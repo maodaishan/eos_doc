@@ -1,0 +1,2023 @@
+Date: Wed, 8 Jun 2022 16:55:30 +0800
+Message-ID: <0001196c$029e6200$5056be7d$YinXiangBiJi>
+MIME-Version: 1.0
+Content-Type: text/html; 
+	charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
+X-Mailer: Evernote® v7.00.6.4762
+
+<html>
+<head>
+  <title>Evernote Export</title>
+  <basefont face=3D"=E5=BE=AE=E8=BD=AF=E9=9B=85=E9=BB=91" size=3D"2" />
+  <meta http-equiv=3D"Content-Type" =
+content=3D"text/html;charset=3Dutf-8" />
+  <meta name=3D"exporter-version" content=3D"YXBJ Windows/604762 (zh-CN, =
+DDL); Windows/10.0.0 (Win64); EDAMVersion=3DV2;"/>
+  <meta name=3D"content-class" content=3D"yinxiang.markdown"/>
+  <style>
+    body, td {
+      font-family: =E5=BE=AE=E8=BD=AF=E9=9B=85=E9=BB=91;
+      font-size: 10pt;
+    }
+  </style>
+</head>
+<body>
+<a name=3D"1655"/>
+
+<div><span><div style=3D"font-size: 14px; margin: 0; padding: 0; width: =
+100%;"><h2 style=3D"line-height: 160%; box-sizing: content-box; =
+font-weight: 700; font-size: 34px; border-bottom: 1px solid #dbdbdb; =
+color: #333;">=E5=85=A5=E5=8F=A3</h2>=0A<p style=3D"line-height: 160%; =
+box-sizing: content-box; margin: 10px 0; color: =
+#333;">Cmd/geth/main.go</p>=0A<pre style=3D"line-height: 160%; =
+box-sizing: content-box; border: 0; border-radius: 0; margin: 2px 0 8px; =
+background-color: #f5f7f8;"><code style=3D"display: block; overflow-x: =
+auto; background: #1e1e1e; line-height: 160%; box-sizing: content-box; =
+border: 0; border-radius: 0; letter-spacing: -.3px; padding: 18px; =
+color: #f4f4f4; white-space: pre-wrap;">Geth{=0Astack, backend :=3D =
+makeFullNode(ctx)=0AstartNode(ctx, stack, backend, =
+false)=0A}=0A</code></pre>=0A<p style=3D"line-height: 160%; box-sizing: =
+content-box; margin: 10px 0; color: =
+#333;">=E9=87=8D=E7=82=B9=E6=98=AFmakeFullNode=E9=87=8C=E7=94=9F=E6=88=90=
+node=E5=92=8Cbackend=EF=BC=8CstartNode=E6=B2=A1=E5=B9=B2=E5=95=A5=EF=BC=8C=
+=E5=8F=AA=E6=98=AF=E5=BC=80=E5=90=AF=E5=89=A9=E4=BD=99=E7=A9=BA=E9=97=B4=E6=
+=A3=80=E6=9F=A5=E7=AD=89=E3=80=82</p>=0A<h2 style=3D"line-height: 160%; =
+box-sizing: content-box; font-weight: 700; font-size: 34px; =
+border-bottom: 1px solid #dbdbdb; color: #333;">Ethereum</h2>=0A<p =
+style=3D"line-height: 160%; box-sizing: content-box; margin: 10px 0; =
+color: =
+#333;">makeFullNode=E9=87=8C=E7=94=9F=E6=88=90node=E5=92=8Cbackend=EF=BC=8C=
+=E5=85=B6=E4=B8=ADbackend=E6=98=AFEthereum=E5=AE=9E=E4=BE=8B=EF=BC=8C=E5=8C=
+=85=E5=90=AB=E4=BA=A4=E6=98=93=E6=B1=A0=E3=80=81=E9=93=BE=E7=AE=A1=E7=90=86=
+=E3=80=81p2p=E7=BD=91=E7=BB=9C=E3=80=81DB=E7=AD=89=E3=80=82</p>=0A<pre =
+style=3D"line-height: 160%; box-sizing: content-box; border: 0; =
+border-radius: 0; margin: 2px 0 8px; background-color: #f5f7f8;"><code =
+style=3D"display: block; overflow-x: auto; background: #1e1e1e; =
+line-height: 160%; box-sizing: content-box; border: 0; border-radius: 0; =
+letter-spacing: -.3px; padding: 18px; color: #f4f4f4; white-space: =
+pre-wrap;">type Ethereum struct {=0A	config *ethconfig.Config=0A	// =
+Handlers=0A	txPool             *core.TxPool                             =
+//=E4=BA=A4=E6=98=93=E6=B1=A0=0A	blockchain         *core.BlockChain     =
+                //=E7=AE=A1=E7=90=86=E9=93=BE=EF=BC=8C=E5=A6=82genesis, =
+=E9=93=BE=E7=9A=84=E5=BB=B6=E9=95=BF=E7=AD=89=0A	handler            =
+*handler                                 =
+//=E9=93=BE=E7=AE=A1=E7=90=86=EF=BC=8C=E5=A6=82=E4=BA=A4=E6=98=93=E6=B1=A0=
+=EF=BC=8C=E8=8A=82=E7=82=B9=EF=BC=8C=E9=93=BE=0A	ethDialCandidates  =
+enode.Iterator=0A	snapDialCandidates enode.Iterator=0A	merger            =
+ *consensus.Merger=0A=0A	// DB interfaces=0A	chainDb ethdb.Database // =
+Block chain database=0A=0A	eventMux       *event.TypeMux=0A	engine       =
+  consensus.Engine=0A	accountManager *accounts.Manager=0A=0A	=
+bloomRequests     chan chan *bloombits.Retrieval // Channel receiving =
+bloom data retrieval requests=0A	bloomIndexer      *core.ChainIndexer    =
+         // Bloom indexer operating during block imports=0A	=
+closeBloomHandler chan struct{}=0A=0A	APIBackend *EthAPIBackend=0A=0A	=
+miner     *miner.Miner=0A	gasPrice  *big.Int=0A	etherbase =
+common.Address=0A=0A	networkID     uint64=0A	netRPCService =
+*ethapi.PublicNetAPI=0A=0A	p2pServer *p2p.Server=0A=0A	lock sync.RWMutex =
+// Protects the variadic fields (e.g. gas price and etherbase)=0A=0A	=
+shutdownTracker *shutdowncheck.ShutdownTracker // Tracks if and when the =
+node has shutdown ungracefully=0A}=0A</code></pre>=0A<p =
+style=3D"line-height: 160%; box-sizing: content-box; margin: 10px 0; =
+color: =
+#333;">=E5=88=9B=E5=BB=BAbackend=E6=97=B6=EF=BC=8C=E4=BC=9A=E5=88=9B=E5=BB=
+=BADB=EF=BC=8C=E5=AF=B9genesis =
+=E5=81=9Aload=E5=92=8C=E6=A3=80=E6=9F=A5=EF=BC=8C=E5=88=9D=E5=A7=8B=E5=8C=
+=96=E5=8C=85=E5=90=AB=E7=9A=84=E5=90=84=E4=B8=AA=E6=A8=A1=E5=9D=97=EF=BC=8C=
+=E5=A6=82txPool, =
+blockchain=EF=BC=8Cminer=EF=BC=8C=E5=B8=83=E9=9A=86=E8=BF=87=E6=BB=A4=E5=99=
+=A8=EF=BC=8CRPCService=E7=AD=89=E3=80=82</p>=0A<h3 style=3D"line-height: =
+160%; box-sizing: content-box; font-weight: 700; font-size: 27px; color: =
+#333;">=E9=87=8D=E8=A6=81=E6=8E=A5=E5=8F=A3</h3>=0A<p =
+style=3D"line-height: 160%; box-sizing: content-box; margin: 10px 0; =
+color: =
+#333;">=E5=AF=B9=E5=A4=96=E6=8F=90=E4=BE=9B=E8=87=AA=E5=B7=B1=E6=8C=81=E6=
+=9C=89=E7=9A=84=E5=90=84=E7=A7=8D=E5=AE=9E=E4=BD=93<br/>=0AStartMining=EF=
+=BC=8C=E5=90=AF=E5=8A=A8=E6=8C=96=E7=9F=BF<br/>=0AStateAtBlock=EF=BC=8C=E8=
+=8E=B7=E5=8F=96=E7=BB=99=E5=AE=9A=E5=9D=97=E7=9A=84=E4=B8=96=E7=95=8C=E7=8A=
+=B6=E6=80=81<br/>=0AstateAtTransaction=EF=BC=8C=E8=BF=94=E5=9B=9E=E6=89=A7=
+=E8=A1=8C=E5=85=B7=E4=BD=93Tx=E7=9A=84=E4=B8=96=E7=95=8C=E7=8A=B6=E6=80=81=
+</p>=0A<h2 style=3D"line-height: 160%; box-sizing: content-box; =
+font-weight: 700; font-size: 34px; border-bottom: 1px solid #dbdbdb; =
+color: #333;">Node</h2>=0A<p style=3D"line-height: 160%; box-sizing: =
+content-box; margin: 10px 0; color: =
+#333;">node=E6=98=AF=E4=B8=80=E4=B8=AAcontainer=EF=BC=8C=E5=90=84=E7=A7=8D=
+=E6=9C=8D=E5=8A=A1=E5=8F=AF=E4=BB=A5=E6=B3=A8=E5=86=8C=E4=B8=8A=E5=8E=BB=E3=
+=80=82<br/>=0A=E9=87=8D=E8=A6=81=E7=9A=84=E6=98=AF=EF=BC=9AaccountManager=
+, p2p.server, lifeCycle=E7=AE=A1=E7=90=86=EF=BC=8CrpcAPIs=EF=BC=8C =
+databases</p>=0A<pre style=3D"line-height: 160%; box-sizing: =
+content-box; border: 0; border-radius: 0; margin: 2px 0 8px; =
+background-color: #f5f7f8;"><code style=3D"display: block; overflow-x: =
+auto; background: #1e1e1e; line-height: 160%; box-sizing: content-box; =
+border: 0; border-radius: 0; letter-spacing: -.3px; padding: 18px; =
+color: #f4f4f4; white-space: pre-wrap;">type Node struct {=0A	eventmux   =
+   *event.TypeMux=0A	config        *Config=0A	accman        =
+*accounts.Manager=0A	log           log.Logger=0A	keyDir        string    =
+        // key store directory=0A	keyDirTemp    bool              // If =
+true, key directory will be removed by Stop=0A	dirLock       =
+fileutil.Releaser // prevents concurrent use of instance directory=0A	=
+stop          chan struct{}     // Channel to wait for termination =
+notifications=0A	server        *p2p.Server       // Currently running =
+P2P networking layer=0A	startStopLock sync.Mutex        // Start/Stop =
+are protected by an additional lock=0A	state         int               =
+// Tracks state of node lifecycle=0A=0A	lock          sync.Mutex=0A	=
+lifecycles    []Lifecycle // All registered backends, services, and =
+auxiliary services that have a lifecycle=0A	rpcAPIs       []rpc.API   // =
+List of APIs currently provided by the node=0A	http          *httpServer =
+//=0A	ws            *httpServer //=0A	httpAuth      *httpServer //=0A	=
+wsAuth        *httpServer //=0A	ipc           *ipcServer  // Stores =
+information about the ipc http server=0A	inprocHandler *rpc.Server // =
+In-process RPC request handler to process the API requests=0A=0A	=
+databases map[*closeTrackingDB]struct{} // All open =
+databases=0A}=0A</code></pre>=0A<h3 style=3D"line-height: 160%; =
+box-sizing: content-box; font-weight: 700; font-size: 27px; color: =
+#333;">=E9=87=8D=E7=82=B9</h3>=0A<p style=3D"line-height: 160%; =
+box-sizing: content-box; margin: 10px 0; color: =
+#333;">AccountManager=E6=98=AF=E5=9C=A8=E8=BF=99=E9=87=8C=E5=88=9B=E5=BB=BA=
+=E7=9A=84=EF=BC=8C=E8=BF=98=E6=B2=A1=E8=B7=9Fbackend=E6=8C=82=E9=92=A9=EF=
+=BC=8C=E5=90=8E=E7=BB=AD=E8=A6=81=E6=8C=82=E4=B8=8A=E3=80=82<br/>=0Ap2pSe=
+rver=E6=98=AF=E5=9C=A8=E8=BF=99=E9=87=8C=E5=88=9B=E5=BB=BA=E7=9A=84<br/>=0A=
+RPCServer=E6=98=AF=E5=9C=A8=E8=BF=99=E9=87=8C=E5=88=9B=E5=BB=BA=E7=9A=84<=
+/p>=0A<h3 style=3D"line-height: 160%; box-sizing: content-box; =
+font-weight: 700; font-size: 27px; color: =
+#333;">=E9=87=8D=E8=A6=81=E6=8E=A5=E5=8F=A3</h3>=0A<p =
+style=3D"line-height: 160%; box-sizing: content-box; margin: 10px 0; =
+color: #333;">=E5=AF=B9=E5=A4=96=E6=8F=90=E4=BE=9BAccountManager, =
+RPCServer=E7=AD=89=E8=87=AA=E5=B7=B1=E6=8C=81=E6=9C=89=E7=9A=84=E6=9C=8D=E5=
+=8A=A1=EF=BC=8C<br/>=0A=E6=B3=A8=E5=86=8CRPC=E6=9C=8D=E5=8A=A1<br/>=0AReg=
+isterProtocols=EF=BC=8C=E6=8A=8Abackend=E7=9A=84protocol=E6=B3=A8=E5=86=8C=
+=E5=88=B0p2pServer</p>=0A<h2 style=3D"line-height: 160%; box-sizing: =
+content-box; font-weight: 700; font-size: 34px; border-bottom: 1px solid =
+#dbdbdb; color: #333;">BlockChain</h2>=0A<p style=3D"line-height: 160%; =
+box-sizing: content-box; margin: 10px 0; color: =
+#333;">=E4=BB=A3=E8=A1=A8=E9=93=BE=E6=95=B0=E6=8D=AE=EF=BC=8C=E8=A2=ABbac=
+kend=E6=8C=81=E6=9C=89=E3=80=82<br/>=0A=E9=87=8D=E8=A6=81=E6=95=B0=E6=8D=AE=
+=EF=BC=9A<br/>=0Ahc=EF=BC=9A=E9=93=BE=E7=9A=84header=EF=BC=8C=E5=8C=85=E5=
+=90=AB=E4=B8=96=E7=95=8C=E7=8A=B6=E6=80=81db=EF=BC=8C=E5=BD=93=E5=89=8D=E5=
+=A4=B4=E7=9A=84=E5=9D=97=E9=AB=98=E3=80=81hash=EF=BC=8C=E6=9C=80=E8=BF=91=
+=E7=9A=84=E5=9D=97=E5=A4=B4cache,=E9=9A=BE=E5=BA=A6cache=EF=BC=8C=E5=9D=97=
+=E9=AB=98cache=EF=BC=8C=E5=85=B1=E8=AF=86engine<br/>=0AgenesisBlock<br/>=0A=
+ClosableMutex=EF=BC=9Achain=E7=9A=84=E5=86=99=E9=94=81=EF=BC=8C=E5=90=8C=E6=
+=AD=A5=E6=93=8D=E4=BD=9C=E7=94=A8<br/>=0AcurrentBlock    =
+atomic.Value<br/>=0AcurrentFastBlock =
+atomic.Value<br/>=0A=E4=B8=80=E5=A0=86cache=EF=BC=9A<br/>=0AstateCache   =
+  state.Database  =
+=E4=B8=96=E7=95=8C=E7=8A=B6=E6=80=81cache<br/>=0AbodyCache   =
+=E6=9C=80=E8=BF=91=E7=9A=84=E5=9D=97body =
+cache=EF=BC=8C=E6=B3=A8=E6=84=8F=E5=B0=B1body<br/>=0AreceiptsCache  =
+=E6=9C=80=E8=BF=91=E5=9D=97=E7=9A=84receipts=EF=BC=8C per =
+block<br/>=0AblockCache   =
+=E6=9C=80=E8=BF=91=E5=9D=97=E7=9A=84=E6=95=B4=E4=B8=AAcache<br/>=0AtxLook=
+upCache<br/>=0AfutureBlocks   =
+=E6=B7=BB=E5=8A=A0=E4=BA=86=EF=BC=8C=E4=BD=86=E8=BF=98=E6=B2=A1=E5=A4=84=E7=
+=90=86=E7=9A=84=E5=9D=97cache</p>=0A<p style=3D"line-height: 160%; =
+box-sizing: content-box; margin: 10px 0; color: #333;">running  =
+=E7=8A=B6=E6=80=81=E6=A0=87=E8=AF=86=EF=BC=8C0=E5=9C=A8=E8=B7=91=EF=BC=8C=
+1 stop<br/>=0Aengine=C2=A0=C2=A0=C2=A0=C2=A0 =
+consensus.Engine<br/>=0Avalidator=C2=A0 Validator    =
+=E5=9D=97=E5=92=8C=E7=8A=B6=E6=80=81=E7=9A=84=E9=AA=8C=E8=AF=81=E5=99=A8<=
+br/>=0Aprefetcher Prefetcher=EF=BC=9Apre-caching transaction signatures =
+and state.<br/>=0Aprocessor=C2=A0 =
+Processor=EF=BC=9A=E5=A4=84=E7=90=86=E5=8C=BA=E5=9D=97=E4=BA=A4=E6=98=93<=
+br/>=0Aforker=C2=A0=C2=A0=C2=A0=C2=A0 *ForkChoice  =
+=E6=A0=B9=E6=8D=AE=E6=80=BB=E9=9A=BE=E5=BA=A6=E9=80=89=E6=8B=A9=E7=94=A8=E5=
+=93=AA=E4=B8=AAfork=EF=BC=8C<br/>=0Adb          =
+=E4=B8=96=E7=95=8C=E7=8A=B6=E6=80=81=E6=95=B0=E6=8D=AE=E5=BA=93</p>=0A<pr=
+e style=3D"line-height: 160%; box-sizing: content-box; border: 0; =
+border-radius: 0; margin: 2px 0 8px; background-color: #f5f7f8;"><code =
+style=3D"display: block; overflow-x: auto; background: #1e1e1e; =
+line-height: 160%; box-sizing: content-box; border: 0; border-radius: 0; =
+letter-spacing: -.3px; padding: 18px; color: #f4f4f4; white-space: =
+pre-wrap;">=E5=8F=AA=E5=88=97=E5=87=BA=E6=9C=80=E9=87=8D=E8=A6=81=E7=9A=84=
+=0Atype BlockChain struct {=0A	db     ethdb.Database // Low level =
+persistent database to store final content in=0A	snaps  *snapshot.Tree =
+// Snapshot tree for fast trie leaf access=0A	triegc *prque.Prque   // =
+Priority queue mapping block numbers to tries to gc=0A	gcproc =
+time.Duration  // Accumulates canonical block processing for trie =
+dumping=0A=0A	txLookupLimit uint64=0A=0A	hc            *HeaderChain=0A	=
+genesisBlock  *types.Block=0A=0A	// This mutex synchronizes chain write =
+operations.=0A	// Readers don't need to take it, they can just read the =
+database.=0A	chainmu *syncx.ClosableMutex=0A=0A	currentBlock     =
+atomic.Value // Current head of the block chain=0A	currentFastBlock =
+atomic.Value // Current head of the fast-sync chain (may be above the =
+block chain!)=0A=0A	stateCache    state.Database // State database to =
+reuse between imports (contains state cache)=0A	bodyCache     *lru.Cache =
+    // Cache for the most recent block bodies=0A	bodyRLPCache  =
+*lru.Cache     // Cache for the most recent block bodies in RLP encoded =
+format=0A	receiptsCache *lru.Cache     // Cache for the most recent =
+receipts per block=0A	blockCache    *lru.Cache     // Cache for the most =
+recent entire blocks=0A	txLookupCache *lru.Cache     // Cache for the =
+most recent transaction lookup data.=0A	futureBlocks  *lru.Cache     // =
+future blocks are blocks added for later processing=0A=0A	wg            =
+sync.WaitGroup //=0A	quit          chan struct{}  // shutdown signal, =
+closed in Stop.=0A	running       int32          // 0 if chain is =
+running, 1 when stopped=0A	procInterrupt int32          // interrupt =
+signaler for block processing=0A=0A	engine     consensus.Engine=0A	=
+validator  Validator // Block and state validator interface=0A	=
+prefetcher Prefetcher=0A	processor  Processor // Block transaction =
+processor interface=0A	forker     *ForkChoice=0A	vmConfig   =
+vm.Config=0A}=0A</code></pre>=0A<p style=3D"line-height: 160%; =
+box-sizing: content-box; margin: 10px 0; color: =
+#333;">newBlockChain=E4=B8=AD=E6=89=A7=E8=A1=8C=E7=9A=84=E6=93=8D=E4=BD=9C=
+=EF=BC=9A<br/>=0A=E4=BC=9A=E8=AF=BB=E5=87=BAhead,<br/>=0Anew=E5=87=BAstat=
+e=EF=BC=88=E6=A0=B9=E6=8D=AEhead, state =
+cache=EF=BC=8C=E6=88=96snap=EF=BC=8CBlockChain=E9=87=8C=E5=A4=A7=E9=87=8F=
+=E7=94=A8=E5=88=B0state=E5=8C=85=E9=87=8C=E7=9A=84=E5=86=85=E5=AE=B9=EF=BC=
+=8C=E8=80=8C=E4=B8=94=E4=BD=86=E6=98=AF=E6=9C=AC=E8=BA=AB=E7=BB=93=E6=9E=84=
+=E4=BD=93=E5=86=85=E5=B9=B6=E4=B8=8D=E5=A4=A7=E9=87=8F=E6=8C=81=E6=9C=89s=
+tate=E7=9A=84=E4=B8=9C=E8=A5=BF=EF=BC=8C=E5=8F=AA=E6=9C=89=E4=B8=80=E4=B8=
+=AAstateCache,=E6=98=AFstate.Database=EF=BC=89<br/>=0A=E5=A4=84=E7=90=86=E4=
+=B9=8B=E5=89=8D=E5=8F=AF=E8=83=BD=E9=81=97=E7=95=99=E7=9A=84=E9=94=99=E8=AF=
+=AF=E7=8A=B6=E6=80=81=E5=92=8C=E9=94=99=E8=AF=AFhash=E7=AD=89<br/>=0A=E5=A6=
+=82=E6=9E=9C=E6=9C=89=E5=BF=AB=E7=85=A7=EF=BC=8C=E4=B8=94=E5=BF=AB=E7=85=A7=
+=E6=AF=94head=E6=9B=B4=E9=AB=98=EF=BC=8C=E5=88=99=E6=81=A2=E5=A4=8D=E5=BF=
+=AB=E7=85=A7<br/>=0A=E5=90=AF=E5=8A=A8=E4=B8=80=E4=B8=AA5s=E7=9A=84=E5=AE=
+=9A=E6=97=B6=E5=99=A8=E5=A4=84=E7=90=86futureBlocks=EF=BC=8CfutureBlocks=E6=
+=98=AF=E5=B7=B2=E8=A2=AB=E6=B7=BB=E5=8A=A0=EF=BC=8C=E4=BD=86=E5=B0=9A=E6=9C=
+=AA=E5=A4=84=E7=90=86=E7=9A=84=E5=9D=97=E3=80=82<br/>=0A=E5=90=AF=E5=8A=A8=
+TxIndexer<br/>=0A=E5=85=B6=E4=BB=96=E4=B8=80=E4=BA=9B=E6=A3=80=E6=9F=A5=EF=
+=BC=8C=E6=88=96=E8=80=85=E6=A0=B9=E6=8D=AEconfig=E5=90=AF=E5=8A=A8=E4=B8=80=
+=E4=BA=9B=E4=B8=9C=E8=A5=BF...<br/>=0A=E6=89=A7=E8=A1=8C=E5=AE=8C=E5=90=8E=
+=EF=BC=8C=E5=B0=B1=E4=BC=9A=E6=9C=89=E4=B8=AA=E5=8F=AF=E7=94=A8=E7=9A=84B=
+lockChain=E4=BA=86=E3=80=82</p>=0A<h3 style=3D"line-height: 160%; =
+box-sizing: content-box; font-weight: 700; font-size: 27px; color: =
+#333;">=E9=87=8D=E8=A6=81=E6=8E=A5=E5=8F=A3</h3>=0A<p =
+style=3D"line-height: 160%; box-sizing: content-box; margin: 10px 0; =
+color: #333;">ContractCode=EF=BC=8C =
+=E6=A0=B9=E6=8D=AEcode=E7=9A=84hash=EF=BC=8C=E8=8E=B7=E5=8F=96code=EF=BC=8C=
+code=E6=98=AFbyte[]=EF=BC=8C=E5=BA=94=E8=AF=A5=E6=98=AF=E5=AD=97=E8=8A=82=
+=E7=A0=81<br/>=0ACurrentBlock=EF=BC=8C=E8=8E=B7=E5=8F=96=E6=AD=A3=E5=BC=8F=
+=E9=93=BE=E7=9A=84head =
+block=EF=BC=8C=E8=BF=94=E5=9B=9E=E7=B1=BB=E5=9E=8B=E4=B8=BABlock<br/>=0AH=
+asHeader=EF=BC=8CGetHeader=EF=BC=8CGetHeaderByHash=EF=BC=8CGetHeaderByNum=
+ber=E5=AF=B9=E5=A4=B4=E7=9A=84=E6=9F=A5=E8=AF=A2=E5=92=8C=E8=8E=B7=E5=8F=96=
+=EF=BC=8C=E8=BF=94=E5=9B=9EHeader<br/>=0AGetBody=EF=BC=8CGetBodyRLP=EF=BC=
+=8C=E8=BF=94=E5=9B=9EBody=EF=BC=8C=E9=87=8C=E9=9D=A2=E5=8C=85=E5=90=ABTra=
+nsactions[]=E5=92=8CUncles[]<br/>=0AGasLimit=EF=BC=8C=E6=A0=B9=E6=8D=AEhe=
+ad=E8=BF=94=E5=9B=9Egas =
+limit<br/>=0A=E3=80=82=E3=80=82=E3=80=82=E3=80=82=E5=BE=88=E5=A4=9A=E8=B7=
+=9F=E9=93=BE=E7=9B=B8=E5=85=B3=E7=9A=84=EF=BC=8C=E4=B8=8D=E5=88=97=E4=B8=BE=
+=E4=BA=86</p>=0A<h4 style=3D"line-height: 160%; box-sizing: content-box; =
+font-size: 20px; color: #333;">InsertChain(chain types.Blocks) (int, =
+error)</h4>=0A<p style=3D"line-height: 160%; box-sizing: content-box; =
+margin: 10px 0; color: =
+#333;">=E6=8A=8A=E4=B8=80=E5=A0=86Block=E6=8F=92=E5=85=A5=E5=88=B0=E6=AD=A3=
+=E5=BC=8F=E9=93=BE=EF=BC=8C=E6=88=96=E8=80=85=E5=88=9B=E5=BB=BA=E4=B8=80=E4=
+=B8=AAfork=E3=80=82=E5=A6=82=E6=9E=9C=E4=B8=AD=E9=97=B4=E5=87=BA=E9=94=99=
+=E4=BA=86=EF=BC=8C=E4=BC=9A=E8=BF=94=E5=9B=9E=E6=98=AF=E7=AC=AC=E5=87=A0=E4=
+=B8=AA=E5=87=BA=E9=94=99=EF=BC=8C=E4=BB=A5=E5=8F=8A=E5=8E=9F=E5=9B=A0=E3=80=
+=82=E6=89=80=E6=9C=89=E7=9A=84=E6=8F=92=E5=85=A5=E5=AE=8C=E6=88=90=E5=90=8E=
+=EF=BC=8C=E4=BC=9A=E5=8F=91=E5=87=BAevent=E3=80=82<br/>=0A=E9=9D=9E=E5=B8=
+=B8=E5=A4=9A=E5=9C=B0=E6=96=B9=E8=B0=83=E7=94=A8=E8=BF=99=E4=B8=AA=E6=8E=A5=
+=E5=8F=A3=E3=80=82=E7=AE=80=E7=95=A5=E6=B5=81=E7=A8=8B=E5=A6=82=E4=B8=8B=EF=
+=BC=9A<br/>=0A//=E5=88=9B=E5=BB=BA=E4=B8=80=E4=B8=AA=E5=9B=9E=E9=80=80=E7=
+=8A=B6=E6=80=81=E7=94=A8=E7=9A=84cache<br/>=0AsenderCacher.recoverFromBlo=
+cks(types.MakeSigner(bc.chainConfig,<br/>=0Achain[0].Number()), =
+chain)</p>=0A<p style=3D"line-height: 160%; box-sizing: content-box; =
+margin: 10px 0; color: =
+#333;">=E6=A3=80=E6=9F=A5header=EF=BC=8C=E6=9C=89=E5=87=A0=E7=A7=8D=E5=A4=
+=84=E7=90=86=E6=83=85=E5=86=B5=EF=BC=88=E8=BF=99=E9=83=A8=E5=88=86=E6=B2=A1=
+=E5=A4=AA=E7=9C=8B=E6=87=82=EF=BC=8C=E4=BD=86=E5=8F=AF=E4=BB=A5=E7=8C=9C=E4=
+=B8=80=E7=8C=9C=EF=BC=89=EF=BC=9A</p>=0A<ol style=3D"line-height: 160%; =
+box-sizing: content-box; display: block; padding-left: 30px; margin: 6px =
+0 10px; color: #333; list-style-type: decimal;">=0A<li =
+style=3D"line-height: 160%; box-sizing: =
+content-box;">=E5=A6=82=E6=9E=9C=E6=88=91=E4=BB=AC=E6=9C=AC=E5=9C=B0=E5=B7=
+=B2=E7=BB=8F=E7=9F=A5=E9=81=93=E7=AC=AC=E4=B8=80=E4=B8=AA=E5=9D=97=E3=80=82=
+<br/>=0A=E5=8F=AF=E8=83=BD=E6=88=91=E4=BB=AC=E8=BF=9B=E8=A1=8C=E4=BA=86=E5=
+=9B=9E=E6=BB=9A=EF=BC=8C=E7=8E=B0=E5=9C=A8=E8=A6=81=E9=87=8D=E6=96=B0=E5=AF=
+=BC=E5=85=A5<br/>=0A=E6=88=96=E8=80=85=E7=95=A5=E8=BF=87=E5=89=8D=E9=9D=A2=
+=E9=87=8D=E5=A4=8D=E5=B7=B2=E7=9F=A5=E7=9A=84=E5=9D=97<br/>=0A=E6=88=96=E8=
+=80=85=E8=A6=81=E5=BC=80=E5=90=AF=E4=B8=80=E4=B8=AA=E5=88=86=E5=8F=89=EF=BC=
+=88fork=EF=BC=89</li>=0A<li style=3D"line-height: 160%; box-sizing: =
+content-box;">=E5=9D=97=E5=A4=B4=E5=A4=A7=E4=BA=8E=E6=88=91=E4=BB=AC=E7=9A=
+=84head=EF=BC=8C=E6=AD=A4=E6=97=B6=E5=8A=A0=E5=85=A5=E5=88=B0FutureBlock=E4=
+=B8=AD</li>=0A</ol>=0A<p style=3D"line-height: 160%; box-sizing: =
+content-box; margin: 10px 0; color: =
+#333;">=E7=84=B6=E5=90=8E=E9=81=8D=E5=8E=86=E5=A4=84=E7=90=86=E5=9D=97=EF=
+=BC=9A</p>=0A<pre style=3D"line-height: 160%; box-sizing: content-box; =
+border: 0; border-radius: 0; margin: 2px 0 8px; background-color: =
+#f5f7f8;"><code style=3D"display: block; overflow-x: auto; background: =
+#1e1e1e; line-height: 160%; box-sizing: content-box; border: 0; =
+border-radius: 0; letter-spacing: -.3px; padding: 18px; color: #f4f4f4; =
+white-space: pre-wrap;">for ; block !=3D nil &amp;&amp; err =3D=3D nil =
+|| errors.Is(err, ErrKnownBlock); block, err =3D =0Ait.next() =
+{=0A</code></pre>=0A<p style=3D"line-height: 160%; box-sizing: =
+content-box; margin: 10px 0; color: =
+#333;">=E8=8E=B7=E5=8F=96=E7=88=B6=E5=8C=BA=E5=9D=97=E5=8F=8A=E5=85=B6sta=
+te=EF=BC=8C=E6=9D=A5=E6=89=A7=E8=A1=8C=E5=BD=93=E5=89=8D=E5=8C=BA=E5=9D=97=
+=E3=80=82</p>=0A<pre style=3D"line-height: 160%; box-sizing: =
+content-box; border: 0; border-radius: 0; margin: 2px 0 8px; =
+background-color: #f5f7f8;"><code style=3D"display: block; overflow-x: =
+auto; background: #1e1e1e; line-height: 160%; box-sizing: content-box; =
+border: 0; border-radius: 0; letter-spacing: -.3px; padding: 18px; =
+color: #f4f4f4; white-space: pre-wrap;">statedb, err :=3D =
+state.New(parent.Root, bc.stateCache, bc.snaps)  =0A</code></pre>=0A<p =
+style=3D"line-height: 160%; box-sizing: content-box; margin: 10px 0; =
+color: =
+#333;">=E5=A4=84=E7=90=86block=EF=BC=9A=EF=BC=88=E8=BF=99=E4=B8=AA=E6=8E=A5=
+=E5=8F=A3=E5=90=8E=E9=9D=A2=E5=86=8D=E6=B7=B1=E5=85=A5=E7=A0=94=E7=A9=B6=EF=
+=BC=89</p>=0A<pre style=3D"line-height: 160%; box-sizing: content-box; =
+border: 0; border-radius: 0; margin: 2px 0 8px; background-color: =
+#f5f7f8;"><code style=3D"display: block; overflow-x: auto; background: =
+#1e1e1e; line-height: 160%; box-sizing: content-box; border: 0; =
+border-radius: 0; letter-spacing: -.3px; padding: 18px; color: #f4f4f4; =
+white-space: pre-wrap;">receipts, logs, usedGas, err :=3D =
+bc.processor.Process(block, statedb, bc.vmConfig)=0A</code></pre>=0A<p =
+style=3D"line-height: 160%; box-sizing: content-box; margin: 10px 0; =
+color: #333;">=E9=AA=8C=E8=AF=81state</p>=0A<pre style=3D"line-height: =
+160%; box-sizing: content-box; border: 0; border-radius: 0; margin: 2px =
+0 8px; background-color: #f5f7f8;"><code style=3D"display: block; =
+overflow-x: auto; background: #1e1e1e; line-height: 160%; box-sizing: =
+content-box; border: 0; border-radius: 0; letter-spacing: -.3px; =
+padding: 18px; color: #f4f4f4; white-space: =
+pre-wrap;">bc.validator.ValidateState(block, statedb, receipts, =
+usedGas);=0A</code></pre>=0A<p style=3D"line-height: 160%; box-sizing: =
+content-box; margin: 10px 0; color: =
+#333;">=E5=B0=86block=E5=86=99=E5=85=A5statedb</p>=0A<pre =
+style=3D"line-height: 160%; box-sizing: content-box; border: 0; =
+border-radius: 0; margin: 2px 0 8px; background-color: #f5f7f8;"><code =
+style=3D"display: block; overflow-x: auto; background: #1e1e1e; =
+line-height: 160%; box-sizing: content-box; border: 0; border-radius: 0; =
+letter-spacing: -.3px; padding: 18px; color: #f4f4f4; white-space: =
+pre-wrap;">if !setHead {=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=0A    =
+    // Don't set the head, only insert the =
+block=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=0A        err =3D =
+bc.writeBlockWithState(block, receipts, logs, statedb)} =0Aelse =
+{=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=0A        status, err =3D =
+bc.writeBlockAndSetHead(block, receipts, logs, statedb, =
+false)=0A}=0A</code></pre>=0A<p style=3D"line-height: 160%; box-sizing: =
+content-box; margin: 10px 0; color: =
+#333;">=E4=BB=A5=E4=B8=8A=E5=A4=84=E7=90=86=E8=BF=87=E7=A8=8B=E4=B8=AD=E6=
+=9B=B4=E6=96=B0=E5=90=84=E7=A7=8D=E7=BB=9F=E8=AE=A1=E6=95=B0=E6=8D=AE=EF=BC=
+=8C=E5=A6=82Timer, =
+Metrics=EF=BC=8C=E5=B9=B6=E4=B8=94=E6=89=93=E5=87=BAlog=E6=98=BE=E7=A4=BA=
+=E5=A4=84=E7=90=86=E6=83=85=E5=86=B5=EF=BC=8C=E5=A6=82=EF=BC=9A<br/>=0AIn=
+serted new block...<br/>=0AInserted forked block...<br/>=0AInserted =
+block with unknown =
+status...<br/>=0A=E6=B3=A8=E6=84=8F=E4=B8=8A=E9=9D=A2=E5=BE=AA=E7=8E=AF=E7=
+=9A=84=E5=BE=AA=E7=8E=AF=E6=9D=A1=E4=BB=B6</p>=0A<pre =
+style=3D"line-height: 160%; box-sizing: content-box; border: 0; =
+border-radius: 0; margin: 2px 0 8px; background-color: #f5f7f8;"><code =
+style=3D"display: block; overflow-x: auto; background: #1e1e1e; =
+line-height: 160%; box-sizing: content-box; border: 0; border-radius: 0; =
+letter-spacing: -.3px; padding: 18px; color: #f4f4f4; white-space: =
+pre-wrap;">for ; block !=3D nil &amp;&amp; err =3D=3D nil || =
+errors.Is(err, ErrKnownBlock); block, err =3D =
+it.next()=0A</code></pre>=0A<p style=3D"line-height: 160%; box-sizing: =
+content-box; margin: 10px 0; color: =
+#333;">block=E8=83=BD=E5=8F=96=E5=87=BA=E6=9D=A5=EF=BC=8C=E4=B8=94=E6=B2=A1=
+=E9=94=99=E8=AF=AF=EF=BC=8C=E6=88=96=E8=80=85=E9=94=99=E8=AF=AF=3DErrKnow=
+nBlock=EF=BC=8C=E6=89=8D=E6=89=A7=E8=A1=8C=E3=80=82<br/>=0A=E6=89=80=E4=BB=
+=A5=E4=B9=9F=E6=9C=89=E5=85=B6=E4=BB=96=E7=9A=84=E5=8F=AF=E8=83=BD=EF=BC=8C=
+=E4=BC=9A=E5=AF=BC=E8=87=B4it=E4=B8=8D=E8=A2=AB=E9=81=8D=E5=8E=86=E5=AE=8C=
+=EF=BC=8C=E5=B0=B1=E8=B7=B3=E5=87=BA=E5=BE=AA=E7=8E=AF=E3=80=82=E5=81=87=E8=
+=AE=BE=E5=87=BA=E7=8E=B0=E8=BF=99=E7=A7=8D=E6=83=85=E5=86=B5=EF=BC=8C=E5=B0=
+=B1=E6=8A=8A=E7=9F=A5=E9=81=93=E6=98=AFFutureBlock=E7=9A=84=EF=BC=8C=E8=BF=
+=98=E6=9C=89=E4=B8=8D=E7=9F=A5=E9=81=93=E7=A5=96=E5=85=88=E7=9A=84=EF=BC=8C=
+=E4=B8=A2=E8=BF=9BFutureBlock=EF=BC=8C=E8=BF=99=E7=A7=8D=E4=BC=9A=E6=9C=89=
+=E4=B8=AATimer=E5=AE=9A=E6=97=B6=E6=8B=BF=E5=87=BA=E6=9D=A5=E5=A4=84=E7=90=
+=86=E3=80=82</p>=0A<pre style=3D"line-height: 160%; box-sizing: =
+content-box; border: 0; border-radius: 0; margin: 2px 0 8px; =
+background-color: #f5f7f8;"><code style=3D"display: block; overflow-x: =
+auto; background: #1e1e1e; line-height: 160%; box-sizing: content-box; =
+border: 0; border-radius: 0; letter-spacing: -.3px; padding: 18px; =
+color: #f4f4f4; white-space: pre-wrap;">if block !=3D nil &amp;&amp; =
+errors.Is(err, consensus.ErrFutureBlock) {=0A		if err :=3D =
+bc.addFutureBlock(block); err !=3D nil {=0A			return it.index, err=0A		=
+}=0A		block, err =3D it.next()=0A=0A		for ; block !=3D nil &amp;&amp; =
+errors.Is(err, consensus.ErrUnknownAncestor); block, err =3D it.next() =
+{=0A			if err :=3D bc.addFutureBlock(block); err !=3D nil {=0A				return =
+it.index, err=0A			}=0A			stats.queued++=0A		}=0A	}=0A</code></pre>=0A<p =
+style=3D"line-height: 160%; box-sizing: content-box; margin: 10px 0; =
+color: =
+#333;">=E4=B8=8B=E9=9D=A2=E4=B8=80=E4=B8=AA=E4=B8=AA=E5=88=86=E6=9E=90=E5=
+=89=8D=E9=9D=A2=E7=95=A5=E8=BF=87=E7=9A=84=E9=87=8D=E7=82=B9=E5=A4=84=E7=90=
+=86=EF=BC=9A</p>=0A<h4 style=3D"line-height: 160%; box-sizing: =
+content-box; font-size: 20px; color: =
+#333;">stateprocessor.Process:</h4>=0A<pre style=3D"line-height: 160%; =
+box-sizing: content-box; border: 0; border-radius: 0; margin: 2px 0 8px; =
+background-color: #f5f7f8;"><code style=3D"display: block; overflow-x: =
+auto; background: #1e1e1e; line-height: 160%; box-sizing: content-box; =
+border: 0; border-radius: 0; letter-spacing: -.3px; padding: 18px; =
+color: #f4f4f4; white-space: =
+pre-wrap;">//=E5=9C=A8statedb=E4=B8=8A=E6=89=A7=E8=A1=8Cblock=E9=87=8C=E7=
+=9A=84tx=EF=BC=8C=E5=B9=B6=E4=B8=94=E6=8A=8A=E5=87=BA=E5=9D=97=E5=A5=96=E5=
+=8A=B1=E5=88=86=E7=BB=99processor=EF=BC=8C=E4=BB=A5=E5=8F=8A=E5=88=86=E9=85=
+=8D=E5=8F=94=E5=9D=97=E5=A5=96=E5=8A=B1=E3=80=82=0A//=E8=BF=94=E5=9B=9E=E5=
+=A4=84=E7=90=86=E8=BF=87=E7=A8=8B=E4=B8=AD=E7=9A=84=E6=94=B6=E6=8D=AE=E3=80=
+=81log=E3=80=81=E7=94=A8=E6=8E=89=E7=9A=84gas=E9=87=8F=E3=80=82=E5=A6=82=E6=
+=9E=9C=E6=9C=89tx=E5=9B=A0=E4=B8=BAgas=E4=B8=8D=E8=B6=B3=E8=80=8C=E8=BF=90=
+=E8=A1=8C=E5=A4=B1=E8=B4=A5=EF=BC=8C=E5=B0=B1=E8=BF=94=E5=9B=9E=E4=B8=AAe=
+rror=0Afunc (p *StateProcessor) Process(block *types.Block, statedb =
+*state.StateDB, cfg vm.Config) (types.Receipts, []*types.Log, uint64, =
+error) {=0A</code></pre>=0A<p style=3D"line-height: 160%; box-sizing: =
+content-box; margin: 10px 0; color: =
+#333;">=E5=88=9B=E5=BB=BA=E8=99=9A=E6=8B=9F=E6=9C=BA=EF=BC=8C=E5=B9=B6=E4=
+=B8=94=E5=9C=A8=E8=99=9A=E6=8B=9F=E6=9C=BA=E4=B8=8A=E8=BF=90=E8=A1=8Cbloc=
+k=E9=87=8C=E7=9A=84=E6=89=80=E6=9C=89tx=EF=BC=8C=E6=B3=A8=E6=84=8F=EF=BC=9A=
+</p>=0A<ol style=3D"line-height: 160%; box-sizing: content-box; display: =
+block; padding-left: 30px; margin: 6px 0 10px; color: #333; =
+list-style-type: decimal;">=0A<li style=3D"line-height: 160%; =
+box-sizing: =
+content-box;">=E8=99=9A=E6=8B=9F=E6=9C=BA=E6=98=AF=E5=9C=A8statedb=E4=B8=8A=
+=E5=88=9B=E5=BB=BA=E5=87=BA=E6=9D=A5=E7=9A=84=E3=80=82</li>=0A<li =
+style=3D"line-height: 160%; box-sizing: =
+content-box;">=E4=B8=8D=E6=98=AF=E6=AF=8F=E4=B8=AAtx=E5=88=9B=E5=BB=BA=E4=
+=B8=80=E4=B8=AA=E8=99=9A=E6=8B=9F=E6=9C=BA=EF=BC=8C=E8=80=8C=E6=98=AF=E9=92=
+=88=E5=AF=B9=E4=B8=80=E4=B8=AA=E5=9D=97=E5=88=9B=E5=BB=BA=E4=B8=80=E4=B8=AA=
+=E8=99=9A=E6=8B=9F=E6=9C=BA=EF=BC=8C=E4=BD=86=E6=98=AF=E8=A6=81=E6=B3=A8=E6=
+=84=8FContext=EF=BC=8C=E5=9C=A8=E4=BB=A5=E5=A4=AA=E5=9D=8A=E9=87=8C=E6=9C=
+=893=E4=B8=AAContext=EF=BC=9A<br/>=0AChain.Context=EF=BC=8C=E5=AE=83=E5=8C=
+=85=E5=90=AB=E5=85=B1=E8=AF=86=E7=9A=84=E5=8F=82=E6=95=B0=EF=BC=8C=E5=92=8C=
+=E9=80=9A=E8=BF=87hash=E8=8E=B7=E5=8F=96=E5=9D=97=E5=A4=B4=E7=9A=84=E6=96=
+=B9=E6=B3=95=EF=BC=9A<br/>=0AEngine() =
+consensus.Engine<br/>=0AGetHeader(common.Hash, uint64) =
+*types.Header<br/>=0ABlockContext=EF=BC=8C=E5=AE=83=E6=98=AF=E5=A4=84=E7=90=
+=86=E4=B8=80=E4=B8=AA=E5=9D=97=E6=97=B6=E7=9A=84Context=EF=BC=8C=E5=8C=85=
+=E6=8B=ACtransfer=E7=9A=84=E5=A4=84=E7=90=86=E5=87=BD=E6=95=B0=E3=80=81co=
+inbase=E5=9C=B0=E5=9D=80=E3=80=81gaslimit=E3=80=81=E5=9D=97=E9=AB=98=E3=80=
+=81=E9=9A=BE=E5=BA=A6=E7=AD=89<br/>=0ATxContext=EF=BC=8C=E5=8C=85=E5=90=AB=
+origin, gasPrice</li>=0A</ol>=0A<pre style=3D"line-height: 160%; =
+box-sizing: content-box; border: 0; border-radius: 0; margin: 2px 0 8px; =
+background-color: #f5f7f8;"><code style=3D"display: block; overflow-x: =
+auto; background: #1e1e1e; line-height: 160%; box-sizing: content-box; =
+border: 0; border-radius: 0; letter-spacing: -.3px; padding: 18px; =
+color: #f4f4f4; white-space: pre-wrap;">	blockContext :=3D =
+NewEVMBlockContext(header, p.bc, nil)=0A	vmenv :=3D =
+vm.NewEVM(blockContext, vm.TxContext{}, statedb, p.config, cfg)=0A	// =
+Iterate over and process the individual transactions=0A	for i, tx :=3D =
+range block.Transactions() {=0A		msg, err :=3D =
+tx.AsMessage(types.MakeSigner(p.config, header.Number), header.BaseFee)  =
+//=E8=BF=99=E4=B8=80=E6=AD=A5=E4=BC=9A=E6=8A=8Atx=E8=BD=AC=E5=8C=96=E4=B8=
+=BAMsg=EF=BC=8C=0A                                               =
+//=E5=85=B6=E4=B8=AD=E5=8C=85=E6=8B=ACfrom, to , nonce, =
+price=E7=9B=B8=E5=85=B3, amount, =
+accessList=EF=BC=8Cdata=E7=AD=89=E3=80=82=E5=85=B6=E4=B8=ADfrom=E6=98=AF=E4=
+=BB=8E=E7=AD=BE=E5=90=8D=0A                                              =
+ =
+//=E4=B8=AD=E9=80=9A=E8=BF=87=E5=AF=86=E7=A0=81=E5=AD=A6=E6=8E=A8=E5=87=BA=
+=E6=9D=A5=E7=9A=84=E3=80=82=E5=8F=91=E9=80=81=E6=95=B0=E6=8D=AE=E4=B8=AD=E6=
+=B2=A1=E6=9C=89Pk=E5=92=8Caddress=EF=BC=8C=E5=8F=AA=E6=9C=89=E7=AD=BE=E5=90=
+=8D=0A		statedb.Prepare(tx.Hash(), i)=0A		receipt, err :=3D =
+applyTransaction(msg, p.config, p.bc, nil, gp, statedb, blockNumber, =
+blockHash, tx, usedGas, vmenv)=0A	}=0A</code></pre>=0A<p =
+style=3D"line-height: 160%; box-sizing: content-box; margin: 10px 0; =
+color: =
+#333;">=E4=B8=8B=E9=9D=A2=E5=88=86=E6=9E=90applyTransaction</p>=0A<pre =
+style=3D"line-height: 160%; box-sizing: content-box; border: 0; =
+border-radius: 0; margin: 2px 0 8px; background-color: #f5f7f8;"><code =
+style=3D"display: block; overflow-x: auto; background: #1e1e1e; =
+line-height: 160%; box-sizing: content-box; border: 0; border-radius: 0; =
+letter-spacing: -.3px; padding: 18px; color: #f4f4f4; white-space: =
+pre-wrap;">applyTransaction{=0A   =
+//=E4=B8=BA=E5=BD=93=E5=89=8DTx=E5=88=9B=E5=BB=BATxContext=EF=BC=8C=E5=B9=
+=B6=E5=BA=94=E7=94=A8=E5=88=B0evm=EF=BC=8C=E5=9B=A0=E4=B8=BAevm=E6=98=AF=E4=
+=B8=80=E4=B8=AA=E5=9D=97=E5=85=B1=E4=BA=AB=E7=9A=84=E3=80=82=0A	=
+txContext :=3D NewEVMTxContext(msg)=0A   evm.Reset(txContext, =
+statedb)=0A   //=E5=B0=86Msg=E5=BA=94=E7=94=A8=E5=88=B0evm=0A   result, =
+err :=3D ApplyMessage(evm, msg, gp)=0A       =
+-&gt;NewStateTransition(evm, msg, gp).TransitionDb()=0A           =
+-&gt;TransitionDb(){=0A               =
+=E5=85=88=E5=81=9A=E4=B8=80=E4=BA=9B=E5=85=B1=E8=AF=86=E7=9B=B8=E5=85=B3=E6=
+=A3=80=E6=9F=A5=EF=BC=8C=E6=AF=94=E5=A6=82=EF=BC=9A=0A                   =
+nonce=E6=98=AF=E5=AF=B9=E7=9A=84=0A                   =
+price=E4=BD=99=E9=A2=9D=E5=A4=9F(&gt;=3DgasLimit*gasPrice=EF=BC=89=0A    =
+               gas=E7=9B=B8=E5=85=B3=E6=A3=80=E6=9F=A5=0A                =
+   =
+=E5=88=A4=E6=96=AD=E5=BD=93=E5=89=8D=E6=94=AF=E6=8C=81=E7=9A=84=E4=BB=A5=E5=
+=A4=AA=E5=9D=8A=E7=89=88=E6=9C=AC=EF=BC=8C=E5=8E=9F=E6=9D=A5=E5=A4=9A=E7=89=
+=88=E6=9C=AC=E6=98=AF=E8=BF=99=E6=A0=B7=E6=94=AF=E6=8C=81=E7=9A=84=E3=80=82=
+=E5=8F=A6=E5=A4=96=E5=AF=B9=E5=90=84=E7=A7=8DEIP=E5=8D=8F=E8=AE=AE=E7=9A=84=
+=E6=94=AF=E6=8C=81=EF=BC=8C=E4=B9=9F=E6=98=AF=E9=80=9A=E8=BF=87=E8=BF=99=E4=
+=BA=9B=EF=BC=8C=E4=BB=A5=E5=8F=8A=E4=B8=80=E4=BA=9B=E9=85=8D=E7=BD=AE=E9=A1=
+=B9=E7=9A=84=E5=88=A4=E6=96=AD=E6=9D=A5=E5=AE=9E=E7=8E=B0=E7=9A=84=E3=80=82=
+=0A                   homestead :=3D =
+st.evm.ChainConfig().IsHomestead(st.evm.Context.BlockNumber)=0A          =
+         istanbul :=3D =
+st.evm.ChainConfig().IsIstanbul(st.evm.Context.BlockNumber)=0A           =
+        london :=3D =
+st.evm.ChainConfig().IsLondon(st.evm.Context.BlockNumber)=0A             =
+      =
+=E5=90=84=E7=A7=8D=E6=A3=80=E6=9F=A5=E5=AE=8C=E6=88=90=E5=90=8E=EF=BC=8C=E6=
+=89=A7=E8=A1=8C=E4=BA=A4=E6=98=93=0A                   if =
+contractCreation {=0A                       =
+//=E5=A6=82=E6=9E=9C=E6=98=AF=E5=88=9B=E5=BB=BA=E6=96=B0=E5=90=88=E7=BA=A6=
+=EF=BC=8C=E5=88=99=E5=88=9B=E5=BB=BA=E5=B9=B6=E8=AE=BE=E7=BD=AEdata=EF=BC=
+=8C=E5=8D=B3=E5=AD=97=E8=8A=82=E7=A0=81=E3=80=82=0A   	                =
+ret, _, st.gas, vmerr =3D st.evm.Create(sender, st.data, st.gas, =
+st.value)=0A                   } else {=0A                       // =
+nonce+1=0A                       st.state.SetNonce(msg.From(), =
+st.state.GetNonce(sender.Address())+1)=0A                       ret, =
+st.gas, vmerr =3D st.evm.Call(sender, st.to(), st.data, st.gas, =
+st.value)=0A                           -&gt;func (evm *EVM) Call{=0A     =
+                          =
+=E6=A0=88=E6=B7=B1=E5=BA=A6=E6=A3=80=E6=9F=A5=0A                         =
+      =E4=BD=99=E9=A2=9D=E6=A3=80=E6=9F=A5=0A                            =
+   =
+=E5=A6=82=E6=9E=9CtoAddress=E4=B8=8D=E5=AD=98=E5=9C=A8=EF=BC=8C=E5=88=9B=E5=
+=BB=BAaccount=0A                               =
+=E6=89=A7=E8=A1=8C=E8=BD=AC=E8=B4=A6=EF=BC=8C=E6=B3=A8=E6=84=8F=E8=BD=AC=E8=
+=B4=A6=E6=8E=A5=E5=8F=A3=E4=B8=8D=E6=98=AF=E5=9B=BA=E5=AE=9A=E7=9A=84=EF=BC=
+=8C=E8=80=8C=E6=98=AFBlockContext=E9=87=8C=E9=85=8D=E7=BD=AE=E7=9A=84=E3=80=
+=82=0A                               =
+=E6=A3=80=E6=9F=A5=E6=98=AF=E5=90=A6=E6=98=AF=E9=A2=84=E7=BC=96=E8=AF=91=E7=
+=9A=84=E5=90=88=E7=BA=A6=EF=BC=8C=E6=B3=A8=E6=84=8F=E9=A2=84=E7=BC=96=E8=AF=
+=91=E7=9A=84=E5=90=88=E7=BA=A6=E5=85=B6=E5=9C=B0=E5=9D=80=E6=98=AF=E7=9B=B4=
+=E6=8E=A5=E5=AF=B91=EF=BC=8C2=EF=BC=8C3...=E6=95=B0=E5=AD=97=E5=81=9Ahash=
+=E5=BE=97=E5=88=B0=E7=9A=84=E3=80=82=0A                               =
+=E8=80=8C=E4=B8=8D=E6=98=AF=E9=80=9A=E8=BF=87account+nonce=E7=9A=84=E6=96=
+=B9=E5=BC=8F=E5=BE=97=E5=88=B0=E7=9A=84=E3=80=82=0A                      =
+         =
+=E9=A2=84=E7=BC=96=E8=AF=91=E5=90=88=E7=BA=A6=E5=9C=A8=E5=90=84=E4=B8=AA=E7=
+=89=88=E6=9C=AC=E4=B8=8A=E4=B8=8D=E4=B8=80=E6=A0=B7=EF=BC=8C=E7=9C=8B=E9=85=
+=8D=E7=BD=AE=E3=80=82=E5=9F=BA=E6=9C=AC=E9=83=BD=E6=98=AF=E4=BA=9B=E5=AF=86=
+=E7=A0=81=E5=AD=A6=E7=9A=84=EF=BC=8C=E5=A6=82ecrecover=EF=BC=8Csha256hash=
+=E7=AD=89=E3=80=82=0A                               	if isPrecompile =
+{=0A                                       ret, gas, err =3D =
+RunPrecompiledContract(p, input, gas)=0A                                 =
+  } else {=0A                                       =
+//=E8=8E=B7=E5=8F=96toAddr=E5=AF=B9=E5=BA=94=E7=9A=84code=0A             =
+                          code :=3D evm.StateDB.GetCode(addr)=0A         =
+                              if len(code) =3D=3D 0 {=0A                 =
+                          ret, err =3D nil, nil // gas is unchanged=0A   =
+                                    } else {=0A                          =
+                 addrCopy :=3D addr=0A                                   =
+        contract :=3D NewContract(caller, AccountRef(addrCopy), value, =
+gas)=0A                                           =
+contract.SetCallCode(&amp;addrCopy, evm.StateDB.GetCodeHash(addrCopy), =
+code)=0A                                           ret, err =3D =
+evm.interpreter.Run(contract, input, false)=0A                           =
+                    -&gt;EVMInterpreter.run{=0A                          =
+                         in.evm.depth++  =
+//=E8=B0=83=E7=94=A8=E6=A0=88++=0A                                       =
+            if len(contract.Code) =3D=3D 0 {=0A                          =
+                             return nil, nil=0A                          =
+                         }=0A                                            =
+       =
+//=E5=9C=A8=E4=B8=80=E4=B8=AA=E6=97=A0=E9=99=90=E5=BE=AA=E7=8E=AF=E9=87=8C=
+=EF=BC=8C=E5=A4=84=E7=90=86=E5=AD=97=E8=8A=82=E7=A0=81=E9=87=8C=E6=89=80=E6=
+=9C=89=E7=9A=84=E4=B8=80=E4=B8=AA=E4=B8=AA=E7=9A=84=E6=93=8D=E4=BD=9C=0A =
+                                                  for {=0A               =
+                                        =
+//=E8=8E=B7=E5=8F=96=E6=93=8D=E4=BD=9C=E7=A0=81=0A                       =
+                                op =3D contract.GetOp(pc)=0A             =
+                                          operation :=3D =
+in.cfg.JumpTable[op]=0A                                                  =
+     =
+//=E8=8E=B7=E5=8F=96=E5=BD=93=E5=89=8D=E6=93=8D=E4=BD=9C=E7=9A=84=E5=9B=BA=
+=E5=AE=9Agas=E6=B6=88=E8=80=97=EF=BC=8C=E5=A6=82=E6=9E=9C=E4=B8=8D=E5=A4=9F=
+=EF=BC=8C=E8=BF=94=E5=9B=9EOutofGas=0A                                   =
+                    cost =3D operation.constantGas=0A                    =
+                                   if !contract.UseGas(cost) {=0A        =
+                                                   return nil, =
+ErrOutOfGas=0A                                                       =
+}=0A                                                       =
+//=E5=A6=82=E6=9E=9C=E5=BD=93=E5=89=8D=E6=93=8D=E4=BD=9C=E6=9C=89=E5=8A=A8=
+=E6=80=81gas=E6=B6=88=E8=80=97=EF=BC=8C=E8=AE=A1=E7=AE=97=E8=AF=A5=E6=B6=88=
+=E8=80=97=EF=BC=8C=E5=A6=82=E6=9E=9C=E4=B8=8D=E5=A4=9F=EF=BC=8C=E4=B9=9FO=
+utOfGas=0A                                                       =
+=E3=80=82=E3=80=82=E3=80=82=0A                                           =
+            //=E6=89=A7=E8=A1=8C=E8=AF=A5=E6=93=8D=E4=BD=9C=0A           =
+                                            res, err =3D =
+operation.execute(&amp;pc, in, callContext)=0A                           =
+                        }=0A                                             =
+  } //end of EVMInterpreter.run=0A                                       =
+    =
+=E5=A6=82=E6=9E=9CRun=E6=89=A7=E8=A1=8C=E5=A4=B1=E8=B4=A5=EF=BC=8C=E5=B0=B1=
+revert=E5=88=B0=E4=B9=8B=E5=89=8D=E7=9A=84=E7=8A=B6=E6=80=81=0A          =
+                             }=0A                                   }=0A =
+                          }//end of func (evm *EVM) Call=0A              =
+         =0A                   }=0A           }//end of ApplyMessage=0A  =
+ =
+//=E5=A6=82=E6=9E=9C=E6=8E=A5=E6=94=B6=E8=80=85=E5=9C=B0=E5=9D=80=E4=B8=BA=
+=E7=A9=BA=EF=BC=8C=E5=88=99=E5=88=9B=E5=BB=BA=E5=9C=B0=E5=9D=80=EF=BC=8C=E8=
+=BF=99=E4=BC=9A=E8=AE=B0=E5=BD=95=E5=9C=A8=E6=94=B6=E6=8D=AE=E9=87=8C=E3=80=
+=82=E5=8F=AF=E8=83=BD=E5=9C=A8=E5=85=B6=E4=BB=96=E5=9C=B0=E6=96=B9=E6=9C=89=
+=E5=A4=84=E7=90=86=0A   if msg.To() =3D=3D nil {=0A   	=
+receipt.ContractAddress =3D crypto.CreateAddress(evm.TxContext.Origin, =
+tx.Nonce())=0A   }=0A</code></pre>=0A<p style=3D"line-height: 160%; =
+box-sizing: content-box; margin: 10px 0; color: =
+#333;">=E8=87=B3=E6=AD=A4=EF=BC=8CProcess=E5=B0=B1=E5=AE=8C=E6=88=90=E4=BA=
+=86=EF=BC=8C=E5=8F=AF=E4=BB=A5=E7=9C=8B=E5=88=B0=E6=98=AF=E9=92=88=E5=AF=B9=
+=E5=BD=93=E5=89=8D=E5=9D=97=EF=BC=8C=E5=88=9B=E5=BB=BABlockContext=EF=BC=8C=
+=E5=88=9B=E5=BB=BAEVM=EF=BC=8C=E7=84=B6=E5=90=8E=E9=81=8D=E5=8E=86=E6=AF=8F=
+=E7=AC=94=E4=BA=A4=E6=98=93=EF=BC=8C=E5=AF=B9=E4=BA=A4=E6=98=93=E5=88=9B=E5=
+=BB=BA=E5=B9=B6=E5=BA=94=E7=94=A8TxContext=EF=BC=8C=E7=84=B6=E5=90=8E=E5=8A=
+=A0=E8=BD=BD=E4=BA=A4=E6=98=93=E9=87=8CtoAddress=E7=9A=84=E5=AD=97=E8=8A=82=
+=E7=A0=81=EF=BC=8C=E5=AF=B9=E5=AD=97=E8=8A=82=E7=A0=81=E9=87=8C=E7=9A=84=E6=
+=AF=8F=E4=B8=80=E4=B8=AAop=EF=BC=8C=E8=AE=A1=E7=AE=97=E5=85=B6gas=EF=BC=8C=
+=E5=B9=B6=E6=89=A7=E8=A1=8C=E3=80=82</p>=0A<h3 style=3D"line-height: =
+160%; box-sizing: content-box; font-weight: 700; font-size: 27px; color: =
+#333;">writeBlockWithState</h3>=0A<p style=3D"line-height: 160%; =
+box-sizing: content-box; margin: 10px 0; color: =
+#333;">=E7=9B=AE=E7=9A=84=EF=BC=9A=E5=B0=86block, metadata, =
+state=E5=86=99=E5=85=A5=E6=95=B0=E6=8D=AE=E5=BA=93<br/>=0A=E8=BF=87=E7=A8=
+=8B=EF=BC=9A</p>=0A<pre style=3D"line-height: 160%; box-sizing: =
+content-box; border: 0; border-radius: 0; margin: 2px 0 8px; =
+background-color: #f5f7f8;"><code style=3D"display: block; overflow-x: =
+auto; background: #1e1e1e; line-height: 160%; box-sizing: content-box; =
+border: 0; border-radius: 0; letter-spacing: -.3px; padding: 18px; =
+color: #f4f4f4; white-space: pre-wrap;">    =
+//=E8=AE=A1=E7=AE=97=E5=BD=93=E5=89=8D=E5=9D=97=E7=9A=84=E6=80=BB=E9=9A=BE=
+=E5=BA=A6=0A    =
+//=E6=8A=8A=E6=80=BB=E9=9A=BE=E5=BA=A6=E3=80=81block=E3=80=81=E6=94=B6=E6=
+=8D=AE=E7=AD=89=E5=9C=A8=E4=B8=80=E4=B8=AA=E5=8E=9F=E5=AD=90=E6=93=8D=E4=BD=
+=9C=E4=B8=AD=E5=86=99=E5=85=A5=E6=95=B0=E6=8D=AE=E5=BA=93=0A	blockBatch =
+:=3D bc.db.NewBatch()=0A	rawdb.WriteTd(blockBatch, block.Hash(), =
+block.NumberU64(), externTd)=0A	rawdb.WriteBlock(blockBatch, block)=0A	=
+rawdb.WriteReceipts(blockBatch, block.Hash(), block.NumberU64(), =
+receipts)=0A	rawdb.WritePreimages(blockBatch, state.Preimages())=0A	err =
+:=3D blockBatch.Write()=0A    //=E6=9B=B4=E6=96=B0TrieDB=0A    triedb =
+:=3D bc.stateCache.TrieDB()=0A    =
+//=E8=AE=A1=E7=AE=97=E5=BD=93=E5=89=8D=E7=9A=84=E5=86=85=E5=AD=98=E5=8D=A0=
+=E7=94=A8=E6=98=AF=E5=90=A6=E5=B7=B2=E7=BB=8F=E8=B6=85=E5=87=BA=E9=99=90=E5=
+=88=B6=EF=BC=8C=E5=A6=82=E6=9E=9C=E8=B6=85=E5=87=BA=EF=BC=8C=E9=9C=80=E8=A6=
+=81=E6=8A=8A=E4=B8=80=E4=BA=9B=E2=80=9D=E6=88=90=E7=86=9F=E2=80=9C=E7=9A=84=
+=E5=9D=97=E5=86=99=E5=85=A5=E5=88=B0=E7=A1=AC=E7=9B=98=0A    if nodes =
+&gt; limit || imgs &gt; 4*1024*1024 =
+{=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=0A        triedb.Cap(limit - =
+ethdb.IdealBatchSize)=0A    }=0A    =
+//=E6=89=BE=E5=87=BA=E4=B8=8B=E4=B8=80=E6=AD=A5=E8=A6=81=E5=A4=84=E7=90=86=
+=E7=9A=84Trie=EF=BC=8C=E5=85=B6=E4=B8=ADcurrent=E6=98=AF=E5=9D=97=E9=AB=98=
+=EF=BC=8CTriesInMemory=E9=BB=98=E8=AE=A4128=0A    chosen :=3D current - =
+TriesInMemory=0A    =
+//=E5=A6=82=E6=9E=9C=E8=B6=85=E5=87=BA=E6=97=B6=E9=97=B4=E9=99=90=E5=88=B6=
+=EF=BC=8C=E5=B0=B1=E6=8A=8A=E6=95=B4=E4=B8=AATrie=E5=86=99=E5=88=B0=E7=A1=
+=AC=E7=9B=98=0A    if bc.gcproc &gt; bc.cacheConfig.TrieTimeLimit {=0A   =
+     triedb.Commit(header.Root, true, nil)=0A        bc.gcproc =3D 0=0A  =
+  }=0A</code></pre>=0A<h2 style=3D"line-height: 160%; box-sizing: =
+content-box; font-weight: 700; font-size: 34px; border-bottom: 1px solid =
+#dbdbdb; color: #333;">=E6=95=B0=E6=8D=AE=E5=AD=98=E5=82=A8</h2>=0A<p =
+style=3D"line-height: 160%; box-sizing: content-box; margin: 10px 0; =
+color: =
+#333;">=E6=95=B0=E6=8D=AE=E5=AD=98=E5=82=A8=E6=9C=89=E5=87=A0=E4=B8=AA=E9=
+=87=8D=E8=A6=81=E7=9A=84=E7=B1=BB=E5=9E=8B=EF=BC=9A<br/>=0AStateDB=EF=BC=9A=
+=E8=BF=99=E4=BF=9D=E5=AD=98=E4=BA=86=E6=89=80=E6=9C=89=E7=9A=84=E6=95=B0=E6=
+=8D=AE=EF=BC=8C=E6=98=AF=E4=BB=A5=E5=A4=AA=E5=9D=8A=E7=9A=84=E4=B8=96=E7=95=
+=8C=E7=8A=B6=E6=80=81=EF=BC=8C=E5=8F=AF=E4=BB=A5=E4=BB=A5=E5=A4=9A=E7=A7=8D=
+=E5=BD=A2=E5=BC=8F=E5=AF=B9=E5=A4=96=E6=8F=90=E4=BE=9B=E6=95=B0=E6=8D=AE=E3=
+=80=82=E5=A6=82Trie, snap, =
+stateObjects=E3=80=82=E5=AE=83=E5=B9=B6=E6=B2=A1=E6=9C=89=E8=A2=ABbackend=
+=E6=8C=81=E6=9C=89=E3=80=82BlockChain=E6=8C=81=E6=9C=89stateCache=EF=BC=8C=
+=E6=98=AF=E4=B8=AAStateDB=EF=BC=8C=E5=AE=83=E6=98=AF=E5=9C=A8BlockChain=E8=
+=A2=AB=E5=88=9B=E5=BB=BA=E6=97=B6=EF=BC=8C=E5=9C=A8BlockChain=E9=87=8C=E8=
+=B0=83=E7=94=A8state.New=E5=88=9B=E5=BB=BA=E5=87=BA=E6=9D=A5=E7=9A=84=E3=80=
+=82<br/>=0ATrie=EF=BC=9A=E5=B8=95=E7=89=B9=E9=87=8C=E5=A4=8F=E6=A0=91=E7=9A=
+=84=E6=8E=A5=E5=8F=A3=E5=AE=9A=E4=B9=89=EF=BC=8C=E5=AE=83=E7=9A=84=E5=AE=9A=
+=E4=B9=89=E6=98=AF=E4=B8=AAInterface=EF=BC=8C=E5=AE=9E=E7=8E=B0=E5=9C=A8S=
+ecureTrie=EF=BC=8C=E5=8F=AF=E4=BB=A5=E4=BF=9D=E5=AD=98k-v=EF=BC=8Caccount=
+=EF=BC=8Cget,update,delete,=E9=81=8D=E5=8E=86=E3=80=81=E7=94=9F=E6=88=90=E8=
+=AF=81=E6=98=8E<br/>=0AStateObject=EF=BC=9A=E4=BB=A3=E8=A1=A8=E4=B8=80=E4=
+=B8=AAaccount</p>=0A<p style=3D"line-height: 160%; box-sizing: =
+content-box; margin: 10px 0; color: =
+#333;">=E8=BF=99=E9=83=A8=E5=88=86=E7=9C=8B=E5=A6=82=E4=B8=8B=E6=96=87=E6=
+=A1=A3=EF=BC=8C=E6=8F=8F=E8=BF=B0=E7=9A=84=E5=BE=88=E6=B8=85=E6=A5=9A=E4=BA=
+=86=EF=BC=9A<br/>=0Ahttps://zhuanlan.zhihu.com/p/54644827<br/>=0Ahttps://=
+zhuanlan.zhihu.com/p/59748711</p>=0A<h2 style=3D"line-height: 160%; =
+box-sizing: content-box; font-weight: 700; font-size: 34px; =
+border-bottom: 1px solid #dbdbdb; color: =
+#333;">=E5=AE=8C=E6=95=B4=E4=BA=A4=E6=98=93=E6=B5=81=E7=A8=8B</h2>=0A<p =
+style=3D"line-height: 160%; box-sizing: content-box; margin: 10px 0; =
+color: =
+#333;">=E5=85=88=E7=9C=8B=E6=95=B0=E6=8D=AE=E7=BB=93=E6=9E=84=EF=BC=9A</p=
+>=0A<pre style=3D"line-height: 160%; box-sizing: content-box; border: 0; =
+border-radius: 0; margin: 2px 0 8px; background-color: #f5f7f8;"><code =
+style=3D"display: block; overflow-x: auto; background: #1e1e1e; =
+line-height: 160%; box-sizing: content-box; border: 0; border-radius: 0; =
+letter-spacing: -.3px; padding: 18px; color: #f4f4f4; white-space: =
+pre-wrap;">type Transaction struct {=0A	inner TxData    // =
+=E5=85=B1=E8=AF=86=E7=9B=B8=E5=85=B3=E6=95=B0=E6=8D=AE=EF=BC=8C=E6=B3=A8=E6=
+=84=8FTxData=E6=98=AF=E4=B8=AAinterface=EF=BC=8C=E6=B3=A8=E6=84=8Finner=E6=
+=98=AFprivate=E7=9A=84=0A	time  time.Time // Time first seen locally =
+(spam avoidance)=0A=0A	// caches=0A	hash atomic.Value=0A	size =
+atomic.Value=0A	from atomic.Value=0A}=0A</code></pre>=0A<pre =
+style=3D"line-height: 160%; box-sizing: content-box; border: 0; =
+border-radius: 0; margin: 2px 0 8px; background-color: #f5f7f8;"><code =
+style=3D"display: block; overflow-x: auto; background: #1e1e1e; =
+line-height: 160%; box-sizing: content-box; border: 0; border-radius: 0; =
+letter-spacing: -.3px; padding: 18px; color: #f4f4f4; white-space: =
+pre-wrap;">// This is implemented by DynamicFeeTx, LegacyTx and =
+AccessListTx.=0Atype TxData interface {=0A	txType() byte // returns the =
+type ID=0A	copy() TxData // creates a deep copy and initializes all =
+fields=0A=0A	chainID() *big.Int=0A	accessList() AccessList=0A	data() =
+[]byte=0A	gas() uint64=0A	gasPrice() *big.Int=0A	gasTipCap() *big.Int=0A	=
+gasFeeCap() *big.Int=0A	value() *big.Int=0A	nonce() uint64=0A	to() =
+*common.Address=0A=0A	rawSignatureValues() (v, r, s *big.Int)=0A	=
+setSignatureValues(chainID, v, r, s *big.Int)=0A}=0A</code></pre>=0A<p =
+style=3D"line-height: 160%; box-sizing: content-box; margin: 10px 0; =
+color: =
+#333;">=E5=8F=82=E8=80=83=E5=85=A5=E5=8F=A3=EF=BC=9A=E4=BB=8E<br/>=0A/acc=
+ounts/abi/bind/base.go-&gt;<br/>=0Afunc (c *BoundContract) transact(opts =
+*TransactOpts, contract *common.Address,<br/>=0Ainput []byte) =
+(*types.Transaction, =
+error)<br/>=0A=E8=BF=99=E9=87=8C=E4=BC=9A=E6=9E=84=E9=80=A0=E4=BA=A4=E6=98=
+=93=E5=B9=B6=E7=AD=BE=E5=90=8D=E3=80=82</p>=0A<p style=3D"line-height: =
+160%; box-sizing: content-box; margin: 10px 0; color: =
+#333;">=E6=9C=80=E5=90=8E=E4=BC=9A=E8=B0=83=E7=94=A8=EF=BC=9A<br/>=0Aethc=
+lient/ethclient.go-&gt;<br/>=0Afunc (ec *Client) SendTransaction(ctx =
+context.Context, tx *types.Transaction) =
+error<br/>=0A-&gt;<br/>=0Ainternal/ethapi/api.go-&gt;SendRawTransaction</=
+p>=0A<p style=3D"line-height: 160%; box-sizing: content-box; margin: =
+10px 0; color: #333;">func SubmitTransaction(ctx context.Context, b =
+Backend, tx *types.Transaction) (common.Hash, =
+error)<br/>=0A=E6=A3=80=E6=9F=A5gas=E8=B4=B9<br/>=0A=E8=B0=83=E7=94=A8bac=
+kend.SendTx(ctx, =
+tx)=EF=BC=8C=E8=BF=99=E6=98=AF=E4=BA=A4=E6=98=93=E6=B1=A0=E7=9A=84=E6=8E=A5=
+=E5=8F=A3=E3=80=82</p>=0A<p style=3D"line-height: 160%; box-sizing: =
+content-box; margin: 10px 0; color: =
+#333;">=E8=8E=B7=E5=8F=96from.<br/>=0A=E7=84=B6=E5=90=8E=EF=BC=9A</p>=0A<=
+pre style=3D"line-height: 160%; box-sizing: content-box; border: 0; =
+border-radius: 0; margin: 2px 0 8px; background-color: #f5f7f8;"><code =
+style=3D"display: block; overflow-x: auto; background: #1e1e1e; =
+line-height: 160%; box-sizing: content-box; border: 0; border-radius: 0; =
+letter-spacing: -.3px; padding: 18px; color: #f4f4f4; white-space: =
+pre-wrap;">if tx.To() =3D=3D nil {=0A		addr :=3D =
+crypto.CreateAddress(from, tx.Nonce())=0A}=0A return tx.Hash(), =
+nil=0A</code></pre>=0A<p style=3D"line-height: 160%; box-sizing: =
+content-box; margin: 10px 0; color: =
+#333;">=E6=89=80=E4=BB=A5=E9=87=8D=E7=82=B9=E7=9C=8Bbackend.SendTx=EF=BC=8C=
+=E5=AE=83=E5=AE=9E=E9=99=85=E8=B0=83=E7=94=A8=E4=BA=86=EF=BC=9A<br/>=0Ab.=
+eth.txPool.AddLocal(signedTx)<br/>=0A=E4=B8=8B=E9=9D=A2=E9=87=8D=E7=82=B9=
+=E7=A0=94=E7=A9=B6=E4=BA=A4=E6=98=93=E6=B1=A0</p>=0A<h3 =
+style=3D"line-height: 160%; box-sizing: content-box; font-weight: 700; =
+font-size: 27px; color: #333;">=E4=BA=A4=E6=98=93=E6=B1=A0</h3>=0A<p =
+style=3D"line-height: 160%; box-sizing: content-box; margin: 10px 0; =
+color: =
+#333;">=E4=BA=A4=E6=98=93=E6=9C=89=E5=88=86local=E7=9A=84=E5=92=8Cremote=E7=
+=9A=84=EF=BC=8C=E5=A4=84=E7=90=86=E6=96=B9=E5=BC=8F=E4=B8=8D=E4=B8=80=E6=A0=
+=B7=E3=80=82<br/>=0A=E4=BA=A4=E6=98=93=E4=B9=9F=E6=9C=89=E5=88=86=E5=8F=AF=
+=E6=89=A7=E8=A1=8C=EF=BC=88pending=EF=BC=89=E5=92=8C=E7=AD=89=E5=BE=85=E7=
+=9A=84=EF=BC=88queue=EF=BC=89=E3=80=82</p>=0A<p style=3D"line-height: =
+160%; box-sizing: content-box; margin: 10px 0; color: =
+#333;">=E5=AE=9A=E4=B9=89(=E5=8F=AA=E5=88=97=E5=87=BA=E9=87=8D=E8=A6=81=E7=
+=9A=84)=EF=BC=9A</p>=0A<pre style=3D"line-height: 160%; box-sizing: =
+content-box; border: 0; border-radius: 0; margin: 2px 0 8px; =
+background-color: #f5f7f8;"><code style=3D"display: block; overflow-x: =
+auto; background: #1e1e1e; line-height: 160%; box-sizing: content-box; =
+border: 0; border-radius: 0; letter-spacing: -.3px; padding: 18px; =
+color: #f4f4f4; white-space: pre-wrap;">type TxPool struct =0A	chain     =
+  blockChain=0A	gasPrice    *big.Int=0A	signer      types.Signer    =
+//=E6=B3=A8=E6=84=8F=E5=AE=83=E4=B8=8D=E7=AD=BE=E5=90=8D=EF=BC=8C=E5=8F=AA=
+=E5=A4=84=E7=90=86=E7=AD=BE=E5=90=8D=EF=BC=8C=E6=AF=94=E5=A6=82=E9=AA=8C=E8=
+=AF=81=EF=BC=8C=E8=8E=B7=E5=8F=96hash=E7=AD=89=0A=0A	currentState  =
+*state.StateDB    // =
+=E9=93=BE=E4=B8=8A=E5=BD=93=E5=89=8D=E7=8A=B6=E6=80=81=0A=0A	locals  =
+*accountSet // =E6=9C=AC=E5=9C=B0Tx=0A    =0A    =
+//=E6=B3=A8=E6=84=8F=EF=BC=9Apending=E5=92=8Cqueue=E9=83=BD=E6=98=AF=E6=8C=
+=89address=E6=9D=A5=E7=BB=84=E7=BB=87=E7=9A=84=E3=80=82=0A	pending =
+map[common.Address]*txList   // =
+=E5=BD=93=E5=89=8D=E5=8F=AF=E5=A4=84=E7=90=86=E7=9A=84=E4=BA=A4=E6=98=93=EF=
+=BC=8C=E5=8D=B3=E5=8F=AF=E4=BB=A5=E6=89=93=E5=85=A5=E5=9D=97=E7=9A=84=0A	=
+queue   map[common.Address]*txList   // =
+=E7=AD=89=E5=BE=85=E4=B8=AD=E7=9A=84=E4=BA=A4=E6=98=93=EF=BC=8C=E5=90=8E=E7=
+=BB=AD=E5=8F=AF=E4=BB=A5=E8=BF=9B=E5=85=A5pending=0A	beats   =
+map[common.Address]time.Time // Last heartbeat from each known =
+account=0A	all     *txLookup                    // =
+=E4=BA=A4=E6=98=93=E6=9F=A5=E8=AF=A2=0A	priced  *txPricedList            =
+    // =E6=8C=89price=E6=8E=92=E5=BA=8F=E7=9A=84=E4=BA=A4=E6=98=93=0A=0A	=
+//=E4=B8=80=E5=A0=86chan,=E8=AE=A2=E9=98=85=E4=BA=8B=E4=BB=B6=E3=80=81=E9=
+=85=8D=E7=BD=AE=E7=AD=89=0A}=0A</code></pre>=0A<p style=3D"line-height: =
+160%; box-sizing: content-box; margin: 10px 0; color: =
+#333;">=E4=BA=A4=E6=98=93=E6=B1=A0=E7=9A=84=E5=88=9B=E5=BB=BA=EF=BC=9A<br=
+/>=0A=E4=BA=A4=E6=98=93=E6=B1=A0=E5=9C=A8 =
+eth/backend.go=E7=9A=84New=E9=87=8C=E8=A2=AB=E5=88=9B=E5=BB=BA=EF=BC=8C=E6=
+=98=AF=E8=B7=9FEthereum=E8=A2=AB=E4=B8=80=E8=B5=B7=E5=88=9B=E5=BB=BA=E5=87=
+=BA=E6=9D=A5=E7=9A=84=EF=BC=8C=E8=A7=81=E5=89=8D=E9=9D=A2Ethereum=E9=83=A8=
+=E5=88=86=E3=80=82<br/>=0A=E5=88=9B=E5=BB=BA=E6=97=B6=E5=81=9A=E4=BA=86=E4=
+=BB=80=E4=B9=88=EF=BC=9F<br/>=0A=E5=88=9D=E5=A7=8B=E5=8C=96=E6=89=80=E6=9C=
+=89=E7=9A=84=E5=86=85=E9=83=A8=E5=8F=98=E9=87=8F=EF=BC=8C=E5=A6=82pending=
+,queue=E7=AD=89=E3=80=82<br/>=0A=E4=BB=8Econfig=E6=96=87=E4=BB=B6=E9=87=8C=
+=E8=AF=BB=E5=87=BA=E9=85=8D=E7=BD=AE=E7=9A=84=E6=9C=AC=E5=9C=B0accounts=EF=
+=BC=8C=E6=B7=BB=E5=8A=A0=E5=88=B0pool.locals<br/>=0Ago =
+pool.scheduleReorgLoop()   =
+=E5=90=AF=E5=8A=A8ReorgLoop=EF=BC=8C=E8=BF=99=E4=B8=AA=E8=87=B3=E5=85=B3=E9=
+=87=8D=E8=A6=81=EF=BC=8C=E4=B8=8B=E9=9D=A2=E5=8D=95=E7=8B=AC=E5=88=86=E6=9E=
+=90=E3=80=82<br/>=0A=E6=A3=80=E6=9F=A5=E6=98=AF=E5=90=A6=E5=85=81=E8=AE=B8=
+=E6=9C=AC=E5=9C=B0=E6=8F=90=E4=BA=A4=E4=BA=A4=E6=98=93=EF=BC=8C=E5=85=81=E8=
+=AE=B8=E7=9A=84=E8=AF=9D=EF=BC=8C=E4=BB=8Ejournal=E6=96=87=E4=BB=B6=E4=B8=
+=AD=E5=8A=A0=E8=BD=BD=E4=B9=8B=E5=89=8D=E4=BF=9D=E5=AD=98=E7=9A=84=E6=9C=AC=
+=E5=9C=B0=E4=BA=A4=E6=98=93=E3=80=82<br/>=0A=E5=90=91blockChain=E6=B3=A8=E5=
+=86=8CheadEvent=EF=BC=8C<br/>=0A=E8=B0=83=E7=94=A8go =
+pool.loop()=EF=BC=8C=E5=90=AF=E5=8A=A8pool=E7=9A=84=E6=B6=88=E6=81=AF=E5=A4=
+=84=E7=90=86=E5=BE=AA=E7=8E=AF=EF=BC=8C=E5=A4=84=E7=90=86=E5=90=84=E7=B1=BB=
+=E5=A4=96=E7=95=8C=E4=BA=8B=E4=BB=B6=E3=80=82=E5=8C=85=E6=8B=AC=EF=BC=9A<=
+/p>=0A<ul style=3D"line-height: 160%; box-sizing: content-box; display: =
+block; list-style-type: disc; padding-left: 30px; margin: 6px 0 10px; =
+color: #333;">=0A<li style=3D"line-height: 160%; box-sizing: =
+content-box; position: =
+relative;">=E6=9D=A5=E8=87=AAblockchain=E7=9A=84=E5=9D=97=E5=A4=B4=E5=8F=98=
+=E5=8C=96=E4=BA=8B=E4=BB=B6=EF=BC=8C=E4=BC=9A=E5=BC=95=E5=8F=91=E4=B8=80=E6=
+=AC=A1ReOrg</li>=0A<li style=3D"line-height: 160%; box-sizing: =
+content-box; position: relative;">=E6=9D=A5=E8=87=AAblock =
+chain=E7=9A=84err=E4=BA=8B=E4=BB=B6=EF=BC=88=E7=B3=BB=E7=BB=9Fshutdown=EF=
+=BC=8C=E4=BC=9A=E5=85=B3=E9=97=AD=E7=BA=BF=E7=A8=8B=E6=B1=A0=EF=BC=89</li=
+>=0A<li style=3D"line-height: 160%; box-sizing: content-box; position: =
+relative;">=E5=AE=9A=E6=97=B6=E5=99=A8=EF=BC=8C=E6=89=93=E5=8D=B0pool=E7=9A=
+=84=E7=8A=B6=E6=80=81=E6=8A=A5=E5=91=8A=EF=BC=888=E7=A7=92=EF=BC=89</li>=0A=
+<li style=3D"line-height: 160%; box-sizing: content-box; position: =
+relative;">=E5=AE=9A=E6=97=B6=E5=99=A8=EF=BC=8C=E6=B8=85=E7=90=86=E9=9D=9E=
+=E6=B4=BB=E8=B7=83=E8=B4=A6=E6=88=B7=E7=9A=84=E4=BA=A4=E6=98=93=EF=BC=881=
+min)</li>=0A<li style=3D"line-height: 160%; box-sizing: content-box; =
+position: =
+relative;">=E5=AE=9A=E6=97=B6=E5=99=A8=EF=BC=8Cjournal=E6=96=87=E4=BB=B6r=
+otate=EF=BC=8C=E6=97=B6=E9=97=B4=E6=A0=B9=E6=8D=AE=E9=85=8D=E7=BD=AE=E6=96=
+=87=E4=BB=B6=E8=AE=BE=E7=BD=AE</li>=0A</ul>=0A<p style=3D"line-height: =
+160%; box-sizing: content-box; margin: 10px 0; color: =
+#333;">=E4=B8=8B=E9=9D=A2=E7=9C=8B=E4=B8=8BAddLocal<br/>=0A-&gt;addTxs<br=
+/>=0A=E9=81=8D=E5=8E=86Tx=E5=88=97=E8=A1=A8=E3=80=82<br/>=0A=E5=A6=82=E6=9E=
+=9C=E4=BA=A4=E6=98=93=E6=B1=A0=E4=B8=AD=E5=B7=B2=E6=9C=89=E8=AF=A5=E4=BA=A4=
+=E6=98=93=EF=BC=8C=E6=A0=87=E4=B8=BAErrAlreadyKnow=EF=BC=8C=E8=B7=B3=E8=BF=
+=87<br/>=0A=E6=A3=80=E6=9F=A5=E7=AD=BE=E5=90=8D=EF=BC=8C=E5=A6=82=E6=9E=9C=
+=E7=AD=BE=E5=90=8D=E4=B8=8D=E6=AD=A3=E7=A1=AE=EF=BC=8C=E6=A0=87=E8=AE=B0e=
+rr=EF=BC=8C=E8=B7=B3=E8=BF=87<br/>=0AnewErrs, dirtyAddrs :=3D =
+pool.addTxsLocked(news, local)   =
+//=E6=8A=8A=E6=96=B0=E7=9A=84=E8=BF=99=E4=BA=9BTx=EF=BC=88=E5=8D=B3=E6=9C=
+=AC=E8=B0=83=E7=94=A8=E4=B8=AD=E5=A4=84=E7=90=86=E7=9A=84=EF=BC=89=E5=8A=A0=
+=E5=88=B0local=E4=B8=AD=EF=BC=8C=E8=AF=A5=E6=8E=A5=E5=8F=A3=E8=AF=A6=E7=BB=
+=86=E5=88=86=E6=9E=90<br/>=0A-&gt;  =
+=E9=81=8D=E5=8E=86Txs=EF=BC=8C=E8=B0=83=E7=94=A8replaced, err :=3D =
+pool.add(tx, local)<br/>=0A-&gt;  =
+=E5=A6=82=E6=9E=9C=E4=BA=A4=E6=98=93=E6=B1=A0=E4=B8=AD=E5=B7=B2=E6=9C=89=EF=
+=BC=8C=E8=BF=94=E5=9B=9E<br/>=0A=E5=AF=B9=E4=BA=A4=E6=98=93=E5=81=9A=E5=90=
+=84=E7=A7=8D=E5=9F=BA=E7=A1=80=E6=A3=80=E6=9F=A5=EF=BC=8C=E5=A6=82=E6=9E=9C=
+=E6=9C=89=E9=97=AE=E9=A2=98=EF=BC=8C=E8=BF=94=E5=9B=9E=EF=BC=88=E7=BC=96=E7=
+=A0=81=E3=80=81=E7=AD=BE=E5=90=8D=E3=80=81gas=E3=80=81=E4=BD=99=E9=A2=9D.=
+..)<br/>=0A=E5=A6=82=E6=9E=9C=E4=BA=A4=E6=98=93=E4=BD=93=E7=A7=AF=E8=BF=87=
+=E5=A4=A7=EF=BC=88=E5=BD=93=E5=89=8Dpool=E6=80=BBslot + =
+=E8=AF=A5=E4=BA=A4=E6=98=93=E5=8D=A0=E7=94=A8slot &gt; =
+=E9=85=8D=E7=BD=AE)=EF=BC=8C<br/>=0A=E5=A6=82=E6=9E=9C=E4=B8=8D=E6=98=AFl=
+ocal=E5=B9=B6=E4=B8=94price=E4=B8=8D=E5=A4=9F=E5=A4=9A=EF=BC=8C=E8=BF=94=E5=
+=9B=9E<br/>=0A=E5=A6=82=E6=9E=9C=E5=BD=93=E5=89=8D=E9=9C=80=E8=A6=81reorg=
+=E7=9A=84=E6=95=B0=E9=87=8F=E5=B7=B2=E7=BB=8F=E5=BE=88=E5=A4=9A=EF=BC=8C=E8=
+=B6=85=E8=BF=87=E4=BA=86=E6=80=BB=E9=87=8F=E7=9A=841/4=EF=BC=8C=E5=B0=B1=E4=
+=B8=8D=E6=8E=A5=E5=8F=97=E8=AF=A5Tx=E4=BA=86=EF=BC=8C=E8=BF=94=E5=9B=9E<b=
+r/>=0A=E5=B0=9D=E8=AF=95=E5=9C=A8=E5=BD=93=E5=89=8Dpool=E4=B8=AD=E7=A7=BB=
+=E9=99=A4=E9=83=A8=E5=88=86price=E6=AF=94=E8=BE=83=E4=BD=8E=E7=9A=84=EF=BC=
+=8C=E7=BB=99=E5=BD=93=E5=89=8DTx=E8=85=BE=E5=87=BA=E7=A9=BA=E9=97=B4<br/>=
+=0A=E5=A6=82=E6=9E=9C=E7=A9=BA=E9=97=B4=E8=BF=98=E6=98=AF=E4=B8=8D=E5=A4=9F=
+=EF=BC=8C=E4=B8=94=E5=BD=93=E5=89=8DTx=E6=98=AFremote=E7=9A=84=EF=BC=8C=E8=
+=BF=94=E5=9B=9E<br/>=0A=E5=A6=82=E6=9E=9Cpending=E4=B8=AD=E5=8C=85=E5=90=AB=
+=E8=AF=A5account=E7=9A=84=E5=90=8Cnonce=E7=9A=84=E4=BA=A4=E6=98=93=EF=BC=8C=
+=E6=A3=80=E6=9F=A5=E6=98=AF=E5=90=A6=E6=96=B0Tx=E7=9A=84=E4=BA=A4=E6=98=93=
+=E8=B4=B9=E6=9B=B4=E9=AB=98=EF=BC=8C=E4=B8=94=E8=BE=BE=E5=88=B0=E6=9B=BF=E6=
+=8D=A2=E8=A6=81=E6=B1=82=EF=BC=88=E5=A6=82=E9=AB=98=E4=BA=8610%)=EF=BC=8C=
+=E6=98=AF=E7=9A=84=E8=AF=9D=EF=BC=8C=E6=9B=BF=E6=8D=A2=E6=8E=89=E5=8E=9F=E4=
+=BA=A4=E6=98=93=E3=80=82<br/>=0A=E5=B0=86=E5=BD=93=E5=89=8DTx=E5=8A=A0=E5=
+=85=A5=E5=88=B0queue<br/>=0A=E5=90=8C=E6=97=B6=E6=9B=B4=E6=96=B0=E5=90=84=
+=E7=A7=8D=E5=8F=98=E9=87=8F=EF=BC=8C=E5=A6=82all, priced, =
+journal=E7=AD=89=E3=80=82</p>=0A<h3 style=3D"line-height: 160%; =
+box-sizing: content-box; font-weight: 700; font-size: 27px; color: =
+#333;">pool=E4=B8=AD=E4=B8=80=E4=BA=9B=E9=87=8D=E7=82=B9=E4=BA=8B=E4=BB=B6=
+</h3>=0A<h3 style=3D"line-height: 160%; box-sizing: content-box; =
+font-weight: 700; font-size: 27px; color: =
+#333;">pool=E4=B8=AD=E7=9A=84=E6=8E=A5=E5=8F=A3</h3>=0A<p =
+style=3D"line-height: 160%; box-sizing: content-box; margin: 10px 0; =
+color: =
+#333;">Content=EF=BC=9A=E8=BF=94=E5=9B=9E=E5=BD=93=E5=89=8Dpool=E4=B8=AD=E7=
+=9A=84pending=E5=92=8Cqueue=E7=9A=84=E4=BA=A4=E6=98=93=EF=BC=8C=E6=8C=89a=
+ccount=E5=8C=BA=E5=88=86=EF=BC=8C=E6=AF=8F=E4=B8=AAaccount=E7=9A=84=E6=8C=
+=89nonce=E6=8E=92=E5=BA=8F=E3=80=82<br/>=0AContentFrom=EF=BC=88address)=EF=
+=BC=8C=E8=BF=94=E5=9B=9E=E5=BD=93=E5=89=8Daddress=E7=9A=84=E4=BA=A4=E6=98=
+=93=EF=BC=8C=E5=8C=85=E6=8B=ACpending+queue<br/>=0ASetGasPrice=EF=BC=8C=E8=
+=AE=BE=E7=BD=AEpool=E6=8E=A5=E5=8F=97=E7=9A=84=E6=9C=80=E4=BD=8Eprice=EF=BC=
+=8C=E4=BC=9A=E6=8A=8A=E4=BD=8E=E4=BA=8E=E8=BF=99=E4=B8=AA=E7=9A=84=E5=88=A0=
+=E6=8E=89<br/>=0AStatus=EF=BC=8C=E6=A0=B9=E6=8D=AETxhash=E6=9F=A5=E8=AF=A2=
+=E4=BA=A4=E6=98=93=E7=8A=B6=E6=80=81=EF=BC=8C=E7=8A=B6=E6=80=81=E4=B8=BAU=
+nknown, pending, queued, included<br/>=0AAddxxx , =
+=E6=B7=BB=E5=8A=A0Tx=E5=88=B0pool</p>=0A<h3 style=3D"line-height: 160%; =
+box-sizing: content-box; font-weight: 700; font-size: 27px; color: =
+#333;">ReOrg</h3>=0A<p style=3D"line-height: 160%; box-sizing: =
+content-box; margin: 10px 0; color: =
+#333;">=E4=BB=8E=E4=B8=8A=E9=9D=A2=E5=88=86=E6=9E=90=E6=9D=A5=E7=9C=8B=EF=
+=BC=8C=E7=BB=93=E6=9E=84=E5=92=8C=E4=B8=BB=E8=A6=81=E6=8E=A5=E5=8F=A3=E8=BF=
+=98=E6=98=AF=E6=AF=94=E8=BE=83=E7=AE=80=E5=8D=95=E7=9A=84=EF=BC=8C=E8=BF=99=
+=E9=87=8C=E5=BE=88=E9=87=8D=E8=A6=81=E7=9A=84=E5=B0=B1=E6=98=AFReOrg=E4=BA=
+=86=E3=80=82=E7=9C=8B=E4=B8=8BReOrg=E6=98=AF=E5=A6=82=E4=BD=95=E8=A7=A6=E5=
+=8F=91=E4=BB=A5=E5=8F=8A=E5=A6=82=E4=BD=95=E5=A4=84=E7=90=86=E7=9A=84=E3=80=
+=82<br/>=0A=E5=9C=A8=E5=88=9B=E5=BB=BApool=E6=97=B6=EF=BC=8C=E4=BC=9A=E5=90=
+=AF=E5=8A=A8=E4=B8=80=E4=B8=AA=E5=8D=8F=E7=A8=8B=E5=A4=84=E7=90=86ReorgLo=
+op<br/>=0Ago =
+pool.scheduleReorgLoop()<br/>=0A=E9=87=8C=E9=9D=A2=E6=98=AF=E4=B8=AA=E6=AD=
+=BB=E5=BE=AA=E7=8E=AF=E3=80=82=E9=80=9A=E8=BF=87select=E5=A4=84=E7=90=86=E5=
+=90=84=E7=A7=8D=E4=BA=8B=E4=BB=B6=E3=80=82<br/>=0A=E6=94=B6=E5=88=B0=E5=A6=
+=82=E4=B8=8B=E8=BF=99=E4=B8=A4=E4=B8=AA=E4=BA=8B=E4=BB=B6=E4=BC=9A=E5=90=AF=
+=E5=8A=A8=E4=B8=80=E4=B8=AA=E5=8D=8F=E7=A8=8B=E8=BF=90=E8=A1=8C=E4=B8=80=E6=
+=AC=A1Reorg=EF=BC=8C=E6=B3=A8=E6=84=8F=E5=8F=AA=E6=9C=89=E8=BF=99=E4=B8=A4=
+=E4=B8=AA=E4=BA=8B=E4=BB=B6=E4=BC=9A=E5=BC=95=E5=8F=91Reorg</p>=0A<ul =
+style=3D"line-height: 160%; box-sizing: content-box; display: block; =
+list-style-type: disc; padding-left: 30px; margin: 6px 0 10px; color: =
+#333;">=0A<li style=3D"line-height: 160%; box-sizing: content-box; =
+position: =
+relative;">reqResetCh=EF=BC=8C=E8=BF=99=E6=98=AF=E4=BB=8Eblockchain=E6=94=
+=B6=E5=88=B0head=E5=8F=98=E5=8C=96=E4=BA=8B=E4=BB=B6=E6=97=B6=E8=A7=A6=E5=
+=8F=91=E7=9A=84=E3=80=82</li>=0A<li style=3D"line-height: 160%; =
+box-sizing: content-box; position: =
+relative;">reqPromoteCh=EF=BC=8C=E5=BD=93=E8=B0=83=E7=94=A8addTxs=E7=BB=93=
+=E6=9D=9F=E5=90=8E=EF=BC=8C=E4=BC=9A=E5=8F=91=E9=80=81=E8=AF=A5=E4=BA=8B=E4=
+=BB=B6=E3=80=82</li>=0A</ul>=0A<p style=3D"line-height: 160%; =
+box-sizing: content-box; margin: 10px 0; color: =
+#333;">=E6=94=B6=E5=88=B0reorgShutdownCh=E6=97=B6=E4=BC=9A=E5=85=B3=E9=97=
+=ADpool=EF=BC=8C=E8=BF=99=E4=B8=AA=E5=9C=A8=E6=94=B6=E5=88=B0chainHeadSub=
+.Err=EF=BC=8C=E6=88=96=E8=80=85pool=E9=87=8C=E7=9A=84=E5=87=A0=E4=B8=AA=E9=
+=87=8D=E8=A6=81Chan=E5=87=BA=E9=97=AE=E9=A2=98=EF=BC=88=E5=A6=82=E5=8F=91=
+=E6=B6=88=E6=81=AF=E5=A4=B1=E8=B4=A5=EF=BC=89=E6=97=B6=E4=BC=9A=E5=8F=91=E7=
+=94=9F=E3=80=82<br/>=0A=E5=8F=A6=E5=A4=96=E5=BD=93addTx=E6=97=B6=EF=BC=8C=
+=E5=A6=82=E6=9E=9C=E6=96=B0Tx=E6=9B=BF=E6=8D=A2=E6=97=A7Tx=EF=BC=88accoun=
+t=E7=9A=84nonce=E4=B8=80=E6=A0=B7=EF=BC=8C=E6=96=B0=E7=9A=84gas_price=E6=9B=
+=B4=E9=AB=98=E4=BC=9A=E5=8F=91=E7=94=9F=EF=BC=89=EF=BC=8C=E4=BC=9A=E5=B0=86=
+=E8=AF=A5Tx=E8=AE=B0=E5=BD=95=E5=9C=A8=E5=88=97=E8=A1=A8=E9=87=8C=EF=BC=8C=
+ReOrg=E6=97=B6=E5=A4=84=E7=90=86=E3=80=82</p>=0A<p style=3D"line-height: =
+160%; box-sizing: content-box; margin: 10px 0; color: =
+#333;">Reorg=E7=9A=84=E6=89=A7=E8=A1=8C=EF=BC=9A</p>=0A<pre =
+style=3D"line-height: 160%; box-sizing: content-box; border: 0; =
+border-radius: 0; margin: 2px 0 8px; background-color: #f5f7f8;"><code =
+style=3D"display: block; overflow-x: auto; background: #1e1e1e; =
+line-height: 160%; box-sizing: content-box; border: 0; border-radius: 0; =
+letter-spacing: -.3px; padding: 18px; color: #f4f4f4; white-space: =
+pre-wrap;">func (pool *TxPool) runReorg(done chan struct{}, reset =
+*txpoolResetRequest, dirtyAccounts *accountSet, events =
+map[common.Address]*txSortedMap) =0A    =
+//=E6=9C=89=E4=B8=A4=E4=B8=AA=E4=BA=8B=E4=BB=B6=E4=BC=9A=E5=BC=95=E8=B5=B7=
+reorg:=0A    //1. =
+=E6=94=B6=E5=88=B0=E6=96=B0=E5=9D=97=E5=A4=B4=E9=80=9A=E7=9F=A5=0A    =
+//2. =
+=E8=B0=83=E7=94=A8addTxs=EF=BC=8C=E6=B7=BB=E5=8A=A0=E4=BA=86=E4=B8=80=E4=BA=
+=9B=E6=96=B0=E4=BA=A4=E6=98=93=E8=BF=9Bqueue=E3=80=82=0A    =
+//=E5=AF=B9reOrg=E6=9D=A5=E8=AF=B4=EF=BC=8C=E9=9C=80=E8=A6=81=E5=A4=84=E7=
+=90=86=E7=9A=84=E5=AF=B9=E8=B1=A1=E9=83=BD=E6=98=AFdirtyAccounts=EF=BC=8C=
+=E5=AF=B9=E4=BA=8E=E6=96=B0=E5=9D=97=E5=A4=B4=EF=BC=8C=E9=9C=80=E8=A6=81=E6=
+=8A=8A=E5=9D=97=E5=A4=B4=E5=AF=BC=E8=87=B4=E7=9A=84=E5=BE=85=E5=A4=84=E7=90=
+=86=E7=9A=84=E8=B4=A6=E6=88=B7=E8=BF=87=E6=BB=A4=E5=87=BA=E6=9D=A5=EF=BC=8C=
+=E5=8A=A0=E5=88=B0dirtyAccounts=E9=87=8C=EF=BC=8C=E7=84=B6=E5=90=8E=E5=AF=
+=B9dirtyAccounts=E8=BF=9B=E8=A1=8Cpromote=E5=8D=B3=E5=8F=AF=E3=80=82=E7=84=
+=B6=E5=90=8E=E5=86=8D=E6=8A=8A=E8=AF=A5remove=E7=9A=84remove=E6=8E=89=EF=BC=
+=8C=E6=9B=B4=E6=96=B0=E8=AF=A5=E6=9B=B4=E6=96=B0=E7=9A=84=E7=8A=B6=E6=80=81=
+=EF=BC=8C=E5=8F=91=E8=AF=A5=E5=8F=91=E7=9A=84=E9=80=9A=E7=9F=A5=EF=BC=8C=E5=
+=B0=B1=E8=A1=8C=E4=BA=86=E3=80=82=0A    if(reset !=3Dnull){ =
+//=E5=A6=82=E6=9E=9C=E6=AD=A4=E6=AC=A1reorg=E8=A6=81=E5=A4=84=E7=90=86res=
+et=EF=BC=8C=E9=82=A3=E5=B0=B1=E5=A4=84=E7=90=86=E5=AE=83=E3=80=82=E5=85=B6=
+=E7=BB=93=E6=9E=9C=E6=98=AF=E5=B0=86=E8=A2=ABrem=E7=9A=84=E5=9D=97=E9=87=8C=
+=EF=BC=8C=E4=B8=94=E6=B2=A1=E5=9C=A8=E6=96=B0=E5=9D=97=E9=87=8C=E7=9A=84=E4=
+=BA=A4=E6=98=93=E9=87=8D=E6=96=B0=E5=8A=A0=E5=85=A5pool=0A        -&gt;  =
+pool.reset(reset.oldHead, reset.newHead)=0A            if =
+(rem=E5=A4=B4=E4=B8=8D=E6=98=AFadd=E5=A4=B4=E7=9A=84parent=EF=BC=89{=0A  =
+              =
+if(rem=E5=92=8Cadd=E4=B9=8B=E9=97=B4=E5=9D=97=E9=AB=98&gt;64=EF=BC=89=EF=BC=
+=8C=E6=AD=A4=E6=83=85=E5=86=B5=E4=B8=8D=E5=A4=84=E7=90=86=EF=BC=8C=E6=B2=A1=
+=E5=95=A5=E4=BB=B7=E5=80=BC=0A                =0A                =
+discarded,included :=3D types.Transactions=0A                =
+if=EF=BC=88rem=E5=A4=B4=E4=B8=BA=E7=A9=BA=EF=BC=89=E6=AD=A4=E6=83=85=E5=86=
+=B5=E5=8F=AF=E8=83=BD=E6=98=AFsetHead=EF=BC=8C=E4=B8=A2=E5=BC=83rem=E7=9A=
+=84=E5=A4=B4=EF=BC=8C=E6=AD=A4=E6=97=B6=E4=B8=8D=E9=9C=80=E8=A6=81=E5=A4=84=
+=E7=90=86=0A                else:=0A                    =
+for(rem=E5=9D=97=E9=AB=98&gt;add=E5=9D=97=E9=AB=98=EF=BC=89=EF=BC=8C=E5=8D=
+=B3=E5=9D=97=E5=9B=9E=E9=80=80=0A                        discarded =
+=E5=8A=A0=E4=B8=8Arem=E5=9D=97=E9=87=8C=E7=9A=84=E6=89=80=E6=9C=89Tx=0A  =
+                  =
+for(add=E5=9D=97=E9=AB=98&gt;rem=E5=9D=97=E9=AB=98=EF=BC=89,=E5=8D=B3=E6=AD=
+=A3=E5=B8=B8=E9=93=BE=E5=8F=98=E9=95=BF=0A                        =
+included=E5=8A=A0=E4=B8=8A=E6=89=80=E6=9C=89add=E5=9D=97=E7=9A=84Tx=0A   =
+                 for(add=E5=9D=97hash !=3D rem=E5=9D=97hash)=0A          =
+              =
+=E5=AF=B9=E6=89=80=E6=9C=89=E7=9A=84add,included=E5=8A=A0=E4=B8=8ATx=0A  =
+                      =
+=E5=AF=B9=E6=89=80=E6=9C=89=E7=9A=84rm=EF=BC=8Cdiscarded =
+=E5=8A=A0=E4=B8=8ATx=0A                    reinject =3D =
+types.TxDifference(discarded, included)  =
+//=E8=BF=99=E6=AD=A5=E9=9D=9E=E5=B8=B8=E9=87=8D=E8=A6=81=EF=BC=8C=E4=B9=8B=
+=E5=89=8D=E8=BF=99=E5=87=A0=E4=B8=AA=E5=BE=AA=E7=8E=AF=EF=BC=8C=E7=9B=AE=E7=
+=9A=84=E5=B0=B1=E6=98=AF=E8=BF=99=E4=B8=80=E6=AD=A5=E5=BE=97=E5=88=B0rein=
+ject=E3=80=82=E5=AE=83=E6=98=AF=E4=BB=8Ediscarded=E7=9A=84Tx=E4=B8=AD=EF=BC=
+=8C=E5=8E=BB=E6=8E=89=E4=B9=9F=E5=9C=A8included=E4=B8=AD=E7=9A=84=E8=BF=99=
+=E9=83=A8=E5=88=86=EF=BC=8C=E5=8D=B3=E8=A2=ABrem=E7=9A=84=E5=9D=97=E9=87=8C=
+=E7=9A=84=E4=BA=A4=E6=98=93=EF=BC=8C=E5=A6=82=E6=9E=9C=E6=B2=A1=E6=9C=89=E5=
+=87=BA=E7=8E=B0=E5=9C=A8add=E7=9A=84=E5=9D=97=E9=87=8C=EF=BC=8C=E5=B0=B1=E4=
+=BC=9A=E8=BF=9B=E5=85=A5=E5=88=B0reinject=E9=87=8C=EF=BC=8C=E8=BF=99=E9=83=
+=A8=E5=88=86=E4=BA=A4=E6=98=93=E7=AC=A6=E5=90=88=E8=A6=81=E6=B1=82=EF=BC=8C=
+=E4=BD=86=E6=98=AF=E5=9B=A0=E4=B8=BAreset=E8=A2=AB=E6=8A=9B=E5=BC=83=E4=BA=
+=86=EF=BC=8C=E6=89=80=E4=BB=A5=E8=A6=81=E9=87=8D=E6=96=B0=E6=B7=BB=E5=8A=A0=
+=E8=BF=9B=E4=BA=A4=E6=98=93=E6=B1=A0=E3=80=82=0A            }=0A         =
+   =
+//=E9=87=8D=E7=BD=AEpool=E9=87=8C=E5=85=B3=E4=BA=8Ehead=E7=9A=84=E4=B8=80=
+=E4=BA=9B=E5=8F=98=E9=87=8F=0A            if newHead =3D=3D nil {=0A     =
+           newHead =3D pool.chain.CurrentBlock().Header() // Special =
+case during testing=0A            }=0A            pool.currentState =3D =
+statedb=0A            pool.pendingNonces =3D newTxNoncer(statedb)=0A     =
+       pool.currentMaxGas =3D newHead.GasLimit=0A            =
+//=E5=B0=86reinject=E6=B7=BB=E5=8A=A0=E5=88=B0pool=EF=BC=8C=E8=BF=99=E5=B0=
+=B1=E6=98=AFreset=E7=9A=84=E6=89=A7=E8=A1=8C=E7=BB=93=E6=9E=9C=0A        =
+    pool.addTxsLocked(reinject, false)=0A            }=0A       =
+//=E5=B0=86queue=E9=87=8C=E6=89=80=E6=9C=89=E7=9A=84address=EF=BC=8C=E6=B7=
+=BB=E5=8A=A0=E5=88=B0promoteAddrs=E9=87=8C=E3=80=82=0A       for addr =
+:=3D range pool.queue {=0A			promoteAddrs =3D append(promoteAddrs, =
+addr)=0A		}=0A    }=0A    =
+//=E5=AF=B9promoteAddrs=E6=A3=80=E6=9F=A5=E7=97=85=E6=89=A7=E8=A1=8Cpromo=
+te=0A    promoted :=3D =
+pool.promoteExecutables(promoteAddrs)//=E8=BF=99=E9=87=8C=E6=9C=89=E4=B8=AA=
+=E7=96=91=E9=97=AE=EF=BC=9A=E5=9C=A8=E5=93=AA=E6=8A=8A=E5=8A=A0=E5=85=A5=E5=
+=88=B0pending=E7=9A=84Tx=E4=BB=8Equeue=E9=87=8Cremove=E7=9A=84=E5=91=A2=EF=
+=BC=9F=0A                            -&gt;=0A                            =
+=E9=81=8D=E5=8E=86=E6=AF=8F=E4=B8=AA=E8=B4=A6=E6=88=B7=EF=BC=8C=E5=AF=B9=E6=
+=AF=8F=E4=B8=AA=E8=B4=A6=E6=88=B7=E6=89=A7=E8=A1=8C=EF=BC=9A{=0A         =
+                       list.Forward   =
+//=E6=8A=8ATx=E5=88=97=E8=A1=A8=E4=B8=ADnonce=E5=B0=8F=E4=BA=8E=E5=BD=93=E5=
+=89=8D=E7=8A=B6=E6=80=81=E7=9A=84=E5=88=A0=E6=8E=89=E3=80=82=0A          =
+                      =
+=E5=88=A0=E6=8E=89=E4=BD=99=E9=A2=9D=E4=B8=8D=E5=A4=9F=E7=9A=84=EF=BC=88=E4=
+=B8=8D=E8=B6=B3=E4=BB=A5=E6=94=AF=E4=BB=98gas=E7=AD=89=EF=BC=89=0A       =
+                         =
+=E9=80=89=E5=87=BA=E6=89=80=E6=9C=89=E5=8F=AF=E4=BB=A5=E6=89=A7=E8=A1=8C=E7=
+=9A=84Tx =
+(nonce=E5=A4=A7=E4=BA=8E=E5=BD=93=E5=89=8Dnonce=E4=B8=94=E8=BF=9E=E7=BB=AD=
+=E5=A2=9E=E5=8A=A0=EF=BC=89=0A                                =
+=E9=81=8D=E5=8E=86=E8=BF=99=E4=BA=9BTx=EF=BC=8C=E5=AF=B9=E6=AF=8F=E4=B8=AA=
+=E6=89=A7=E8=A1=8Cpool.promoteTx=0A                                    =
+-&gt;  =0A                                    list :=3D =
+pool.pending[addr]  //list=E6=98=AFpending =
+=E4=B8=AD=E8=AF=A5=E8=B4=A6=E6=88=B7=E7=9A=84TxList=EF=BC=8C=E5=8D=B3=E6=8F=
+=92=E5=85=A5=E7=9B=AE=E6=A0=87=E3=80=82=0A                               =
+     inserted, old :=3D list.Add(tx, pool.config.PriceBump)=0A           =
+                             -&gt;=0A                                    =
+    =
+=E6=9F=A5=E7=9C=8B=E8=AF=A5nonce=E5=9C=A8list=E4=B8=AD=E6=98=AF=E5=90=A6=E5=
+=B7=B2=E6=9C=89=E4=BA=86=EF=BC=8C=E5=A6=82=E6=9E=9C=E6=9C=89=E7=9A=84=E8=AF=
+=9D=EF=BC=8C=E6=9F=A5=E7=9C=8B=E5=8E=9F=E6=9C=89Tx=E7=9A=84gasFee=E6=98=AF=
+=E5=90=A6=E6=AF=94=E6=96=B0=E7=9A=84=E9=AB=98=EF=BC=8C=E6=98=AF=E7=9A=84=E8=
+=AF=9D=E8=BF=94=E5=9B=9E=0A                                        =
+=E5=90=A6=E5=88=99=E8=AE=A1=E7=AE=97=E6=96=B0Tx=E7=9A=84gas=E6=AF=94=E6=97=
+=A7=E4=BA=A4=E6=98=93=E9=AB=98=E7=9A=84=E6=AF=94=E4=BE=8B=E6=98=AF=E5=90=A6=
+=E6=BB=A1=E8=B6=B3=E8=A6=81=E6=B1=82=EF=BC=88=E5=90=8Cnonce=E7=9A=84=E4=BA=
+=A4=E6=98=93=EF=BC=8C=E6=96=B0=E7=9A=84=E8=A6=81=E6=AF=94=E6=97=A7=E7=9A=84=
+gas=E8=B4=B9=E9=AB=98x%=E6=89=8D=E5=85=81=E8=AE=B8=E6=9B=BF=E6=8D=A2=E4=BA=
+=A4=E6=98=93=EF=BC=8C=E6=AF=94=E4=BE=8B=E5=9C=A8pool.config.PriceBump=E4=B8=
+=AD=E8=AE=BE=E7=BD=AE=0A                                        =
+=E5=A6=82=E6=9E=9C=E9=80=9A=E8=BF=87=E6=A3=80=E6=9F=A5=EF=BC=8C=E5=88=99=E6=
+=8A=8A=E6=96=B0=E4=BA=A4=E6=98=93=E5=8A=A0=E5=85=A5list=EF=BC=8C=E5=B9=B6=
+=E6=9B=B4=E6=96=B0list=E7=9A=84gasCap=EF=BC=8CcostCap=0A                 =
+                   =
+=E6=A0=B9=E6=8D=AElist.Add=E7=9A=84=E7=BB=93=E6=9E=9C=EF=BC=8C=E6=9B=B4=E6=
+=96=B0pool.all, =
+pool.priced=EF=BC=8CpendingNonces=E7=AD=89=E7=8A=B6=E6=80=81=0A          =
+                      =
+=E5=A6=82=E6=9E=9C=E8=AF=A5=E8=B4=A6=E6=88=B7=E4=B8=8D=E6=98=AF=E6=9C=AC=E5=
+=9C=B0=E8=B4=A6=E6=88=B7=EF=BC=8C=E6=A3=80=E6=9F=A5=E8=AF=A5=E8=B4=A6=E6=88=
+=B7=E5=A4=A7=E5=B0=8F=E6=98=AF=E5=90=A6=E8=B6=85=E5=87=BApool.config.Acco=
+untQueue=EF=BC=88=E5=8D=B3pool=E4=B8=AD=E5=85=81=E8=AE=B8=E7=9A=84queue=E4=
+=B8=AD=E4=B8=80=E4=B8=AA=E8=B4=A6=E6=88=B7=E5=8F=AF=E4=BB=A5=E4=BF=9D=E5=AD=
+=98=E7=9A=84=E6=9C=80=E5=A4=A7Tx=E6=95=B0=EF=BC=89=EF=BC=8C=E5=A6=82=E6=9E=
+=9C=E8=B6=85=E5=87=BA=EF=BC=8C=E5=B0=B1=E4=BB=8Equeue=E4=B8=AD=E7=A7=BB=E9=
+=99=A4=E8=B6=85=E5=87=BA=E9=83=A8=E5=88=86=E7=9A=84Tx=E3=80=82=0A        =
+                        =
+=E6=9B=B4=E6=96=B0=E5=90=84=E7=A7=8D=E5=8F=98=E9=87=8F=E7=8A=B6=E6=80=81=0A=
+                            }=0A    if reset !=3D null=0A        =
+pool.demoteUnexecutables()  =
+//=E9=81=8D=E5=8E=86pending=E4=B8=AD=E7=9A=84=E6=89=80=E6=9C=89=E8=B4=A6=E6=
+=88=B7=EF=BC=8C=E7=A7=BB=E9=99=A4=E6=89=80=E6=9C=89=E8=B6=85=E8=BF=87nonc=
+e=E7=9A=84=EF=BC=8C=E4=BD=99=E9=A2=9D=E4=B8=8D=E8=B6=B3=E7=9A=84=EF=BC=88=
+=E4=B8=8D=E5=A4=9Fgas)=0A                                               =
+//=E9=92=88=E5=AF=B9gas=E8=B4=B9=E4=B8=8D=E5=A4=9F=E7=9A=84=EF=BC=8C=E5=B9=
+=B6=E4=B8=8D=E6=98=AF=E7=9B=B4=E6=8E=A5=E6=8A=9B=E5=BC=83=EF=BC=8C=E8=80=8C=
+=E6=98=AF=E5=86=8D=E5=8A=A0=E5=88=B0queue=E9=87=8C=EF=BC=8C=E5=9B=A0=E4=B8=
+=BA=E6=9C=AA=E6=9D=A5price=E5=8F=AF=E8=83=BD=E4=BC=9A=E9=99=8D=EF=BC=8C=E9=
+=9A=8F=E6=97=B6=E5=8F=AF=E8=83=BD=E5=8F=88=E6=BB=A1=E8=B6=B3=E8=A6=81=E6=B1=
+=82=E4=BA=86=E3=80=82 =0A        =E6=9B=B4=E6=96=B0pool.pendingNonces    =
+//=E6=8A=8Apending=E7=9A=84=E6=89=80=E6=9C=89=E8=B4=A6=E6=88=B7=E7=9A=84n=
+once=E6=9B=B4=E6=96=B0=E5=88=B0=E6=96=B0=E5=9D=97=0A        =
+=E5=AF=B9=E5=A4=96=E5=8F=91=E5=87=BANewTxsEvent=E9=80=9A=E7=9F=A5=0A</cod=
+e></pre>=0A</div><center style=3D"display:none =
+!important;visibility:collapse !important;height:0 =
+!important;white-space:nowrap;width:100%;overflow:hidden">%23%23%20%E5%85=
+%A5%E5%8F%A3%0ACmd%2Fgeth%2Fmain.go%0A%60%60%60%0AGeth%7B%0Astack%2C%20ba=
+ckend%20%3A%3D%20makeFullNode(ctx)%0AstartNode(ctx%2C%20stack%2C%20backen=
+d%2C%20false)%0A%7D%0A%60%60%60%0A%E9%87%8D%E7%82%B9%E6%98%AFmakeFullNode=
+%E9%87%8C%E7%94%9F%E6%88%90node%E5%92%8Cbackend%EF%BC%8CstartNode%E6%B2%A=
+1%E5%B9%B2%E5%95%A5%EF%BC%8C%E5%8F%AA%E6%98%AF%E5%BC%80%E5%90%AF%E5%89%A9=
+%E4%BD%99%E7%A9%BA%E9%97%B4%E6%A3%80%E6%9F%A5%E7%AD%89%E3%80%82%0A%23%23%=
+20Ethereum%0AmakeFullNode%E9%87%8C%E7%94%9F%E6%88%90node%E5%92%8Cbackend%=
+EF%BC%8C%E5%85%B6%E4%B8%ADbackend%E6%98%AFEthereum%E5%AE%9E%E4%BE%8B%EF%B=
+C%8C%E5%8C%85%E5%90%AB%E4%BA%A4%E6%98%93%E6%B1%A0%E3%80%81%E9%93%BE%E7%AE=
+%A1%E7%90%86%E3%80%81p2p%E7%BD%91%E7%BB%9C%E3%80%81DB%E7%AD%89%E3%80%82%0=
+A%60%60%60%0Atype%20Ethereum%20struct%20%7B%0A%09config%20*ethconfig.Conf=
+ig%0A%09%2F%2F%20Handlers%0A%09txPool%20%20%20%20%20%20%20%20%20%20%20%20=
+%20*core.TxPool%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%=
+20%20%20%20%20%20%20%20%20%20%2F%2F%E4%BA%A4%E6%98%93%E6%B1%A0%0A%09block=
+chain%20%20%20%20%20%20%20%20%20*core.BlockChain%20%20%20%20%20%20%20%20%=
+20%20%20%20%20%20%20%20%20%20%20%20%20%2F%2F%E7%AE%A1%E7%90%86%E9%93%BE%E=
+F%BC%8C%E5%A6%82genesis%2C%20%E9%93%BE%E7%9A%84%E5%BB%B6%E9%95%BF%E7%AD%8=
+9%0A%09handler%20%20%20%20%20%20%20%20%20%20%20%20*handler%20%20%20%20%20=
+%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%=
+20%20%20%20%2F%2F%E9%93%BE%E7%AE%A1%E7%90%86%EF%BC%8C%E5%A6%82%E4%BA%A4%E=
+6%98%93%E6%B1%A0%EF%BC%8C%E8%8A%82%E7%82%B9%EF%BC%8C%E9%93%BE%0A%09ethDia=
+lCandidates%20%20enode.Iterator%0A%09snapDialCandidates%20enode.Iterator%=
+0A%09merger%20%20%20%20%20%20%20%20%20%20%20%20%20*consensus.Merger%0A%0A=
+%09%2F%2F%20DB%20interfaces%0A%09chainDb%20ethdb.Database%20%2F%2F%20Bloc=
+k%20chain%20database%0A%0A%09eventMux%20%20%20%20%20%20%20*event.TypeMux%=
+0A%09engine%20%20%20%20%20%20%20%20%20consensus.Engine%0A%09accountManage=
+r%20*accounts.Manager%0A%0A%09bloomRequests%20%20%20%20%20chan%20chan%20*=
+bloombits.Retrieval%20%2F%2F%20Channel%20receiving%20bloom%20data%20retri=
+eval%20requests%0A%09bloomIndexer%20%20%20%20%20%20*core.ChainIndexer%20%=
+20%20%20%20%20%20%20%20%20%20%20%20%2F%2F%20Bloom%20indexer%20operating%2=
+0during%20block%20imports%0A%09closeBloomHandler%20chan%20struct%7B%7D%0A=
+%0A%09APIBackend%20*EthAPIBackend%0A%0A%09miner%20%20%20%20%20*miner.Mine=
+r%0A%09gasPrice%20%20*big.Int%0A%09etherbase%20common.Address%0A%0A%09net=
+workID%20%20%20%20%20uint64%0A%09netRPCService%20*ethapi.PublicNetAPI%0A%=
+0A%09p2pServer%20*p2p.Server%0A%0A%09lock%20sync.RWMutex%20%2F%2F%20Prote=
+cts%20the%20variadic%20fields%20(e.g.%20gas%20price%20and%20etherbase)%0A=
+%0A%09shutdownTracker%20*shutdowncheck.ShutdownTracker%20%2F%2F%20Tracks%=
+20if%20and%20when%20the%20node%20has%20shutdown%20ungracefully%0A%7D%0A%6=
+0%60%60%0A%E5%88%9B%E5%BB%BAbackend%E6%97%B6%EF%BC%8C%E4%BC%9A%E5%88%9B%E=
+5%BB%BADB%EF%BC%8C%E5%AF%B9genesis%20%E5%81%9Aload%E5%92%8C%E6%A3%80%E6%9=
+F%A5%EF%BC%8C%E5%88%9D%E5%A7%8B%E5%8C%96%E5%8C%85%E5%90%AB%E7%9A%84%E5%90=
+%84%E4%B8%AA%E6%A8%A1%E5%9D%97%EF%BC%8C%E5%A6%82txPool%2C%20blockchain%EF=
+%BC%8Cminer%EF%BC%8C%E5%B8%83%E9%9A%86%E8%BF%87%E6%BB%A4%E5%99%A8%EF%BC%8=
+CRPCService%E7%AD%89%E3%80%82%0A%23%23%23%20%E9%87%8D%E8%A6%81%E6%8E%A5%E=
+5%8F%A3%0A%E5%AF%B9%E5%A4%96%E6%8F%90%E4%BE%9B%E8%87%AA%E5%B7%B1%E6%8C%81=
+%E6%9C%89%E7%9A%84%E5%90%84%E7%A7%8D%E5%AE%9E%E4%BD%93%0AStartMining%EF%B=
+C%8C%E5%90%AF%E5%8A%A8%E6%8C%96%E7%9F%BF%0AStateAtBlock%EF%BC%8C%E8%8E%B7=
+%E5%8F%96%E7%BB%99%E5%AE%9A%E5%9D%97%E7%9A%84%E4%B8%96%E7%95%8C%E7%8A%B6%=
+E6%80%81%0AstateAtTransaction%EF%BC%8C%E8%BF%94%E5%9B%9E%E6%89%A7%E8%A1%8=
+C%E5%85%B7%E4%BD%93Tx%E7%9A%84%E4%B8%96%E7%95%8C%E7%8A%B6%E6%80%81%0A%0A%=
+23%23%20Node%0Anode%E6%98%AF%E4%B8%80%E4%B8%AAcontainer%EF%BC%8C%E5%90%84=
+%E7%A7%8D%E6%9C%8D%E5%8A%A1%E5%8F%AF%E4%BB%A5%E6%B3%A8%E5%86%8C%E4%B8%8A%=
+E5%8E%BB%E3%80%82%0A%E9%87%8D%E8%A6%81%E7%9A%84%E6%98%AF%EF%BC%9AaccountM=
+anager%2C%20p2p.server%2C%20lifeCycle%E7%AE%A1%E7%90%86%EF%BC%8CrpcAPIs%E=
+F%BC%8C%20databases%0A%60%60%60%0Atype%20Node%20struct%20%7B%0A%09eventmu=
+x%20%20%20%20%20%20*event.TypeMux%0A%09config%20%20%20%20%20%20%20%20*Con=
+fig%0A%09accman%20%20%20%20%20%20%20%20*accounts.Manager%0A%09log%20%20%2=
+0%20%20%20%20%20%20%20%20log.Logger%0A%09keyDir%20%20%20%20%20%20%20%20st=
+ring%20%20%20%20%20%20%20%20%20%20%20%20%2F%2F%20key%20store%20directory%=
+0A%09keyDirTemp%20%20%20%20bool%20%20%20%20%20%20%20%20%20%20%20%20%20%20=
+%2F%2F%20If%20true%2C%20key%20directory%20will%20be%20removed%20by%20Stop=
+%0A%09dirLock%20%20%20%20%20%20%20fileutil.Releaser%20%2F%2F%20prevents%2=
+0concurrent%20use%20of%20instance%20directory%0A%09stop%20%20%20%20%20%20=
+%20%20%20%20chan%20struct%7B%7D%20%20%20%20%20%2F%2F%20Channel%20to%20wai=
+t%20for%20termination%20notifications%0A%09server%20%20%20%20%20%20%20%20=
+*p2p.Server%20%20%20%20%20%20%20%2F%2F%20Currently%20running%20P2P%20netw=
+orking%20layer%0A%09startStopLock%20sync.Mutex%20%20%20%20%20%20%20%20%2F=
+%2F%20Start%2FStop%20are%20protected%20by%20an%20additional%20lock%0A%09s=
+tate%20%20%20%20%20%20%20%20%20int%20%20%20%20%20%20%20%20%20%20%20%20%20=
+%20%20%2F%2F%20Tracks%20state%20of%20node%20lifecycle%0A%0A%09lock%20%20%=
+20%20%20%20%20%20%20%20sync.Mutex%0A%09lifecycles%20%20%20%20%5B%5DLifecy=
+cle%20%2F%2F%20All%20registered%20backends%2C%20services%2C%20and%20auxil=
+iary%20services%20that%20have%20a%20lifecycle%0A%09rpcAPIs%20%20%20%20%20=
+%20%20%5B%5Drpc.API%20%20%20%2F%2F%20List%20of%20APIs%20currently%20provi=
+ded%20by%20the%20node%0A%09http%20%20%20%20%20%20%20%20%20%20*httpServer%=
+20%2F%2F%0A%09ws%20%20%20%20%20%20%20%20%20%20%20%20*httpServer%20%2F%2F%=
+0A%09httpAuth%20%20%20%20%20%20*httpServer%20%2F%2F%0A%09wsAuth%20%20%20%=
+20%20%20%20%20*httpServer%20%2F%2F%0A%09ipc%20%20%20%20%20%20%20%20%20%20=
+%20*ipcServer%20%20%2F%2F%20Stores%20information%20about%20the%20ipc%20ht=
+tp%20server%0A%09inprocHandler%20*rpc.Server%20%2F%2F%20In-process%20RPC%=
+20request%20handler%20to%20process%20the%20API%20requests%0A%0A%09databas=
+es%20map%5B*closeTrackingDB%5Dstruct%7B%7D%20%2F%2F%20All%20open%20databa=
+ses%0A%7D%0A%60%60%60%0A%23%23%23%20%E9%87%8D%E7%82%B9%0AAccountManager%E=
+6%98%AF%E5%9C%A8%E8%BF%99%E9%87%8C%E5%88%9B%E5%BB%BA%E7%9A%84%EF%BC%8C%E8=
+%BF%98%E6%B2%A1%E8%B7%9Fbackend%E6%8C%82%E9%92%A9%EF%BC%8C%E5%90%8E%E7%BB=
+%AD%E8%A6%81%E6%8C%82%E4%B8%8A%E3%80%82%0Ap2pServer%E6%98%AF%E5%9C%A8%E8%=
+BF%99%E9%87%8C%E5%88%9B%E5%BB%BA%E7%9A%84%0ARPCServer%E6%98%AF%E5%9C%A8%E=
+8%BF%99%E9%87%8C%E5%88%9B%E5%BB%BA%E7%9A%84%0A%0A%23%23%23%20%E9%87%8D%E8=
+%A6%81%E6%8E%A5%E5%8F%A3%0A%E5%AF%B9%E5%A4%96%E6%8F%90%E4%BE%9BAccountMan=
+ager%2C%20RPCServer%E7%AD%89%E8%87%AA%E5%B7%B1%E6%8C%81%E6%9C%89%E7%9A%84=
+%E6%9C%8D%E5%8A%A1%EF%BC%8C%0A%E6%B3%A8%E5%86%8CRPC%E6%9C%8D%E5%8A%A1%0AR=
+egisterProtocols%EF%BC%8C%E6%8A%8Abackend%E7%9A%84protocol%E6%B3%A8%E5%86=
+%8C%E5%88%B0p2pServer%0A%0A%0A%23%23%20BlockChain%0A%E4%BB%A3%E8%A1%A8%E9=
+%93%BE%E6%95%B0%E6%8D%AE%EF%BC%8C%E8%A2%ABbackend%E6%8C%81%E6%9C%89%E3%80=
+%82%0A%E9%87%8D%E8%A6%81%E6%95%B0%E6%8D%AE%EF%BC%9A%0Ahc%EF%BC%9A%E9%93%B=
+E%E7%9A%84header%EF%BC%8C%E5%8C%85%E5%90%AB%E4%B8%96%E7%95%8C%E7%8A%B6%E6=
+%80%81db%EF%BC%8C%E5%BD%93%E5%89%8D%E5%A4%B4%E7%9A%84%E5%9D%97%E9%AB%98%E=
+3%80%81hash%EF%BC%8C%E6%9C%80%E8%BF%91%E7%9A%84%E5%9D%97%E5%A4%B4cache%2C=
+%E9%9A%BE%E5%BA%A6cache%EF%BC%8C%E5%9D%97%E9%AB%98cache%EF%BC%8C%E5%85%B1=
+%E8%AF%86engine%0AgenesisBlock%0AClosableMutex%EF%BC%9Achain%E7%9A%84%E5%=
+86%99%E9%94%81%EF%BC%8C%E5%90%8C%E6%AD%A5%E6%93%8D%E4%BD%9C%E7%94%A8%0Acu=
+rrentBlock%20%20%20%20atomic.Value%0AcurrentFastBlock%20atomic.Value%0A%E=
+4%B8%80%E5%A0%86cache%EF%BC%9A%0AstateCache%20%20%20%20%20state.Database%=
+20%20%E4%B8%96%E7%95%8C%E7%8A%B6%E6%80%81cache%0AbodyCache%20%20%20%E6%9C=
+%80%E8%BF%91%E7%9A%84%E5%9D%97body%20cache%EF%BC%8C%E6%B3%A8%E6%84%8F%E5%=
+B0%B1body%0AreceiptsCache%20%20%E6%9C%80%E8%BF%91%E5%9D%97%E7%9A%84receip=
+ts%EF%BC%8C%20per%20block%0AblockCache%20%20%20%E6%9C%80%E8%BF%91%E5%9D%9=
+7%E7%9A%84%E6%95%B4%E4%B8%AAcache%0AtxLookupCache%0AfutureBlocks%20%20%20=
+%E6%B7%BB%E5%8A%A0%E4%BA%86%EF%BC%8C%E4%BD%86%E8%BF%98%E6%B2%A1%E5%A4%84%=
+E7%90%86%E7%9A%84%E5%9D%97cache%0A%0Arunning%20%20%E7%8A%B6%E6%80%81%E6%A=
+0%87%E8%AF%86%EF%BC%8C0%E5%9C%A8%E8%B7%91%EF%BC%8C1%20stop%0Aengine%C2%A0=
+%C2%A0%C2%A0%C2%A0%20consensus.Engine%0Avalidator%C2%A0%20Validator%20%20=
+%20%20%E5%9D%97%E5%92%8C%E7%8A%B6%E6%80%81%E7%9A%84%E9%AA%8C%E8%AF%81%E5%=
+99%A8%0Aprefetcher%20Prefetcher%EF%BC%9Apre-caching%20transaction%20signa=
+tures%20and%20state.%0Aprocessor%C2%A0%20Processor%EF%BC%9A%E5%A4%84%E7%9=
+0%86%E5%8C%BA%E5%9D%97%E4%BA%A4%E6%98%93%0Aforker%C2%A0%C2%A0%C2%A0%C2%A0=
+%20*ForkChoice%20%20%E6%A0%B9%E6%8D%AE%E6%80%BB%E9%9A%BE%E5%BA%A6%E9%80%8=
+9%E6%8B%A9%E7%94%A8%E5%93%AA%E4%B8%AAfork%EF%BC%8C%0Adb%20%20%20%20%20%20=
+%20%20%20%20%E4%B8%96%E7%95%8C%E7%8A%B6%E6%80%81%E6%95%B0%E6%8D%AE%E5%BA%=
+93%0A%60%60%60%0A%E5%8F%AA%E5%88%97%E5%87%BA%E6%9C%80%E9%87%8D%E8%A6%81%E=
+7%9A%84%0Atype%20BlockChain%20struct%20%7B%0A%09db%20%20%20%20%20ethdb.Da=
+tabase%20%2F%2F%20Low%20level%20persistent%20database%20to%20store%20fina=
+l%20content%20in%0A%09snaps%20%20*snapshot.Tree%20%2F%2F%20Snapshot%20tre=
+e%20for%20fast%20trie%20leaf%20access%0A%09triegc%20*prque.Prque%20%20%20=
+%2F%2F%20Priority%20queue%20mapping%20block%20numbers%20to%20tries%20to%2=
+0gc%0A%09gcproc%20time.Duration%20%20%2F%2F%20Accumulates%20canonical%20b=
+lock%20processing%20for%20trie%20dumping%0A%0A%09txLookupLimit%20uint64%0=
+A%0A%09hc%20%20%20%20%20%20%20%20%20%20%20%20*HeaderChain%0A%09genesisBlo=
+ck%20%20*types.Block%0A%0A%09%2F%2F%20This%20mutex%20synchronizes%20chain=
+%20write%20operations.%0A%09%2F%2F%20Readers%20don't%20need%20to%20take%2=
+0it%2C%20they%20can%20just%20read%20the%20database.%0A%09chainmu%20*syncx=
+.ClosableMutex%0A%0A%09currentBlock%20%20%20%20%20atomic.Value%20%2F%2F%2=
+0Current%20head%20of%20the%20block%20chain%0A%09currentFastBlock%20atomic=
+.Value%20%2F%2F%20Current%20head%20of%20the%20fast-sync%20chain%20(may%20=
+be%20above%20the%20block%20chain!)%0A%0A%09stateCache%20%20%20%20state.Da=
+tabase%20%2F%2F%20State%20database%20to%20reuse%20between%20imports%20(co=
+ntains%20state%20cache)%0A%09bodyCache%20%20%20%20%20*lru.Cache%20%20%20%=
+20%20%2F%2F%20Cache%20for%20the%20most%20recent%20block%20bodies%0A%09bod=
+yRLPCache%20%20*lru.Cache%20%20%20%20%20%2F%2F%20Cache%20for%20the%20most=
+%20recent%20block%20bodies%20in%20RLP%20encoded%20format%0A%09receiptsCac=
+he%20*lru.Cache%20%20%20%20%20%2F%2F%20Cache%20for%20the%20most%20recent%=
+20receipts%20per%20block%0A%09blockCache%20%20%20%20*lru.Cache%20%20%20%2=
+0%20%2F%2F%20Cache%20for%20the%20most%20recent%20entire%20blocks%0A%09txL=
+ookupCache%20*lru.Cache%20%20%20%20%20%2F%2F%20Cache%20for%20the%20most%2=
+0recent%20transaction%20lookup%20data.%0A%09futureBlocks%20%20*lru.Cache%=
+20%20%20%20%20%2F%2F%20future%20blocks%20are%20blocks%20added%20for%20lat=
+er%20processing%0A%0A%09wg%20%20%20%20%20%20%20%20%20%20%20%20sync.WaitGr=
+oup%20%2F%2F%0A%09quit%20%20%20%20%20%20%20%20%20%20chan%20struct%7B%7D%2=
+0%20%2F%2F%20shutdown%20signal%2C%20closed%20in%20Stop.%0A%09running%20%2=
+0%20%20%20%20%20int32%20%20%20%20%20%20%20%20%20%20%2F%2F%200%20if%20chai=
+n%20is%20running%2C%201%20when%20stopped%0A%09procInterrupt%20int32%20%20=
+%20%20%20%20%20%20%20%20%2F%2F%20interrupt%20signaler%20for%20block%20pro=
+cessing%0A%0A%09engine%20%20%20%20%20consensus.Engine%0A%09validator%20%2=
+0Validator%20%2F%2F%20Block%20and%20state%20validator%20interface%0A%09pr=
+efetcher%20Prefetcher%0A%09processor%20%20Processor%20%2F%2F%20Block%20tr=
+ansaction%20processor%20interface%0A%09forker%20%20%20%20%20*ForkChoice%0=
+A%09vmConfig%20%20%20vm.Config%0A%7D%0A%60%60%60%0AnewBlockChain%E4%B8%AD=
+%E6%89%A7%E8%A1%8C%E7%9A%84%E6%93%8D%E4%BD%9C%EF%BC%9A%0A%E4%BC%9A%E8%AF%=
+BB%E5%87%BAhead%2C%0Anew%E5%87%BAstate%EF%BC%88%E6%A0%B9%E6%8D%AEhead%2C%=
+20state%20cache%EF%BC%8C%E6%88%96snap%EF%BC%8CBlockChain%E9%87%8C%E5%A4%A=
+7%E9%87%8F%E7%94%A8%E5%88%B0state%E5%8C%85%E9%87%8C%E7%9A%84%E5%86%85%E5%=
+AE%B9%EF%BC%8C%E8%80%8C%E4%B8%94%E4%BD%86%E6%98%AF%E6%9C%AC%E8%BA%AB%E7%B=
+B%93%E6%9E%84%E4%BD%93%E5%86%85%E5%B9%B6%E4%B8%8D%E5%A4%A7%E9%87%8F%E6%8C=
+%81%E6%9C%89state%E7%9A%84%E4%B8%9C%E8%A5%BF%EF%BC%8C%E5%8F%AA%E6%9C%89%E=
+4%B8%80%E4%B8%AAstateCache%2C%E6%98%AFstate.Database%EF%BC%89%0A%E5%A4%84=
+%E7%90%86%E4%B9%8B%E5%89%8D%E5%8F%AF%E8%83%BD%E9%81%97%E7%95%99%E7%9A%84%=
+E9%94%99%E8%AF%AF%E7%8A%B6%E6%80%81%E5%92%8C%E9%94%99%E8%AF%AFhash%E7%AD%=
+89%0A%E5%A6%82%E6%9E%9C%E6%9C%89%E5%BF%AB%E7%85%A7%EF%BC%8C%E4%B8%94%E5%B=
+F%AB%E7%85%A7%E6%AF%94head%E6%9B%B4%E9%AB%98%EF%BC%8C%E5%88%99%E6%81%A2%E=
+5%A4%8D%E5%BF%AB%E7%85%A7%0A%E5%90%AF%E5%8A%A8%E4%B8%80%E4%B8%AA5s%E7%9A%=
+84%E5%AE%9A%E6%97%B6%E5%99%A8%E5%A4%84%E7%90%86futureBlocks%EF%BC%8Cfutur=
+eBlocks%E6%98%AF%E5%B7%B2%E8%A2%AB%E6%B7%BB%E5%8A%A0%EF%BC%8C%E4%BD%86%E5=
+%B0%9A%E6%9C%AA%E5%A4%84%E7%90%86%E7%9A%84%E5%9D%97%E3%80%82%0A%E5%90%AF%=
+E5%8A%A8TxIndexer%0A%E5%85%B6%E4%BB%96%E4%B8%80%E4%BA%9B%E6%A3%80%E6%9F%A=
+5%EF%BC%8C%E6%88%96%E8%80%85%E6%A0%B9%E6%8D%AEconfig%E5%90%AF%E5%8A%A8%E4=
+%B8%80%E4%BA%9B%E4%B8%9C%E8%A5%BF...%0A%E6%89%A7%E8%A1%8C%E5%AE%8C%E5%90%=
+8E%EF%BC%8C%E5%B0%B1%E4%BC%9A%E6%9C%89%E4%B8%AA%E5%8F%AF%E7%94%A8%E7%9A%8=
+4BlockChain%E4%BA%86%E3%80%82%0A%0A%23%23%23%20%E9%87%8D%E8%A6%81%E6%8E%A=
+5%E5%8F%A3%0AContractCode%EF%BC%8C%20%E6%A0%B9%E6%8D%AEcode%E7%9A%84hash%=
+EF%BC%8C%E8%8E%B7%E5%8F%96code%EF%BC%8Ccode%E6%98%AFbyte%5B%5D%EF%BC%8C%E=
+5%BA%94%E8%AF%A5%E6%98%AF%E5%AD%97%E8%8A%82%E7%A0%81%0ACurrentBlock%EF%BC=
+%8C%E8%8E%B7%E5%8F%96%E6%AD%A3%E5%BC%8F%E9%93%BE%E7%9A%84head%20block%EF%=
+BC%8C%E8%BF%94%E5%9B%9E%E7%B1%BB%E5%9E%8B%E4%B8%BABlock%0AHasHeader%EF%BC=
+%8CGetHeader%EF%BC%8CGetHeaderByHash%EF%BC%8CGetHeaderByNumber%E5%AF%B9%E=
+5%A4%B4%E7%9A%84%E6%9F%A5%E8%AF%A2%E5%92%8C%E8%8E%B7%E5%8F%96%EF%BC%8C%E8=
+%BF%94%E5%9B%9EHeader%0AGetBody%EF%BC%8CGetBodyRLP%EF%BC%8C%E8%BF%94%E5%9=
+B%9EBody%EF%BC%8C%E9%87%8C%E9%9D%A2%E5%8C%85%E5%90%ABTransactions%5B%5D%E=
+5%92%8CUncles%5B%5D%0AGasLimit%EF%BC%8C%E6%A0%B9%E6%8D%AEhead%E8%BF%94%E5=
+%9B%9Egas%20limit%0A%E3%80%82%E3%80%82%E3%80%82%E3%80%82%E5%BE%88%E5%A4%9=
+A%E8%B7%9F%E9%93%BE%E7%9B%B8%E5%85%B3%E7%9A%84%EF%BC%8C%E4%B8%8D%E5%88%97=
+%E4%B8%BE%E4%BA%86%0A%0A%23%23%23%23%20InsertChain(chain%20types.Blocks)%=
+20(int%2C%20error)%20%0A%E6%8A%8A%E4%B8%80%E5%A0%86Block%E6%8F%92%E5%85%A=
+5%E5%88%B0%E6%AD%A3%E5%BC%8F%E9%93%BE%EF%BC%8C%E6%88%96%E8%80%85%E5%88%9B=
+%E5%BB%BA%E4%B8%80%E4%B8%AAfork%E3%80%82%E5%A6%82%E6%9E%9C%E4%B8%AD%E9%97=
+%B4%E5%87%BA%E9%94%99%E4%BA%86%EF%BC%8C%E4%BC%9A%E8%BF%94%E5%9B%9E%E6%98%=
+AF%E7%AC%AC%E5%87%A0%E4%B8%AA%E5%87%BA%E9%94%99%EF%BC%8C%E4%BB%A5%E5%8F%8=
+A%E5%8E%9F%E5%9B%A0%E3%80%82%E6%89%80%E6%9C%89%E7%9A%84%E6%8F%92%E5%85%A5=
+%E5%AE%8C%E6%88%90%E5%90%8E%EF%BC%8C%E4%BC%9A%E5%8F%91%E5%87%BAevent%E3%8=
+0%82%0A%E9%9D%9E%E5%B8%B8%E5%A4%9A%E5%9C%B0%E6%96%B9%E8%B0%83%E7%94%A8%E8=
+%BF%99%E4%B8%AA%E6%8E%A5%E5%8F%A3%E3%80%82%E7%AE%80%E7%95%A5%E6%B5%81%E7%=
+A8%8B%E5%A6%82%E4%B8%8B%EF%BC%9A%0A%2F%2F%E5%88%9B%E5%BB%BA%E4%B8%80%E4%B=
+8%AA%E5%9B%9E%E9%80%80%E7%8A%B6%E6%80%81%E7%94%A8%E7%9A%84cache%0AsenderC=
+acher.recoverFromBlocks(types.MakeSigner(bc.chainConfig%2C%20%0Achain%5B0=
+%5D.Number())%2C%20chain)%0A%0A%E6%A3%80%E6%9F%A5header%EF%BC%8C%E6%9C%89=
+%E5%87%A0%E7%A7%8D%E5%A4%84%E7%90%86%E6%83%85%E5%86%B5%EF%BC%88%E8%BF%99%=
+E9%83%A8%E5%88%86%E6%B2%A1%E5%A4%AA%E7%9C%8B%E6%87%82%EF%BC%8C%E4%BD%86%E=
+5%8F%AF%E4%BB%A5%E7%8C%9C%E4%B8%80%E7%8C%9C%EF%BC%89%EF%BC%9A%0A1.%20%E5%=
+A6%82%E6%9E%9C%E6%88%91%E4%BB%AC%E6%9C%AC%E5%9C%B0%E5%B7%B2%E7%BB%8F%E7%9=
+F%A5%E9%81%93%E7%AC%AC%E4%B8%80%E4%B8%AA%E5%9D%97%E3%80%82%0A%20%20%20%20=
+%E5%8F%AF%E8%83%BD%E6%88%91%E4%BB%AC%E8%BF%9B%E8%A1%8C%E4%BA%86%E5%9B%9E%=
+E6%BB%9A%EF%BC%8C%E7%8E%B0%E5%9C%A8%E8%A6%81%E9%87%8D%E6%96%B0%E5%AF%BC%E=
+5%85%A5%0A%20%20%20%20%E6%88%96%E8%80%85%E7%95%A5%E8%BF%87%E5%89%8D%E9%9D=
+%A2%E9%87%8D%E5%A4%8D%E5%B7%B2%E7%9F%A5%E7%9A%84%E5%9D%97%0A%20%20%20%20%=
+E6%88%96%E8%80%85%E8%A6%81%E5%BC%80%E5%90%AF%E4%B8%80%E4%B8%AA%E5%88%86%E=
+5%8F%89%EF%BC%88fork%EF%BC%89%0A2.%20%E5%9D%97%E5%A4%B4%E5%A4%A7%E4%BA%8E=
+%E6%88%91%E4%BB%AC%E7%9A%84head%EF%BC%8C%E6%AD%A4%E6%97%B6%E5%8A%A0%E5%85=
+%A5%E5%88%B0FutureBlock%E4%B8%AD%0A%0A%E7%84%B6%E5%90%8E%E9%81%8D%E5%8E%8=
+6%E5%A4%84%E7%90%86%E5%9D%97%EF%BC%9A%0A%60%60%60%0Afor%20%3B%20block%20!=
+%3D%20nil%20%26%26%20err%20%3D%3D%20nil%20%7C%7C%20errors.Is(err%2C%20Err=
+KnownBlock)%3B%20block%2C%20err%20%3D%20%0Ait.next()%20%7B%0A%60%60%60%0A=
+%E8%8E%B7%E5%8F%96%E7%88%B6%E5%8C%BA%E5%9D%97%E5%8F%8A%E5%85%B6state%EF%B=
+C%8C%E6%9D%A5%E6%89%A7%E8%A1%8C%E5%BD%93%E5%89%8D%E5%8C%BA%E5%9D%97%E3%80=
+%82%0A%60%60%60%0Astatedb%2C%20err%20%3A%3D%20state.New(parent.Root%2C%20=
+bc.stateCache%2C%20bc.snaps)%20%20%0A%60%60%60%0A%E5%A4%84%E7%90%86block%=
+EF%BC%9A%EF%BC%88%E8%BF%99%E4%B8%AA%E6%8E%A5%E5%8F%A3%E5%90%8E%E9%9D%A2%E=
+5%86%8D%E6%B7%B1%E5%85%A5%E7%A0%94%E7%A9%B6%EF%BC%89%0A%60%60%60%0Areceip=
+ts%2C%20logs%2C%20usedGas%2C%20err%20%3A%3D%20bc.processor.Process(block%=
+2C%20statedb%2C%20bc.vmConfig)%0A%60%60%60%0A%E9%AA%8C%E8%AF%81state%0A%6=
+0%60%60%0Abc.validator.ValidateState(block%2C%20statedb%2C%20receipts%2C%=
+20usedGas)%3B%0A%60%60%60%0A%E5%B0%86block%E5%86%99%E5%85%A5statedb%0A%60=
+%60%60%0Aif%20!setHead%20%7B%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%0A=
+%20%20%20%20%20%20%20%20%2F%2F%20Don't%20set%20the%20head%2C%20only%20ins=
+ert%20the%20block%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%0A%20%20%20%2=
+0%20%20%20%20err%20%3D%20bc.writeBlockWithState(block%2C%20receipts%2C%20=
+logs%2C%20statedb)%7D%20%0Aelse%20%7B%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0=
+%C2%A0%0A%20%20%20%20%20%20%20%20status%2C%20err%20%3D%20bc.writeBlockAnd=
+SetHead(block%2C%20receipts%2C%20logs%2C%20statedb%2C%20false)%0A%7D%0A%6=
+0%60%60%0A%E4%BB%A5%E4%B8%8A%E5%A4%84%E7%90%86%E8%BF%87%E7%A8%8B%E4%B8%AD=
+%E6%9B%B4%E6%96%B0%E5%90%84%E7%A7%8D%E7%BB%9F%E8%AE%A1%E6%95%B0%E6%8D%AE%=
+EF%BC%8C%E5%A6%82Timer%2C%20Metrics%EF%BC%8C%E5%B9%B6%E4%B8%94%E6%89%93%E=
+5%87%BAlog%E6%98%BE%E7%A4%BA%E5%A4%84%E7%90%86%E6%83%85%E5%86%B5%EF%BC%8C=
+%E5%A6%82%EF%BC%9A%0AInserted%20new%20block...%0AInserted%20forked%20bloc=
+k...%0AInserted%20block%20with%20unknown%20status...%0A%E6%B3%A8%E6%84%8F=
+%E4%B8%8A%E9%9D%A2%E5%BE%AA%E7%8E%AF%E7%9A%84%E5%BE%AA%E7%8E%AF%E6%9D%A1%=
+E4%BB%B6%0A%60%60%60%0Afor%20%3B%20block%20!%3D%20nil%20%26%26%20err%20%3=
+D%3D%20nil%20%7C%7C%20errors.Is(err%2C%20ErrKnownBlock)%3B%20block%2C%20e=
+rr%20%3D%20it.next()%0A%60%60%60%0Ablock%E8%83%BD%E5%8F%96%E5%87%BA%E6%9D=
+%A5%EF%BC%8C%E4%B8%94%E6%B2%A1%E9%94%99%E8%AF%AF%EF%BC%8C%E6%88%96%E8%80%=
+85%E9%94%99%E8%AF%AF%3DErrKnownBlock%EF%BC%8C%E6%89%8D%E6%89%A7%E8%A1%8C%=
+E3%80%82%0A%E6%89%80%E4%BB%A5%E4%B9%9F%E6%9C%89%E5%85%B6%E4%BB%96%E7%9A%8=
+4%E5%8F%AF%E8%83%BD%EF%BC%8C%E4%BC%9A%E5%AF%BC%E8%87%B4it%E4%B8%8D%E8%A2%=
+AB%E9%81%8D%E5%8E%86%E5%AE%8C%EF%BC%8C%E5%B0%B1%E8%B7%B3%E5%87%BA%E5%BE%A=
+A%E7%8E%AF%E3%80%82%E5%81%87%E8%AE%BE%E5%87%BA%E7%8E%B0%E8%BF%99%E7%A7%8D=
+%E6%83%85%E5%86%B5%EF%BC%8C%E5%B0%B1%E6%8A%8A%E7%9F%A5%E9%81%93%E6%98%AFF=
+utureBlock%E7%9A%84%EF%BC%8C%E8%BF%98%E6%9C%89%E4%B8%8D%E7%9F%A5%E9%81%93=
+%E7%A5%96%E5%85%88%E7%9A%84%EF%BC%8C%E4%B8%A2%E8%BF%9BFutureBlock%EF%BC%8=
+C%E8%BF%99%E7%A7%8D%E4%BC%9A%E6%9C%89%E4%B8%AATimer%E5%AE%9A%E6%97%B6%E6%=
+8B%BF%E5%87%BA%E6%9D%A5%E5%A4%84%E7%90%86%E3%80%82%0A%60%60%60%0Aif%20blo=
+ck%20!%3D%20nil%20%26%26%20errors.Is(err%2C%20consensus.ErrFutureBlock)%2=
+0%7B%0A%09%09if%20err%20%3A%3D%20bc.addFutureBlock(block)%3B%20err%20!%3D=
+%20nil%20%7B%0A%09%09%09return%20it.index%2C%20err%0A%09%09%7D%0A%09%09bl=
+ock%2C%20err%20%3D%20it.next()%0A%0A%09%09for%20%3B%20block%20!%3D%20nil%=
+20%26%26%20errors.Is(err%2C%20consensus.ErrUnknownAncestor)%3B%20block%2C=
+%20err%20%3D%20it.next()%20%7B%0A%09%09%09if%20err%20%3A%3D%20bc.addFutur=
+eBlock(block)%3B%20err%20!%3D%20nil%20%7B%0A%09%09%09%09return%20it.index=
+%2C%20err%0A%09%09%09%7D%0A%09%09%09stats.queued%2B%2B%0A%09%09%7D%0A%09%=
+7D%0A%60%60%60%0A%0A%E4%B8%8B%E9%9D%A2%E4%B8%80%E4%B8%AA%E4%B8%AA%E5%88%8=
+6%E6%9E%90%E5%89%8D%E9%9D%A2%E7%95%A5%E8%BF%87%E7%9A%84%E9%87%8D%E7%82%B9=
+%E5%A4%84%E7%90%86%EF%BC%9A%0A%23%23%23%23%20stateprocessor.Process%3A%0A=
+%60%60%60%0A%2F%2F%E5%9C%A8statedb%E4%B8%8A%E6%89%A7%E8%A1%8Cblock%E9%87%=
+8C%E7%9A%84tx%EF%BC%8C%E5%B9%B6%E4%B8%94%E6%8A%8A%E5%87%BA%E5%9D%97%E5%A5=
+%96%E5%8A%B1%E5%88%86%E7%BB%99processor%EF%BC%8C%E4%BB%A5%E5%8F%8A%E5%88%=
+86%E9%85%8D%E5%8F%94%E5%9D%97%E5%A5%96%E5%8A%B1%E3%80%82%0A%2F%2F%E8%BF%9=
+4%E5%9B%9E%E5%A4%84%E7%90%86%E8%BF%87%E7%A8%8B%E4%B8%AD%E7%9A%84%E6%94%B6=
+%E6%8D%AE%E3%80%81log%E3%80%81%E7%94%A8%E6%8E%89%E7%9A%84gas%E9%87%8F%E3%=
+80%82%E5%A6%82%E6%9E%9C%E6%9C%89tx%E5%9B%A0%E4%B8%BAgas%E4%B8%8D%E8%B6%B3=
+%E8%80%8C%E8%BF%90%E8%A1%8C%E5%A4%B1%E8%B4%A5%EF%BC%8C%E5%B0%B1%E8%BF%94%=
+E5%9B%9E%E4%B8%AAerror%0Afunc%20(p%20*StateProcessor)%20Process(block%20*=
+types.Block%2C%20statedb%20*state.StateDB%2C%20cfg%20vm.Config)%20(types.=
+Receipts%2C%20%5B%5D*types.Log%2C%20uint64%2C%20error)%20%7B%0A%60%60%60%=
+0A%E5%88%9B%E5%BB%BA%E8%99%9A%E6%8B%9F%E6%9C%BA%EF%BC%8C%E5%B9%B6%E4%B8%9=
+4%E5%9C%A8%E8%99%9A%E6%8B%9F%E6%9C%BA%E4%B8%8A%E8%BF%90%E8%A1%8Cblock%E9%=
+87%8C%E7%9A%84%E6%89%80%E6%9C%89tx%EF%BC%8C%E6%B3%A8%E6%84%8F%EF%BC%9A%0A=
+1.%20%E8%99%9A%E6%8B%9F%E6%9C%BA%E6%98%AF%E5%9C%A8statedb%E4%B8%8A%E5%88%=
+9B%E5%BB%BA%E5%87%BA%E6%9D%A5%E7%9A%84%E3%80%82%0A2.%20%E4%B8%8D%E6%98%AF=
+%E6%AF%8F%E4%B8%AAtx%E5%88%9B%E5%BB%BA%E4%B8%80%E4%B8%AA%E8%99%9A%E6%8B%9=
+F%E6%9C%BA%EF%BC%8C%E8%80%8C%E6%98%AF%E9%92%88%E5%AF%B9%E4%B8%80%E4%B8%AA=
+%E5%9D%97%E5%88%9B%E5%BB%BA%E4%B8%80%E4%B8%AA%E8%99%9A%E6%8B%9F%E6%9C%BA%=
+EF%BC%8C%E4%BD%86%E6%98%AF%E8%A6%81%E6%B3%A8%E6%84%8FContext%EF%BC%8C%E5%=
+9C%A8%E4%BB%A5%E5%A4%AA%E5%9D%8A%E9%87%8C%E6%9C%893%E4%B8%AAContext%EF%BC=
+%9A%0AChain.Context%EF%BC%8C%E5%AE%83%E5%8C%85%E5%90%AB%E5%85%B1%E8%AF%86=
+%E7%9A%84%E5%8F%82%E6%95%B0%EF%BC%8C%E5%92%8C%E9%80%9A%E8%BF%87hash%E8%8E=
+%B7%E5%8F%96%E5%9D%97%E5%A4%B4%E7%9A%84%E6%96%B9%E6%B3%95%EF%BC%9A%0A%20%=
+20%20%20%20%20%20%20Engine()%20consensus.Engine%0A%20%20%20%20%20%20%20%2=
+0GetHeader(common.Hash%2C%20uint64)%20*types.Header%0ABlockContext%EF%BC%=
+8C%E5%AE%83%E6%98%AF%E5%A4%84%E7%90%86%E4%B8%80%E4%B8%AA%E5%9D%97%E6%97%B=
+6%E7%9A%84Context%EF%BC%8C%E5%8C%85%E6%8B%ACtransfer%E7%9A%84%E5%A4%84%E7=
+%90%86%E5%87%BD%E6%95%B0%E3%80%81coinbase%E5%9C%B0%E5%9D%80%E3%80%81gasli=
+mit%E3%80%81%E5%9D%97%E9%AB%98%E3%80%81%E9%9A%BE%E5%BA%A6%E7%AD%89%0ATxCo=
+ntext%EF%BC%8C%E5%8C%85%E5%90%ABorigin%2C%20gasPrice%0A%0A%60%60%60%0A%09=
+blockContext%20%3A%3D%20NewEVMBlockContext(header%2C%20p.bc%2C%20nil)%0A%=
+09vmenv%20%3A%3D%20vm.NewEVM(blockContext%2C%20vm.TxContext%7B%7D%2C%20st=
+atedb%2C%20p.config%2C%20cfg)%0A%09%2F%2F%20Iterate%20over%20and%20proces=
+s%20the%20individual%20transactions%0A%09for%20i%2C%20tx%20%3A%3D%20range=
+%20block.Transactions()%20%7B%0A%09%09msg%2C%20err%20%3A%3D%20tx.AsMessag=
+e(types.MakeSigner(p.config%2C%20header.Number)%2C%20header.BaseFee)%20%2=
+0%2F%2F%E8%BF%99%E4%B8%80%E6%AD%A5%E4%BC%9A%E6%8A%8Atx%E8%BD%AC%E5%8C%96%=
+E4%B8%BAMsg%EF%BC%8C%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%2=
+0%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20=
+%20%20%20%20%20%20%2F%2F%E5%85%B6%E4%B8%AD%E5%8C%85%E6%8B%ACfrom%2C%20to%=
+20%2C%20nonce%2C%20price%E7%9B%B8%E5%85%B3%2C%20amount%2C%20accessList%EF=
+%BC%8Cdata%E7%AD%89%E3%80%82%E5%85%B6%E4%B8%ADfrom%E6%98%AF%E4%BB%8E%E7%A=
+D%BE%E5%90%8D%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20=
+%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%=
+20%20%20%20%2F%2F%E4%B8%AD%E9%80%9A%E8%BF%87%E5%AF%86%E7%A0%81%E5%AD%A6%E=
+6%8E%A8%E5%87%BA%E6%9D%A5%E7%9A%84%E3%80%82%E5%8F%91%E9%80%81%E6%95%B0%E6=
+%8D%AE%E4%B8%AD%E6%B2%A1%E6%9C%89Pk%E5%92%8Caddress%EF%BC%8C%E5%8F%AA%E6%=
+9C%89%E7%AD%BE%E5%90%8D%0A%09%09statedb.Prepare(tx.Hash()%2C%20i)%0A%09%0=
+9receipt%2C%20err%20%3A%3D%20applyTransaction(msg%2C%20p.config%2C%20p.bc=
+%2C%20nil%2C%20gp%2C%20statedb%2C%20blockNumber%2C%20blockHash%2C%20tx%2C=
+%20usedGas%2C%20vmenv)%0A%09%7D%0A%20%60%60%60%0A%20%E4%B8%8B%E9%9D%A2%E5=
+%88%86%E6%9E%90applyTransaction%0A%20%60%60%60%0A%20applyTransaction%7B%0=
+A%20%20%20%20%2F%2F%E4%B8%BA%E5%BD%93%E5%89%8DTx%E5%88%9B%E5%BB%BATxConte=
+xt%EF%BC%8C%E5%B9%B6%E5%BA%94%E7%94%A8%E5%88%B0evm%EF%BC%8C%E5%9B%A0%E4%B=
+8%BAevm%E6%98%AF%E4%B8%80%E4%B8%AA%E5%9D%97%E5%85%B1%E4%BA%AB%E7%9A%84%E3=
+%80%82%0A%20%09txContext%20%3A%3D%20NewEVMTxContext(msg)%0A%09evm.Reset(t=
+xContext%2C%20statedb)%0A%20%20%20%20%2F%2F%E5%B0%86Msg%E5%BA%94%E7%94%A8=
+%E5%88%B0evm%0A%20%20%20%20result%2C%20err%20%3A%3D%20ApplyMessage(evm%2C=
+%20msg%2C%20gp)%0A%20%20%20%20%20%20%20%20-%3ENewStateTransition(evm%2C%2=
+0msg%2C%20gp).TransitionDb()%0A%20%20%20%20%20%20%20%20%20%20%20%20-%3ETr=
+ansitionDb()%7B%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%E5%85%=
+88%E5%81%9A%E4%B8%80%E4%BA%9B%E5%85%B1%E8%AF%86%E7%9B%B8%E5%85%B3%E6%A3%8=
+0%E6%9F%A5%EF%BC%8C%E6%AF%94%E5%A6%82%EF%BC%9A%0A%20%20%20%20%20%20%20%20=
+%20%20%20%20%20%20%20%20%20%20%20%20nonce%E6%98%AF%E5%AF%B9%E7%9A%84%0A%2=
+0%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20price%E4%BD%99%=
+E9%A2%9D%E5%A4%9F(%3E%3DgasLimit*gasPrice%EF%BC%89%0A%20%20%20%20%20%20%2=
+0%20%20%20%20%20%20%20%20%20%20%20%20%20gas%E7%9B%B8%E5%85%B3%E6%A3%80%E6=
+%9F%A5%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%E5%=
+88%A4%E6%96%AD%E5%BD%93%E5%89%8D%E6%94%AF%E6%8C%81%E7%9A%84%E4%BB%A5%E5%A=
+4%AA%E5%9D%8A%E7%89%88%E6%9C%AC%EF%BC%8C%E5%8E%9F%E6%9D%A5%E5%A4%9A%E7%89=
+%88%E6%9C%AC%E6%98%AF%E8%BF%99%E6%A0%B7%E6%94%AF%E6%8C%81%E7%9A%84%E3%80%=
+82%E5%8F%A6%E5%A4%96%E5%AF%B9%E5%90%84%E7%A7%8DEIP%E5%8D%8F%E8%AE%AE%E7%9=
+A%84%E6%94%AF%E6%8C%81%EF%BC%8C%E4%B9%9F%E6%98%AF%E9%80%9A%E8%BF%87%E8%BF=
+%99%E4%BA%9B%EF%BC%8C%E4%BB%A5%E5%8F%8A%E4%B8%80%E4%BA%9B%E9%85%8D%E7%BD%=
+AE%E9%A1%B9%E7%9A%84%E5%88%A4%E6%96%AD%E6%9D%A5%E5%AE%9E%E7%8E%B0%E7%9A%8=
+4%E3%80%82%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20=
+homestead%20%3A%3D%20st.evm.ChainConfig().IsHomestead(st.evm.Context.Bloc=
+kNumber)%0A%09%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20istanbul%20=
+%3A%3D%20st.evm.ChainConfig().IsIstanbul(st.evm.Context.BlockNumber)%0A%0=
+9%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20london%20%3A%3D%20st.evm=
+.ChainConfig().IsLondon(st.evm.Context.BlockNumber)%0A%20%20%20%20%20%20%=
+20%20%20%20%20%20%20%20%20%20%20%20%20%20%E5%90%84%E7%A7%8D%E6%A3%80%E6%9=
+F%A5%E5%AE%8C%E6%88%90%E5%90%8E%EF%BC%8C%E6%89%A7%E8%A1%8C%E4%BA%A4%E6%98=
+%93%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20if%20co=
+ntractCreation%20%7B%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%2=
+0%20%20%20%20%20%20%20%2F%2F%E5%A6%82%E6%9E%9C%E6%98%AF%E5%88%9B%E5%BB%BA=
+%E6%96%B0%E5%90%88%E7%BA%A6%EF%BC%8C%E5%88%99%E5%88%9B%E5%BB%BA%E5%B9%B6%=
+E8%AE%BE%E7%BD%AEdata%EF%BC%8C%E5%8D%B3%E5%AD%97%E8%8A%82%E7%A0%81%E3%80%=
+82%0A%09%09%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20ret%2C%20_%2C%=
+20st.gas%2C%20vmerr%20%3D%20st.evm.Create(sender%2C%20st.data%2C%20st.gas=
+%2C%20st.value)%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%=
+20%20%7D%20else%20%7B%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%=
+20%20%20%20%20%20%20%20%2F%2F%20nonce%2B1%0A%20%20%20%20%20%20%20%20%20%2=
+0%20%20%20%20%20%20%20%20%20%20%20%20%20%20st.state.SetNonce(msg.From()%2=
+C%20st.state.GetNonce(sender.Address())%2B1)%0A%20%20%20%20%20%20%20%20%2=
+0%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20ret%2C%20st.gas%2C%20vmerr%=
+20%3D%20st.evm.Call(sender%2C%20st.to()%2C%20st.data%2C%20st.gas%2C%20st.=
+value)%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%=
+20%20%20%20%20%20%20-%3Efunc%20(evm%20*EVM)%20Call%7B%0A%20%20%20%20%20%2=
+0%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20=
+%20%20%E6%A0%88%E6%B7%B1%E5%BA%A6%E6%A3%80%E6%9F%A5%0A%20%20%20%20%20%20%=
+20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%2=
+0%20%E4%BD%99%E9%A2%9D%E6%A3%80%E6%9F%A5%0A%20%20%20%20%20%20%20%20%20%20=
+%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%E5%A6%=
+82%E6%9E%9CtoAddress%E4%B8%8D%E5%AD%98%E5%9C%A8%EF%BC%8C%E5%88%9B%E5%BB%B=
+Aaccount%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%2=
+0%20%20%20%20%20%20%20%20%20%20%20%E6%89%A7%E8%A1%8C%E8%BD%AC%E8%B4%A6%EF=
+%BC%8C%E6%B3%A8%E6%84%8F%E8%BD%AC%E8%B4%A6%E6%8E%A5%E5%8F%A3%E4%B8%8D%E6%=
+98%AF%E5%9B%BA%E5%AE%9A%E7%9A%84%EF%BC%8C%E8%80%8C%E6%98%AFBlockContext%E=
+9%87%8C%E9%85%8D%E7%BD%AE%E7%9A%84%E3%80%82%0A%20%20%20%20%20%20%20%20%20=
+%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%E6%=
+A3%80%E6%9F%A5%E6%98%AF%E5%90%A6%E6%98%AF%E9%A2%84%E7%BC%96%E8%AF%91%E7%9=
+A%84%E5%90%88%E7%BA%A6%EF%BC%8C%E6%B3%A8%E6%84%8F%E9%A2%84%E7%BC%96%E8%AF=
+%91%E7%9A%84%E5%90%88%E7%BA%A6%E5%85%B6%E5%9C%B0%E5%9D%80%E6%98%AF%E7%9B%=
+B4%E6%8E%A5%E5%AF%B91%EF%BC%8C2%EF%BC%8C3...%E6%95%B0%E5%AD%97%E5%81%9Aha=
+sh%E5%BE%97%E5%88%B0%E7%9A%84%E3%80%82%0A%20%20%20%20%20%20%20%20%20%20%2=
+0%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%E8%80%8C=
+%E4%B8%8D%E6%98%AF%E9%80%9A%E8%BF%87account%2Bnonce%E7%9A%84%E6%96%B9%E5%=
+BC%8F%E5%BE%97%E5%88%B0%E7%9A%84%E3%80%82%0A%20%20%20%20%20%20%20%20%20%2=
+0%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%E9%A2=
+%84%E7%BC%96%E8%AF%91%E5%90%88%E7%BA%A6%E5%9C%A8%E5%90%84%E4%B8%AA%E7%89%=
+88%E6%9C%AC%E4%B8%8A%E4%B8%8D%E4%B8%80%E6%A0%B7%EF%BC%8C%E7%9C%8B%E9%85%8=
+D%E7%BD%AE%E3%80%82%E5%9F%BA%E6%9C%AC%E9%83%BD%E6%98%AF%E4%BA%9B%E5%AF%86=
+%E7%A0%81%E5%AD%A6%E7%9A%84%EF%BC%8C%E5%A6%82ecrecover%EF%BC%8Csha256hash=
+%E7%AD%89%E3%80%82%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%=
+20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%09if%20isPrecompile%20%7B%0A=
+%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%=
+20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20ret%2C%20gas%2C%20err%20%3=
+D%20RunPrecompiledContract(p%2C%20input%2C%20gas)%0A%20%20%20%20%20%20%20=
+%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%=
+20%20%20%20%20%7D%20else%20%7B%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%=
+20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%2=
+0%20%20%2F%2F%E8%8E%B7%E5%8F%96toAddr%E5%AF%B9%E5%BA%94%E7%9A%84code%0A%2=
+0%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20=
+%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20code%20%3A%3D%20evm.StateDB.=
+GetCode(addr)%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20=
+%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20if%20len(c=
+ode)%20%3D%3D%200%20%7B%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%2=
+0%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20=
+%20%20%20%20ret%2C%20err%20%3D%20nil%2C%20nil%20%2F%2F%20gas%20is%20uncha=
+nged%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20=
+%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%7D%20else%20%7B%0A=
+%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%=
+20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20addrCopy%20%3A=
+%3D%20addr%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20=
+%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20c=
+ontract%20%3A%3D%20NewContract(caller%2C%20AccountRef(addrCopy)%2C%20valu=
+e%2C%20gas)%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%2=
+0%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20=
+contract.SetCallCode(%26addrCopy%2C%20evm.StateDB.GetCodeHash(addrCopy)%2=
+C%20code)%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%=
+20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20re=
+t%2C%20err%20%3D%20evm.interpreter.Run(contract%2C%20input%2C%20false)%0A=
+%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%=
+20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20-%=
+3EEVMInterpreter.run%7B%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%2=
+0%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20=
+%20%20%20%20%20%20%20%20%20%20%20%20in.evm.depth%2B%2B%20%20%2F%2F%E8%B0%=
+83%E7%94%A8%E6%A0%88%2B%2B%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%2=
+0%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20=
+%20%20%20%20%20%20%20%20%20%20%20%20%20if%20len(contract.Code)%20%3D%3D%2=
+00%20%7B%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%2=
+0%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20=
+%20%20%20%20%20%20%20%20%20%20%20return%20nil%2C%20nil%0A%20%20%20%20%20%=
+20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%2=
+0%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%7D%0A=
+%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%=
+20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%2=
+0%20%20%20%2F%2F%E5%9C%A8%E4%B8%80%E4%B8%AA%E6%97%A0%E9%99%90%E5%BE%AA%E7=
+%8E%AF%E9%87%8C%EF%BC%8C%E5%A4%84%E7%90%86%E5%AD%97%E8%8A%82%E7%A0%81%E9%=
+87%8C%E6%89%80%E6%9C%89%E7%9A%84%E4%B8%80%E4%B8%AA%E4%B8%AA%E7%9A%84%E6%9=
+3%8D%E4%BD%9C%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20=
+%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%=
+20%20%20%20%20%20%20%20%20for%20%7B%0A%20%20%20%20%20%20%20%20%20%20%20%2=
+0%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20=
+%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%2F%2F%E8%8E%=
+B7%E5%8F%96%E6%93%8D%E4%BD%9C%E7%A0%81%0A%20%20%20%20%20%20%20%20%20%20%2=
+0%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20=
+%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20op%20%3D%2=
+0contract.GetOp(pc)%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20=
+%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%=
+20%20%20%20%20%20%20%20%20%20%20%20%20%20%20operation%20%3A%3D%20in.cfg.J=
+umpTable%5Bop%5D%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20=
+%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%=
+20%20%20%20%20%20%20%20%20%20%20%20%20%20%2F%2F%E8%8E%B7%E5%8F%96%E5%BD%9=
+3%E5%89%8D%E6%93%8D%E4%BD%9C%E7%9A%84%E5%9B%BA%E5%AE%9Agas%E6%B6%88%E8%80=
+%97%EF%BC%8C%E5%A6%82%E6%9E%9C%E4%B8%8D%E5%A4%9F%EF%BC%8C%E8%BF%94%E5%9B%=
+9EOutofGas%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20=
+%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%=
+20%20%20%20%20%20%20%20%20%20%20%20cost%20%3D%20operation.constantGas%0A%=
+20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%2=
+0%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20=
+%20%20%20%20%20%20%20if%20!contract.UseGas(cost)%20%7B%0A%20%20%20%20%20%=
+20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%2=
+0%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20=
+%20%20%20%20%20%20return%20nil%2C%20ErrOutOfGas%0A%20%20%20%20%20%20%20%2=
+0%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20=
+%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%=
+7D%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%2=
+0%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20=
+%20%20%20%20%20%20%20%20%20%2F%2F%E5%A6%82%E6%9E%9C%E5%BD%93%E5%89%8D%E6%=
+93%8D%E4%BD%9C%E6%9C%89%E5%8A%A8%E6%80%81gas%E6%B6%88%E8%80%97%EF%BC%8C%E=
+8%AE%A1%E7%AE%97%E8%AF%A5%E6%B6%88%E8%80%97%EF%BC%8C%E5%A6%82%E6%9E%9C%E4=
+%B8%8D%E5%A4%9F%EF%BC%8C%E4%B9%9FOutOfGas%0A%20%20%20%20%20%20%20%20%20%2=
+0%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20=
+%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%E3%80%=
+82%E3%80%82%E3%80%82%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%2=
+0%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20=
+%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%2F%2F%E6%89%A7%E8%A1%8C%E8%=
+AF%A5%E6%93%8D%E4%BD%9C%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%2=
+0%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20=
+%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20res%2C%20err%20%3D%20oper=
+ation.execute(%26pc%2C%20in%2C%20callContext)%0A%20%20%20%20%20%20%20%20%=
+20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%2=
+0%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%7D%0A%20%20%20=
+%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%=
+20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%7D%20%2F%2=
+Fend%20of%20EVMInterpreter.run%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%=
+20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%2=
+0%20%20%20%20%20%20%E5%A6%82%E6%9E%9CRun%E6%89%A7%E8%A1%8C%E5%A4%B1%E8%B4=
+%A5%EF%BC%8C%E5%B0%B1revert%E5%88%B0%E4%B9%8B%E5%89%8D%E7%9A%84%E7%8A%B6%=
+E6%80%81%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%2=
+0%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%7D%0A%09%20%20=
+%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%=
+20%20%20%20%20%20%7D%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%2=
+0%20%20%20%20%20%20%20%20%20%20%20%7D%2F%2Fend%20of%20func%20(evm%20*EVM)=
+%20Call%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20=
+%20%20%20%0A%09%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%7D%0A%20%=
+20%20%20%20%20%20%20%20%20%20%20%7D%2F%2Fend%20of%20ApplyMessage%0A%20%20=
+%20%20%2F%2F%E5%A6%82%E6%9E%9C%E6%8E%A5%E6%94%B6%E8%80%85%E5%9C%B0%E5%9D%=
+80%E4%B8%BA%E7%A9%BA%EF%BC%8C%E5%88%99%E5%88%9B%E5%BB%BA%E5%9C%B0%E5%9D%8=
+0%EF%BC%8C%E8%BF%99%E4%BC%9A%E8%AE%B0%E5%BD%95%E5%9C%A8%E6%94%B6%E6%8D%AE=
+%E9%87%8C%E3%80%82%E5%8F%AF%E8%83%BD%E5%9C%A8%E5%85%B6%E4%BB%96%E5%9C%B0%=
+E6%96%B9%E6%9C%89%E5%A4%84%E7%90%86%0A%09if%20msg.To()%20%3D%3D%20nil%20%=
+7B%0A%09%09receipt.ContractAddress%20%3D%20crypto.CreateAddress(evm.TxCon=
+text.Origin%2C%20tx.Nonce())%0A%09%7D%0A%20%60%60%60%0A%E8%87%B3%E6%AD%A4=
+%EF%BC%8CProcess%E5%B0%B1%E5%AE%8C%E6%88%90%E4%BA%86%EF%BC%8C%E5%8F%AF%E4=
+%BB%A5%E7%9C%8B%E5%88%B0%E6%98%AF%E9%92%88%E5%AF%B9%E5%BD%93%E5%89%8D%E5%=
+9D%97%EF%BC%8C%E5%88%9B%E5%BB%BABlockContext%EF%BC%8C%E5%88%9B%E5%BB%BAEV=
+M%EF%BC%8C%E7%84%B6%E5%90%8E%E9%81%8D%E5%8E%86%E6%AF%8F%E7%AC%94%E4%BA%A4=
+%E6%98%93%EF%BC%8C%E5%AF%B9%E4%BA%A4%E6%98%93%E5%88%9B%E5%BB%BA%E5%B9%B6%=
+E5%BA%94%E7%94%A8TxContext%EF%BC%8C%E7%84%B6%E5%90%8E%E5%8A%A0%E8%BD%BD%E=
+4%BA%A4%E6%98%93%E9%87%8CtoAddress%E7%9A%84%E5%AD%97%E8%8A%82%E7%A0%81%EF=
+%BC%8C%E5%AF%B9%E5%AD%97%E8%8A%82%E7%A0%81%E9%87%8C%E7%9A%84%E6%AF%8F%E4%=
+B8%80%E4%B8%AAop%EF%BC%8C%E8%AE%A1%E7%AE%97%E5%85%B6gas%EF%BC%8C%E5%B9%B6=
+%E6%89%A7%E8%A1%8C%E3%80%82%0A%0A%23%23%23%20writeBlockWithState%0A%E7%9B=
+%AE%E7%9A%84%EF%BC%9A%E5%B0%86block%2C%20metadata%2C%20state%E5%86%99%E5%=
+85%A5%E6%95%B0%E6%8D%AE%E5%BA%93%0A%E8%BF%87%E7%A8%8B%EF%BC%9A%0A%60%60%6=
+0%0A%20%20%20%20%2F%2F%E8%AE%A1%E7%AE%97%E5%BD%93%E5%89%8D%E5%9D%97%E7%9A=
+%84%E6%80%BB%E9%9A%BE%E5%BA%A6%0A%20%20%20%20%2F%2F%E6%8A%8A%E6%80%BB%E9%=
+9A%BE%E5%BA%A6%E3%80%81block%E3%80%81%E6%94%B6%E6%8D%AE%E7%AD%89%E5%9C%A8=
+%E4%B8%80%E4%B8%AA%E5%8E%9F%E5%AD%90%E6%93%8D%E4%BD%9C%E4%B8%AD%E5%86%99%=
+E5%85%A5%E6%95%B0%E6%8D%AE%E5%BA%93%0A%09blockBatch%20%3A%3D%20bc.db.NewB=
+atch()%0A%09rawdb.WriteTd(blockBatch%2C%20block.Hash()%2C%20block.NumberU=
+64()%2C%20externTd)%0A%09rawdb.WriteBlock(blockBatch%2C%20block)%0A%09raw=
+db.WriteReceipts(blockBatch%2C%20block.Hash()%2C%20block.NumberU64()%2C%2=
+0receipts)%0A%09rawdb.WritePreimages(blockBatch%2C%20state.Preimages())%0=
+A%09err%20%3A%3D%20blockBatch.Write()%0A%20%20%20%20%2F%2F%E6%9B%B4%E6%96=
+%B0TrieDB%0A%20%20%20%20triedb%20%3A%3D%20bc.stateCache.TrieDB()%0A%20%20=
+%20%20%2F%2F%E8%AE%A1%E7%AE%97%E5%BD%93%E5%89%8D%E7%9A%84%E5%86%85%E5%AD%=
+98%E5%8D%A0%E7%94%A8%E6%98%AF%E5%90%A6%E5%B7%B2%E7%BB%8F%E8%B6%85%E5%87%B=
+A%E9%99%90%E5%88%B6%EF%BC%8C%E5%A6%82%E6%9E%9C%E8%B6%85%E5%87%BA%EF%BC%8C=
+%E9%9C%80%E8%A6%81%E6%8A%8A%E4%B8%80%E4%BA%9B%E2%80%9D%E6%88%90%E7%86%9F%=
+E2%80%9C%E7%9A%84%E5%9D%97%E5%86%99%E5%85%A5%E5%88%B0%E7%A1%AC%E7%9B%98%0=
+A%20%20%20%20if%20nodes%20%3E%20limit%20%7C%7C%20imgs%20%3E%204*1024*1024=
+%20%7B%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%C2%A0%0A%20%20%20%20%20%20%20%=
+20triedb.Cap(limit%20-%20ethdb.IdealBatchSize)%0A%20%20%20%20%7D%0A%20%20=
+%20%20%2F%2F%E6%89%BE%E5%87%BA%E4%B8%8B%E4%B8%80%E6%AD%A5%E8%A6%81%E5%A4%=
+84%E7%90%86%E7%9A%84Trie%EF%BC%8C%E5%85%B6%E4%B8%ADcurrent%E6%98%AF%E5%9D=
+%97%E9%AB%98%EF%BC%8CTriesInMemory%E9%BB%98%E8%AE%A4128%0A%20%20%20%20cho=
+sen%20%3A%3D%20current%20-%20TriesInMemory%0A%20%20%20%20%2F%2F%E5%A6%82%=
+E6%9E%9C%E8%B6%85%E5%87%BA%E6%97%B6%E9%97%B4%E9%99%90%E5%88%B6%EF%BC%8C%E=
+5%B0%B1%E6%8A%8A%E6%95%B4%E4%B8%AATrie%E5%86%99%E5%88%B0%E7%A1%AC%E7%9B%9=
+8%0A%20%20%20%20if%20bc.gcproc%20%3E%20bc.cacheConfig.TrieTimeLimit%20%7B=
+%0A%20%20%20%20%20%20%20%20triedb.Commit(header.Root%2C%20true%2C%20nil)%=
+0A%20%20%20%20%20%20%20%20bc.gcproc%20%3D%200%0A%20%20%20%20%7D%0A%60%60%=
+60%0A%0A%23%23%20%E6%95%B0%E6%8D%AE%E5%AD%98%E5%82%A8%0A%E6%95%B0%E6%8D%A=
+E%E5%AD%98%E5%82%A8%E6%9C%89%E5%87%A0%E4%B8%AA%E9%87%8D%E8%A6%81%E7%9A%84=
+%E7%B1%BB%E5%9E%8B%EF%BC%9A%0AStateDB%EF%BC%9A%E8%BF%99%E4%BF%9D%E5%AD%98=
+%E4%BA%86%E6%89%80%E6%9C%89%E7%9A%84%E6%95%B0%E6%8D%AE%EF%BC%8C%E6%98%AF%=
+E4%BB%A5%E5%A4%AA%E5%9D%8A%E7%9A%84%E4%B8%96%E7%95%8C%E7%8A%B6%E6%80%81%E=
+F%BC%8C%E5%8F%AF%E4%BB%A5%E4%BB%A5%E5%A4%9A%E7%A7%8D%E5%BD%A2%E5%BC%8F%E5=
+%AF%B9%E5%A4%96%E6%8F%90%E4%BE%9B%E6%95%B0%E6%8D%AE%E3%80%82%E5%A6%82Trie=
+%2C%20snap%2C%20stateObjects%E3%80%82%E5%AE%83%E5%B9%B6%E6%B2%A1%E6%9C%89=
+%E8%A2%ABbackend%E6%8C%81%E6%9C%89%E3%80%82BlockChain%E6%8C%81%E6%9C%89st=
+ateCache%EF%BC%8C%E6%98%AF%E4%B8%AAStateDB%EF%BC%8C%E5%AE%83%E6%98%AF%E5%=
+9C%A8BlockChain%E8%A2%AB%E5%88%9B%E5%BB%BA%E6%97%B6%EF%BC%8C%E5%9C%A8Bloc=
+kChain%E9%87%8C%E8%B0%83%E7%94%A8state.New%E5%88%9B%E5%BB%BA%E5%87%BA%E6%=
+9D%A5%E7%9A%84%E3%80%82%0ATrie%EF%BC%9A%E5%B8%95%E7%89%B9%E9%87%8C%E5%A4%=
+8F%E6%A0%91%E7%9A%84%E6%8E%A5%E5%8F%A3%E5%AE%9A%E4%B9%89%EF%BC%8C%E5%AE%8=
+3%E7%9A%84%E5%AE%9A%E4%B9%89%E6%98%AF%E4%B8%AAInterface%EF%BC%8C%E5%AE%9E=
+%E7%8E%B0%E5%9C%A8SecureTrie%EF%BC%8C%E5%8F%AF%E4%BB%A5%E4%BF%9D%E5%AD%98=
+k-v%EF%BC%8Caccount%EF%BC%8Cget%2Cupdate%2Cdelete%2C%E9%81%8D%E5%8E%86%E3=
+%80%81%E7%94%9F%E6%88%90%E8%AF%81%E6%98%8E%0AStateObject%EF%BC%9A%E4%BB%A=
+3%E8%A1%A8%E4%B8%80%E4%B8%AAaccount%0A%0A%E8%BF%99%E9%83%A8%E5%88%86%E7%9=
+C%8B%E5%A6%82%E4%B8%8B%E6%96%87%E6%A1%A3%EF%BC%8C%E6%8F%8F%E8%BF%B0%E7%9A=
+%84%E5%BE%88%E6%B8%85%E6%A5%9A%E4%BA%86%EF%BC%9A%0Ahttps%3A%2F%2Fzhuanlan=
+.zhihu.com%2Fp%2F54644827%0Ahttps%3A%2F%2Fzhuanlan.zhihu.com%2Fp%2F597487=
+11%0A%0A%23%23%20%E5%AE%8C%E6%95%B4%E4%BA%A4%E6%98%93%E6%B5%81%E7%A8%8B%0=
+A%E5%85%88%E7%9C%8B%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84%EF%BC%9A%0A%60%60=
+%60%0Atype%20Transaction%20struct%20%7B%0A%09inner%20TxData%20%20%20%20%2=
+F%2F%20%E5%85%B1%E8%AF%86%E7%9B%B8%E5%85%B3%E6%95%B0%E6%8D%AE%EF%BC%8C%E6=
+%B3%A8%E6%84%8FTxData%E6%98%AF%E4%B8%AAinterface%EF%BC%8C%E6%B3%A8%E6%84%=
+8Finner%E6%98%AFprivate%E7%9A%84%0A%09time%20%20time.Time%20%2F%2F%20Time=
+%20first%20seen%20locally%20(spam%20avoidance)%0A%0A%09%2F%2F%20caches%0A=
+%09hash%20atomic.Value%0A%09size%20atomic.Value%0A%09from%20atomic.Value%=
+0A%7D%0A%60%60%60%0A%0A%60%60%60%0A%2F%2F%20This%20is%20implemented%20by%=
+20DynamicFeeTx%2C%20LegacyTx%20and%20AccessListTx.%0Atype%20TxData%20inte=
+rface%20%7B%0A%09txType()%20byte%20%2F%2F%20returns%20the%20type%20ID%0A%=
+09copy()%20TxData%20%2F%2F%20creates%20a%20deep%20copy%20and%20initialize=
+s%20all%20fields%0A%0A%09chainID()%20*big.Int%0A%09accessList()%20AccessL=
+ist%0A%09data()%20%5B%5Dbyte%0A%09gas()%20uint64%0A%09gasPrice()%20*big.I=
+nt%0A%09gasTipCap()%20*big.Int%0A%09gasFeeCap()%20*big.Int%0A%09value()%2=
+0*big.Int%0A%09nonce()%20uint64%0A%09to()%20*common.Address%0A%0A%09rawSi=
+gnatureValues()%20(v%2C%20r%2C%20s%20*big.Int)%0A%09setSignatureValues(ch=
+ainID%2C%20v%2C%20r%2C%20s%20*big.Int)%0A%7D%0A%60%60%60%0A%E5%8F%82%E8%8=
+0%83%E5%85%A5%E5%8F%A3%EF%BC%9A%E4%BB%8E%0A%2Faccounts%2Fabi%2Fbind%2Fbas=
+e.go-%3E%0Afunc%20(c%20*BoundContract)%20transact(opts%20*TransactOpts%2C=
+%20contract%20*common.Address%2C%20%0Ainput%20%5B%5Dbyte)%20(*types.Trans=
+action%2C%20error)%0A%E8%BF%99%E9%87%8C%E4%BC%9A%E6%9E%84%E9%80%A0%E4%BA%=
+A4%E6%98%93%E5%B9%B6%E7%AD%BE%E5%90%8D%E3%80%82%0A%0A%E6%9C%80%E5%90%8E%E=
+4%BC%9A%E8%B0%83%E7%94%A8%EF%BC%9A%0Aethclient%2Fethclient.go-%3E%0Afunc%=
+20(ec%20*Client)%20SendTransaction(ctx%20context.Context%2C%20tx%20*types=
+.Transaction)%20error%20%0A-%3E%0Ainternal%2Fethapi%2Fapi.go-%3ESendRawTr=
+ansaction%0A%0A%0Afunc%20SubmitTransaction(ctx%20context.Context%2C%20b%2=
+0Backend%2C%20tx%20*types.Transaction)%20(common.Hash%2C%20error)%20%0A%E=
+6%A3%80%E6%9F%A5gas%E8%B4%B9%0A%E8%B0%83%E7%94%A8backend.SendTx(ctx%2C%20=
+tx)%EF%BC%8C%E8%BF%99%E6%98%AF%E4%BA%A4%E6%98%93%E6%B1%A0%E7%9A%84%E6%8E%=
+A5%E5%8F%A3%E3%80%82%0A%0A%E8%8E%B7%E5%8F%96from.%0A%E7%84%B6%E5%90%8E%EF=
+%BC%9A%0A%60%60%60%0Aif%20tx.To()%20%3D%3D%20nil%20%7B%0A%09%09addr%20%3A=
+%3D%20crypto.CreateAddress(from%2C%20tx.Nonce())%0A%7D%0A%20return%20tx.H=
+ash()%2C%20nil%0A%60%60%60%0A%E6%89%80%E4%BB%A5%E9%87%8D%E7%82%B9%E7%9C%8=
+Bbackend.SendTx%EF%BC%8C%E5%AE%83%E5%AE%9E%E9%99%85%E8%B0%83%E7%94%A8%E4%=
+BA%86%EF%BC%9A%0Ab.eth.txPool.AddLocal(signedTx)%0A%E4%B8%8B%E9%9D%A2%E9%=
+87%8D%E7%82%B9%E7%A0%94%E7%A9%B6%E4%BA%A4%E6%98%93%E6%B1%A0%0A%0A%0A%23%2=
+3%23%20%E4%BA%A4%E6%98%93%E6%B1%A0%0A%E4%BA%A4%E6%98%93%E6%9C%89%E5%88%86=
+local%E7%9A%84%E5%92%8Cremote%E7%9A%84%EF%BC%8C%E5%A4%84%E7%90%86%E6%96%B=
+9%E5%BC%8F%E4%B8%8D%E4%B8%80%E6%A0%B7%E3%80%82%0A%E4%BA%A4%E6%98%93%E4%B9=
+%9F%E6%9C%89%E5%88%86%E5%8F%AF%E6%89%A7%E8%A1%8C%EF%BC%88pending%EF%BC%89=
+%E5%92%8C%E7%AD%89%E5%BE%85%E7%9A%84%EF%BC%88queue%EF%BC%89%E3%80%82%0A%0=
+A%E5%AE%9A%E4%B9%89(%E5%8F%AA%E5%88%97%E5%87%BA%E9%87%8D%E8%A6%81%E7%9A%8=
+4)%EF%BC%9A%0A%60%60%60%0Atype%20TxPool%20struct%20%0A%09chain%20%20%20%2=
+0%20%20%20blockChain%0A%09gasPrice%20%20%20%20*big.Int%0A%09signer%20%20%=
+20%20%20%20types.Signer%20%20%20%20%2F%2F%E6%B3%A8%E6%84%8F%E5%AE%83%E4%B=
+8%8D%E7%AD%BE%E5%90%8D%EF%BC%8C%E5%8F%AA%E5%A4%84%E7%90%86%E7%AD%BE%E5%90=
+%8D%EF%BC%8C%E6%AF%94%E5%A6%82%E9%AA%8C%E8%AF%81%EF%BC%8C%E8%8E%B7%E5%8F%=
+96hash%E7%AD%89%0A%0A%09currentState%20%20*state.StateDB%20%20%20%20%2F%2=
+F%20%E9%93%BE%E4%B8%8A%E5%BD%93%E5%89%8D%E7%8A%B6%E6%80%81%0A%0A%09locals=
+%20%20*accountSet%20%2F%2F%20%E6%9C%AC%E5%9C%B0Tx%0A%20%20%20%20%0A%20%20=
+%20%20%2F%2F%E6%B3%A8%E6%84%8F%EF%BC%9Apending%E5%92%8Cqueue%E9%83%BD%E6%=
+98%AF%E6%8C%89address%E6%9D%A5%E7%BB%84%E7%BB%87%E7%9A%84%E3%80%82%0A%09p=
+ending%20map%5Bcommon.Address%5D*txList%20%20%20%2F%2F%20%E5%BD%93%E5%89%=
+8D%E5%8F%AF%E5%A4%84%E7%90%86%E7%9A%84%E4%BA%A4%E6%98%93%EF%BC%8C%E5%8D%B=
+3%E5%8F%AF%E4%BB%A5%E6%89%93%E5%85%A5%E5%9D%97%E7%9A%84%0A%09queue%20%20%=
+20map%5Bcommon.Address%5D*txList%20%20%20%2F%2F%20%E7%AD%89%E5%BE%85%E4%B=
+8%AD%E7%9A%84%E4%BA%A4%E6%98%93%EF%BC%8C%E5%90%8E%E7%BB%AD%E5%8F%AF%E4%BB=
+%A5%E8%BF%9B%E5%85%A5pending%0A%09beats%20%20%20map%5Bcommon.Address%5Dti=
+me.Time%20%2F%2F%20Last%20heartbeat%20from%20each%20known%20account%0A%09=
+all%20%20%20%20%20*txLookup%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%=
+20%20%20%20%20%2F%2F%20%E4%BA%A4%E6%98%93%E6%9F%A5%E8%AF%A2%0A%09priced%2=
+0%20*txPricedList%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%2F%2F%2=
+0%E6%8C%89price%E6%8E%92%E5%BA%8F%E7%9A%84%E4%BA%A4%E6%98%93%0A%0A%09%2F%=
+2F%E4%B8%80%E5%A0%86chan%2C%E8%AE%A2%E9%98%85%E4%BA%8B%E4%BB%B6%E3%80%81%=
+E9%85%8D%E7%BD%AE%E7%AD%89%0A%7D%0A%60%60%60%0A%E4%BA%A4%E6%98%93%E6%B1%A=
+0%E7%9A%84%E5%88%9B%E5%BB%BA%EF%BC%9A%0A%E4%BA%A4%E6%98%93%E6%B1%A0%E5%9C=
+%A8%20eth%2Fbackend.go%E7%9A%84New%E9%87%8C%E8%A2%AB%E5%88%9B%E5%BB%BA%EF=
+%BC%8C%E6%98%AF%E8%B7%9FEthereum%E8%A2%AB%E4%B8%80%E8%B5%B7%E5%88%9B%E5%B=
+B%BA%E5%87%BA%E6%9D%A5%E7%9A%84%EF%BC%8C%E8%A7%81%E5%89%8D%E9%9D%A2Ethere=
+um%E9%83%A8%E5%88%86%E3%80%82%0A%E5%88%9B%E5%BB%BA%E6%97%B6%E5%81%9A%E4%B=
+A%86%E4%BB%80%E4%B9%88%EF%BC%9F%0A%E5%88%9D%E5%A7%8B%E5%8C%96%E6%89%80%E6=
+%9C%89%E7%9A%84%E5%86%85%E9%83%A8%E5%8F%98%E9%87%8F%EF%BC%8C%E5%A6%82pend=
+ing%2Cqueue%E7%AD%89%E3%80%82%0A%E4%BB%8Econfig%E6%96%87%E4%BB%B6%E9%87%8=
+C%E8%AF%BB%E5%87%BA%E9%85%8D%E7%BD%AE%E7%9A%84%E6%9C%AC%E5%9C%B0accounts%=
+EF%BC%8C%E6%B7%BB%E5%8A%A0%E5%88%B0pool.locals%0Ago%20pool.scheduleReorgL=
+oop()%20%20%20%E5%90%AF%E5%8A%A8ReorgLoop%EF%BC%8C%E8%BF%99%E4%B8%AA%E8%8=
+7%B3%E5%85%B3%E9%87%8D%E8%A6%81%EF%BC%8C%E4%B8%8B%E9%9D%A2%E5%8D%95%E7%8B=
+%AC%E5%88%86%E6%9E%90%E3%80%82%0A%E6%A3%80%E6%9F%A5%E6%98%AF%E5%90%A6%E5%=
+85%81%E8%AE%B8%E6%9C%AC%E5%9C%B0%E6%8F%90%E4%BA%A4%E4%BA%A4%E6%98%93%EF%B=
+C%8C%E5%85%81%E8%AE%B8%E7%9A%84%E8%AF%9D%EF%BC%8C%E4%BB%8Ejournal%E6%96%8=
+7%E4%BB%B6%E4%B8%AD%E5%8A%A0%E8%BD%BD%E4%B9%8B%E5%89%8D%E4%BF%9D%E5%AD%98=
+%E7%9A%84%E6%9C%AC%E5%9C%B0%E4%BA%A4%E6%98%93%E3%80%82%0A%E5%90%91blockCh=
+ain%E6%B3%A8%E5%86%8CheadEvent%EF%BC%8C%0A%E8%B0%83%E7%94%A8go%20pool.loo=
+p()%EF%BC%8C%E5%90%AF%E5%8A%A8pool%E7%9A%84%E6%B6%88%E6%81%AF%E5%A4%84%E7=
+%90%86%E5%BE%AA%E7%8E%AF%EF%BC%8C%E5%A4%84%E7%90%86%E5%90%84%E7%B1%BB%E5%=
+A4%96%E7%95%8C%E4%BA%8B%E4%BB%B6%E3%80%82%E5%8C%85%E6%8B%AC%EF%BC%9A%0A*%=
+20%E6%9D%A5%E8%87%AAblockchain%E7%9A%84%E5%9D%97%E5%A4%B4%E5%8F%98%E5%8C%=
+96%E4%BA%8B%E4%BB%B6%EF%BC%8C%E4%BC%9A%E5%BC%95%E5%8F%91%E4%B8%80%E6%AC%A=
+1ReOrg%0A*%20%E6%9D%A5%E8%87%AAblock%20chain%E7%9A%84err%E4%BA%8B%E4%BB%B=
+6%EF%BC%88%E7%B3%BB%E7%BB%9Fshutdown%EF%BC%8C%E4%BC%9A%E5%85%B3%E9%97%AD%=
+E7%BA%BF%E7%A8%8B%E6%B1%A0%EF%BC%89%0A*%20%E5%AE%9A%E6%97%B6%E5%99%A8%EF%=
+BC%8C%E6%89%93%E5%8D%B0pool%E7%9A%84%E7%8A%B6%E6%80%81%E6%8A%A5%E5%91%8A%=
+EF%BC%888%E7%A7%92%EF%BC%89%0A*%20%E5%AE%9A%E6%97%B6%E5%99%A8%EF%BC%8C%E6=
+%B8%85%E7%90%86%E9%9D%9E%E6%B4%BB%E8%B7%83%E8%B4%A6%E6%88%B7%E7%9A%84%E4%=
+BA%A4%E6%98%93%EF%BC%881min)%0A*%20%E5%AE%9A%E6%97%B6%E5%99%A8%EF%BC%8Cjo=
+urnal%E6%96%87%E4%BB%B6rotate%EF%BC%8C%E6%97%B6%E9%97%B4%E6%A0%B9%E6%8D%A=
+E%E9%85%8D%E7%BD%AE%E6%96%87%E4%BB%B6%E8%AE%BE%E7%BD%AE%0A%0A%0A%E4%B8%8B=
+%E9%9D%A2%E7%9C%8B%E4%B8%8BAddLocal%0A-%3EaddTxs%0A%20%20%20%20%E9%81%8D%=
+E5%8E%86Tx%E5%88%97%E8%A1%A8%E3%80%82%0A%20%20%20%20%20%20%20%20%E5%A6%82=
+%E6%9E%9C%E4%BA%A4%E6%98%93%E6%B1%A0%E4%B8%AD%E5%B7%B2%E6%9C%89%E8%AF%A5%=
+E4%BA%A4%E6%98%93%EF%BC%8C%E6%A0%87%E4%B8%BAErrAlreadyKnow%EF%BC%8C%E8%B7=
+%B3%E8%BF%87%0A%20%20%20%20%20%20%20%20%E6%A3%80%E6%9F%A5%E7%AD%BE%E5%90%=
+8D%EF%BC%8C%E5%A6%82%E6%9E%9C%E7%AD%BE%E5%90%8D%E4%B8%8D%E6%AD%A3%E7%A1%A=
+E%EF%BC%8C%E6%A0%87%E8%AE%B0err%EF%BC%8C%E8%B7%B3%E8%BF%87%0A%20%20%20new=
+Errs%2C%20dirtyAddrs%20%3A%3D%20pool.addTxsLocked(news%2C%20local)%20%20%=
+20%2F%2F%E6%8A%8A%E6%96%B0%E7%9A%84%E8%BF%99%E4%BA%9BTx%EF%BC%88%E5%8D%B3=
+%E6%9C%AC%E8%B0%83%E7%94%A8%E4%B8%AD%E5%A4%84%E7%90%86%E7%9A%84%EF%BC%89%=
+E5%8A%A0%E5%88%B0local%E4%B8%AD%EF%BC%8C%E8%AF%A5%E6%8E%A5%E5%8F%A3%E8%AF=
+%A6%E7%BB%86%E5%88%86%E6%9E%90%0A%20%20%20%20%20%20%20%20-%3E%20%20%E9%81=
+%8D%E5%8E%86Txs%EF%BC%8C%E8%B0%83%E7%94%A8replaced%2C%20err%20%3A%3D%20po=
+ol.add(tx%2C%20local)%0A%20%20%20%20%20%20%20%20%20%20%20%20-%3E%20%20%E5=
+%A6%82%E6%9E%9C%E4%BA%A4%E6%98%93%E6%B1%A0%E4%B8%AD%E5%B7%B2%E6%9C%89%EF%=
+BC%8C%E8%BF%94%E5%9B%9E%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%2=
+0%E5%AF%B9%E4%BA%A4%E6%98%93%E5%81%9A%E5%90%84%E7%A7%8D%E5%9F%BA%E7%A1%80=
+%E6%A3%80%E6%9F%A5%EF%BC%8C%E5%A6%82%E6%9E%9C%E6%9C%89%E9%97%AE%E9%A2%98%=
+EF%BC%8C%E8%BF%94%E5%9B%9E%EF%BC%88%E7%BC%96%E7%A0%81%E3%80%81%E7%AD%BE%E=
+5%90%8D%E3%80%81gas%E3%80%81%E4%BD%99%E9%A2%9D...)%0A%20%20%20%20%20%20%2=
+0%20%20%20%20%20%20%20%20%20%E5%A6%82%E6%9E%9C%E4%BA%A4%E6%98%93%E4%BD%93=
+%E7%A7%AF%E8%BF%87%E5%A4%A7%EF%BC%88%E5%BD%93%E5%89%8Dpool%E6%80%BBslot%2=
+0%2B%20%E8%AF%A5%E4%BA%A4%E6%98%93%E5%8D%A0%E7%94%A8slot%20%3E%20%E9%85%8=
+D%E7%BD%AE)%EF%BC%8C%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%2=
+0%20%20%20%E5%A6%82%E6%9E%9C%E4%B8%8D%E6%98%AFlocal%E5%B9%B6%E4%B8%94pric=
+e%E4%B8%8D%E5%A4%9F%E5%A4%9A%EF%BC%8C%E8%BF%94%E5%9B%9E%0A%20%20%20%20%20=
+%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%E5%A6%82%E6%9E%9C%E5%BD%93%=
+E5%89%8D%E9%9C%80%E8%A6%81reorg%E7%9A%84%E6%95%B0%E9%87%8F%E5%B7%B2%E7%BB=
+%8F%E5%BE%88%E5%A4%9A%EF%BC%8C%E8%B6%85%E8%BF%87%E4%BA%86%E6%80%BB%E9%87%=
+8F%E7%9A%841%2F4%EF%BC%8C%E5%B0%B1%E4%B8%8D%E6%8E%A5%E5%8F%97%E8%AF%A5Tx%=
+E4%BA%86%EF%BC%8C%E8%BF%94%E5%9B%9E%0A%20%20%20%20%20%20%20%20%20%20%20%2=
+0%20%20%20%20%20%20%20%20%E5%B0%9D%E8%AF%95%E5%9C%A8%E5%BD%93%E5%89%8Dpoo=
+l%E4%B8%AD%E7%A7%BB%E9%99%A4%E9%83%A8%E5%88%86price%E6%AF%94%E8%BE%83%E4%=
+BD%8E%E7%9A%84%EF%BC%8C%E7%BB%99%E5%BD%93%E5%89%8DTx%E8%85%BE%E5%87%BA%E7=
+%A9%BA%E9%97%B4%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%=
+20%20%E5%A6%82%E6%9E%9C%E7%A9%BA%E9%97%B4%E8%BF%98%E6%98%AF%E4%B8%8D%E5%A=
+4%9F%EF%BC%8C%E4%B8%94%E5%BD%93%E5%89%8DTx%E6%98%AFremote%E7%9A%84%EF%BC%=
+8C%E8%BF%94%E5%9B%9E%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%2=
+0%20%20%20%E5%A6%82%E6%9E%9Cpending%E4%B8%AD%E5%8C%85%E5%90%AB%E8%AF%A5ac=
+count%E7%9A%84%E5%90%8Cnonce%E7%9A%84%E4%BA%A4%E6%98%93%EF%BC%8C%E6%A3%80=
+%E6%9F%A5%E6%98%AF%E5%90%A6%E6%96%B0Tx%E7%9A%84%E4%BA%A4%E6%98%93%E8%B4%B=
+9%E6%9B%B4%E9%AB%98%EF%BC%8C%E4%B8%94%E8%BE%BE%E5%88%B0%E6%9B%BF%E6%8D%A2=
+%E8%A6%81%E6%B1%82%EF%BC%88%E5%A6%82%E9%AB%98%E4%BA%8610%25)%EF%BC%8C%E6%=
+98%AF%E7%9A%84%E8%AF%9D%EF%BC%8C%E6%9B%BF%E6%8D%A2%E6%8E%89%E5%8E%9F%E4%B=
+A%A4%E6%98%93%E3%80%82%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20=
+%E5%B0%86%E5%BD%93%E5%89%8DTx%E5%8A%A0%E5%85%A5%E5%88%B0queue%0A%20%20%20=
+%20%20%20%20%20%20%20%20%20%20%20%20%20%E5%90%8C%E6%97%B6%E6%9B%B4%E6%96%=
+B0%E5%90%84%E7%A7%8D%E5%8F%98%E9%87%8F%EF%BC%8C%E5%A6%82all%2C%20priced%2=
+C%20journal%E7%AD%89%E3%80%82%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%2=
+0%20%20%0A%23%23%23%20pool%E4%B8%AD%E4%B8%80%E4%BA%9B%E9%87%8D%E7%82%B9%E=
+4%BA%8B%E4%BB%B6%0A%0A%0A%23%23%23%20pool%E4%B8%AD%E7%9A%84%E6%8E%A5%E5%8=
+F%A3%0AContent%EF%BC%9A%E8%BF%94%E5%9B%9E%E5%BD%93%E5%89%8Dpool%E4%B8%AD%=
+E7%9A%84pending%E5%92%8Cqueue%E7%9A%84%E4%BA%A4%E6%98%93%EF%BC%8C%E6%8C%8=
+9account%E5%8C%BA%E5%88%86%EF%BC%8C%E6%AF%8F%E4%B8%AAaccount%E7%9A%84%E6%=
+8C%89nonce%E6%8E%92%E5%BA%8F%E3%80%82%0AContentFrom%EF%BC%88address)%EF%B=
+C%8C%E8%BF%94%E5%9B%9E%E5%BD%93%E5%89%8Daddress%E7%9A%84%E4%BA%A4%E6%98%9=
+3%EF%BC%8C%E5%8C%85%E6%8B%ACpending%2Bqueue%0ASetGasPrice%EF%BC%8C%E8%AE%=
+BE%E7%BD%AEpool%E6%8E%A5%E5%8F%97%E7%9A%84%E6%9C%80%E4%BD%8Eprice%EF%BC%8=
+C%E4%BC%9A%E6%8A%8A%E4%BD%8E%E4%BA%8E%E8%BF%99%E4%B8%AA%E7%9A%84%E5%88%A0=
+%E6%8E%89%0AStatus%EF%BC%8C%E6%A0%B9%E6%8D%AETxhash%E6%9F%A5%E8%AF%A2%E4%=
+BA%A4%E6%98%93%E7%8A%B6%E6%80%81%EF%BC%8C%E7%8A%B6%E6%80%81%E4%B8%BAUnkno=
+wn%2C%20pending%2C%20queued%2C%20included%0AAddxxx%20%2C%20%E6%B7%BB%E5%8=
+A%A0Tx%E5%88%B0pool%0A%0A%0A%23%23%23%20ReOrg%0A%E4%BB%8E%E4%B8%8A%E9%9D%=
+A2%E5%88%86%E6%9E%90%E6%9D%A5%E7%9C%8B%EF%BC%8C%E7%BB%93%E6%9E%84%E5%92%8=
+C%E4%B8%BB%E8%A6%81%E6%8E%A5%E5%8F%A3%E8%BF%98%E6%98%AF%E6%AF%94%E8%BE%83=
+%E7%AE%80%E5%8D%95%E7%9A%84%EF%BC%8C%E8%BF%99%E9%87%8C%E5%BE%88%E9%87%8D%=
+E8%A6%81%E7%9A%84%E5%B0%B1%E6%98%AFReOrg%E4%BA%86%E3%80%82%E7%9C%8B%E4%B8=
+%8BReOrg%E6%98%AF%E5%A6%82%E4%BD%95%E8%A7%A6%E5%8F%91%E4%BB%A5%E5%8F%8A%E=
+5%A6%82%E4%BD%95%E5%A4%84%E7%90%86%E7%9A%84%E3%80%82%0A%E5%9C%A8%E5%88%9B=
+%E5%BB%BApool%E6%97%B6%EF%BC%8C%E4%BC%9A%E5%90%AF%E5%8A%A8%E4%B8%80%E4%B8=
+%AA%E5%8D%8F%E7%A8%8B%E5%A4%84%E7%90%86ReorgLoop%0Ago%20pool.scheduleReor=
+gLoop()%20%0A%E9%87%8C%E9%9D%A2%E6%98%AF%E4%B8%AA%E6%AD%BB%E5%BE%AA%E7%8E=
+%AF%E3%80%82%E9%80%9A%E8%BF%87select%E5%A4%84%E7%90%86%E5%90%84%E7%A7%8D%=
+E4%BA%8B%E4%BB%B6%E3%80%82%0A%E6%94%B6%E5%88%B0%E5%A6%82%E4%B8%8B%E8%BF%9=
+9%E4%B8%A4%E4%B8%AA%E4%BA%8B%E4%BB%B6%E4%BC%9A%E5%90%AF%E5%8A%A8%E4%B8%80=
+%E4%B8%AA%E5%8D%8F%E7%A8%8B%E8%BF%90%E8%A1%8C%E4%B8%80%E6%AC%A1Reorg%EF%B=
+C%8C%E6%B3%A8%E6%84%8F%E5%8F%AA%E6%9C%89%E8%BF%99%E4%B8%A4%E4%B8%AA%E4%BA=
+%8B%E4%BB%B6%E4%BC%9A%E5%BC%95%E5%8F%91Reorg%0A*%20reqResetCh%EF%BC%8C%E8=
+%BF%99%E6%98%AF%E4%BB%8Eblockchain%E6%94%B6%E5%88%B0head%E5%8F%98%E5%8C%9=
+6%E4%BA%8B%E4%BB%B6%E6%97%B6%E8%A7%A6%E5%8F%91%E7%9A%84%E3%80%82%0A*%20re=
+qPromoteCh%EF%BC%8C%E5%BD%93%E8%B0%83%E7%94%A8addTxs%E7%BB%93%E6%9D%9F%E5=
+%90%8E%EF%BC%8C%E4%BC%9A%E5%8F%91%E9%80%81%E8%AF%A5%E4%BA%8B%E4%BB%B6%E3%=
+80%82%0A%0A%E6%94%B6%E5%88%B0reorgShutdownCh%E6%97%B6%E4%BC%9A%E5%85%B3%E=
+9%97%ADpool%EF%BC%8C%E8%BF%99%E4%B8%AA%E5%9C%A8%E6%94%B6%E5%88%B0chainHea=
+dSub.Err%EF%BC%8C%E6%88%96%E8%80%85pool%E9%87%8C%E7%9A%84%E5%87%A0%E4%B8%=
+AA%E9%87%8D%E8%A6%81Chan%E5%87%BA%E9%97%AE%E9%A2%98%EF%BC%88%E5%A6%82%E5%=
+8F%91%E6%B6%88%E6%81%AF%E5%A4%B1%E8%B4%A5%EF%BC%89%E6%97%B6%E4%BC%9A%E5%8=
+F%91%E7%94%9F%E3%80%82%0A%E5%8F%A6%E5%A4%96%E5%BD%93addTx%E6%97%B6%EF%BC%=
+8C%E5%A6%82%E6%9E%9C%E6%96%B0Tx%E6%9B%BF%E6%8D%A2%E6%97%A7Tx%EF%BC%88acco=
+unt%E7%9A%84nonce%E4%B8%80%E6%A0%B7%EF%BC%8C%E6%96%B0%E7%9A%84gas_price%E=
+6%9B%B4%E9%AB%98%E4%BC%9A%E5%8F%91%E7%94%9F%EF%BC%89%EF%BC%8C%E4%BC%9A%E5=
+%B0%86%E8%AF%A5Tx%E8%AE%B0%E5%BD%95%E5%9C%A8%E5%88%97%E8%A1%A8%E9%87%8C%E=
+F%BC%8CReOrg%E6%97%B6%E5%A4%84%E7%90%86%E3%80%82%0A%0AReorg%E7%9A%84%E6%8=
+9%A7%E8%A1%8C%EF%BC%9A%0A%60%60%60%0Afunc%20(pool%20*TxPool)%20runReorg(d=
+one%20chan%20struct%7B%7D%2C%20reset%20*txpoolResetRequest%2C%20dirtyAcco=
+unts%20*accountSet%2C%20events%20map%5Bcommon.Address%5D*txSortedMap)%20%=
+0A%20%20%20%20%2F%2F%E6%9C%89%E4%B8%A4%E4%B8%AA%E4%BA%8B%E4%BB%B6%E4%BC%9=
+A%E5%BC%95%E8%B5%B7reorg%3A%0A%20%20%20%20%2F%2F1.%20%E6%94%B6%E5%88%B0%E=
+6%96%B0%E5%9D%97%E5%A4%B4%E9%80%9A%E7%9F%A5%0A%20%20%20%20%2F%2F2.%20%E8%=
+B0%83%E7%94%A8addTxs%EF%BC%8C%E6%B7%BB%E5%8A%A0%E4%BA%86%E4%B8%80%E4%BA%9=
+B%E6%96%B0%E4%BA%A4%E6%98%93%E8%BF%9Bqueue%E3%80%82%0A%20%20%20%20%2F%2F%=
+E5%AF%B9reOrg%E6%9D%A5%E8%AF%B4%EF%BC%8C%E9%9C%80%E8%A6%81%E5%A4%84%E7%90=
+%86%E7%9A%84%E5%AF%B9%E8%B1%A1%E9%83%BD%E6%98%AFdirtyAccounts%EF%BC%8C%E5=
+%AF%B9%E4%BA%8E%E6%96%B0%E5%9D%97%E5%A4%B4%EF%BC%8C%E9%9C%80%E8%A6%81%E6%=
+8A%8A%E5%9D%97%E5%A4%B4%E5%AF%BC%E8%87%B4%E7%9A%84%E5%BE%85%E5%A4%84%E7%9=
+0%86%E7%9A%84%E8%B4%A6%E6%88%B7%E8%BF%87%E6%BB%A4%E5%87%BA%E6%9D%A5%EF%BC=
+%8C%E5%8A%A0%E5%88%B0dirtyAccounts%E9%87%8C%EF%BC%8C%E7%84%B6%E5%90%8E%E5=
+%AF%B9dirtyAccounts%E8%BF%9B%E8%A1%8Cpromote%E5%8D%B3%E5%8F%AF%E3%80%82%E=
+7%84%B6%E5%90%8E%E5%86%8D%E6%8A%8A%E8%AF%A5remove%E7%9A%84remove%E6%8E%89=
+%EF%BC%8C%E6%9B%B4%E6%96%B0%E8%AF%A5%E6%9B%B4%E6%96%B0%E7%9A%84%E7%8A%B6%=
+E6%80%81%EF%BC%8C%E5%8F%91%E8%AF%A5%E5%8F%91%E7%9A%84%E9%80%9A%E7%9F%A5%E=
+F%BC%8C%E5%B0%B1%E8%A1%8C%E4%BA%86%E3%80%82%0A%20%20%20%20if(reset%20!%3D=
+null)%7B%20%2F%2F%E5%A6%82%E6%9E%9C%E6%AD%A4%E6%AC%A1reorg%E8%A6%81%E5%A4=
+%84%E7%90%86reset%EF%BC%8C%E9%82%A3%E5%B0%B1%E5%A4%84%E7%90%86%E5%AE%83%E=
+3%80%82%E5%85%B6%E7%BB%93%E6%9E%9C%E6%98%AF%E5%B0%86%E8%A2%ABrem%E7%9A%84=
+%E5%9D%97%E9%87%8C%EF%BC%8C%E4%B8%94%E6%B2%A1%E5%9C%A8%E6%96%B0%E5%9D%97%=
+E9%87%8C%E7%9A%84%E4%BA%A4%E6%98%93%E9%87%8D%E6%96%B0%E5%8A%A0%E5%85%A5po=
+ol%0A%20%20%20%20%20%20%20%20-%3E%20%20pool.reset(reset.oldHead%2C%20rese=
+t.newHead)%0A%20%20%20%20%20%20%20%20%20%20%20%20if%20(rem%E5%A4%B4%E4%B8=
+%8D%E6%98%AFadd%E5%A4%B4%E7%9A%84parent%EF%BC%89%7B%0A%20%20%20%20%20%20%=
+20%20%20%20%20%20%20%20%20%20if(rem%E5%92%8Cadd%E4%B9%8B%E9%97%B4%E5%9D%9=
+7%E9%AB%98%3E64%EF%BC%89%EF%BC%8C%E6%AD%A4%E6%83%85%E5%86%B5%E4%B8%8D%E5%=
+A4%84%E7%90%86%EF%BC%8C%E6%B2%A1%E5%95%A5%E4%BB%B7%E5%80%BC%0A%20%20%20%2=
+0%20%20%20%20%20%20%20%20%20%20%20%20%0A%20%20%20%20%20%20%20%20%20%20%20=
+%20%20%20%20%20discarded%2Cincluded%20%3A%3D%20types.Transactions%0A%20%2=
+0%20%20%20%20%20%20%20%20%20%20%20%20%20%20if%EF%BC%88rem%E5%A4%B4%E4%B8%=
+BA%E7%A9%BA%EF%BC%89%E6%AD%A4%E6%83%85%E5%86%B5%E5%8F%AF%E8%83%BD%E6%98%A=
+FsetHead%EF%BC%8C%E4%B8%A2%E5%BC%83rem%E7%9A%84%E5%A4%B4%EF%BC%8C%E6%AD%A=
+4%E6%97%B6%E4%B8%8D%E9%9C%80%E8%A6%81%E5%A4%84%E7%90%86%0A%20%20%20%20%20=
+%20%20%20%20%20%20%20%20%20%20%20else%3A%0A%20%20%20%20%20%20%20%20%20%20=
+%20%20%20%20%20%20%20%20%20%20for(rem%E5%9D%97%E9%AB%98%3Eadd%E5%9D%97%E9=
+%AB%98%EF%BC%89%EF%BC%8C%E5%8D%B3%E5%9D%97%E5%9B%9E%E9%80%80%0A%20%20%20%=
+20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20discarded%2=
+0%E5%8A%A0%E4%B8%8Arem%E5%9D%97%E9%87%8C%E7%9A%84%E6%89%80%E6%9C%89Tx%0A%=
+20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20for(add%E5%9D%=
+97%E9%AB%98%3Erem%E5%9D%97%E9%AB%98%EF%BC%89%2C%E5%8D%B3%E6%AD%A3%E5%B8%B=
+8%E9%93%BE%E5%8F%98%E9%95%BF%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20=
+%20%20%20%20%20%20%20%20%20%20included%E5%8A%A0%E4%B8%8A%E6%89%80%E6%9C%8=
+9add%E5%9D%97%E7%9A%84Tx%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%=
+20%20%20%20%20for(add%E5%9D%97hash%20!%3D%20rem%E5%9D%97hash)%0A%20%20%20=
+%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%E5%AF%B9%=
+E6%89%80%E6%9C%89%E7%9A%84add%2Cincluded%E5%8A%A0%E4%B8%8ATx%0A%20%20%20%=
+20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%E5%AF%B9%E=
+6%89%80%E6%9C%89%E7%9A%84rm%EF%BC%8Cdiscarded%20%E5%8A%A0%E4%B8%8ATx%0A%2=
+0%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20reinject%20%3D%=
+20types.TxDifference(discarded%2C%20included)%20%20%2F%2F%E8%BF%99%E6%AD%=
+A5%E9%9D%9E%E5%B8%B8%E9%87%8D%E8%A6%81%EF%BC%8C%E4%B9%8B%E5%89%8D%E8%BF%9=
+9%E5%87%A0%E4%B8%AA%E5%BE%AA%E7%8E%AF%EF%BC%8C%E7%9B%AE%E7%9A%84%E5%B0%B1=
+%E6%98%AF%E8%BF%99%E4%B8%80%E6%AD%A5%E5%BE%97%E5%88%B0reinject%E3%80%82%E=
+5%AE%83%E6%98%AF%E4%BB%8Ediscarded%E7%9A%84Tx%E4%B8%AD%EF%BC%8C%E5%8E%BB%=
+E6%8E%89%E4%B9%9F%E5%9C%A8included%E4%B8%AD%E7%9A%84%E8%BF%99%E9%83%A8%E5=
+%88%86%EF%BC%8C%E5%8D%B3%E8%A2%ABrem%E7%9A%84%E5%9D%97%E9%87%8C%E7%9A%84%=
+E4%BA%A4%E6%98%93%EF%BC%8C%E5%A6%82%E6%9E%9C%E6%B2%A1%E6%9C%89%E5%87%BA%E=
+7%8E%B0%E5%9C%A8add%E7%9A%84%E5%9D%97%E9%87%8C%EF%BC%8C%E5%B0%B1%E4%BC%9A=
+%E8%BF%9B%E5%85%A5%E5%88%B0reinject%E9%87%8C%EF%BC%8C%E8%BF%99%E9%83%A8%E=
+5%88%86%E4%BA%A4%E6%98%93%E7%AC%A6%E5%90%88%E8%A6%81%E6%B1%82%EF%BC%8C%E4=
+%BD%86%E6%98%AF%E5%9B%A0%E4%B8%BAreset%E8%A2%AB%E6%8A%9B%E5%BC%83%E4%BA%8=
+6%EF%BC%8C%E6%89%80%E4%BB%A5%E8%A6%81%E9%87%8D%E6%96%B0%E6%B7%BB%E5%8A%A0=
+%E8%BF%9B%E4%BA%A4%E6%98%93%E6%B1%A0%E3%80%82%0A%20%20%20%20%20%20%20%20%=
+20%20%20%20%7D%0A%20%20%20%20%20%20%20%20%20%20%20%20%2F%2F%E9%87%8D%E7%B=
+D%AEpool%E9%87%8C%E5%85%B3%E4%BA%8Ehead%E7%9A%84%E4%B8%80%E4%BA%9B%E5%8F%=
+98%E9%87%8F%0A%20%20%20%20%20%20%20%20%20%20%20%20if%20newHead%20%3D%3D%2=
+0nil%20%7B%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20newHead%20%3=
+D%20pool.chain.CurrentBlock().Header()%20%2F%2F%20Special%20case%20during=
+%20testing%0A%20%20%20%20%20%20%20%20%20%20%20%20%7D%0A%20%20%20%20%20%20=
+%20%20%20%20%20%20pool.currentState%20%3D%20statedb%0A%20%20%20%20%20%20%=
+20%20%20%20%20%20pool.pendingNonces%20%3D%20newTxNoncer(statedb)%0A%20%20=
+%20%20%20%20%20%20%20%20%20%20pool.currentMaxGas%20%3D%20newHead.GasLimit=
+%0A%20%20%20%20%20%20%20%20%20%20%20%20%2F%2F%E5%B0%86reinject%E6%B7%BB%E=
+5%8A%A0%E5%88%B0pool%EF%BC%8C%E8%BF%99%E5%B0%B1%E6%98%AFreset%E7%9A%84%E6=
+%89%A7%E8%A1%8C%E7%BB%93%E6%9E%9C%0A%20%20%20%20%20%20%20%20%20%20%20%20p=
+ool.addTxsLocked(reinject%2C%20false)%0A%20%20%20%20%20%20%20%20%20%20%20=
+%20%7D%0A%20%20%20%20%20%20%20%2F%2F%E5%B0%86queue%E9%87%8C%E6%89%80%E6%9=
+C%89%E7%9A%84address%EF%BC%8C%E6%B7%BB%E5%8A%A0%E5%88%B0promoteAddrs%E9%8=
+7%8C%E3%80%82%0A%20%20%20%20%20%20%20for%20addr%20%3A%3D%20range%20pool.q=
+ueue%20%7B%0A%09%09%09promoteAddrs%20%3D%20append(promoteAddrs%2C%20addr)=
+%0A%09%09%7D%0A%20%20%20%20%7D%0A%20%20%20%20%2F%2F%E5%AF%B9promoteAddrs%=
+E6%A3%80%E6%9F%A5%E7%97%85%E6%89%A7%E8%A1%8Cpromote%0A%20%20%20%20promote=
+d%20%3A%3D%20pool.promoteExecutables(promoteAddrs)%2F%2F%E8%BF%99%E9%87%8=
+C%E6%9C%89%E4%B8%AA%E7%96%91%E9%97%AE%EF%BC%9A%E5%9C%A8%E5%93%AA%E6%8A%8A=
+%E5%8A%A0%E5%85%A5%E5%88%B0pending%E7%9A%84Tx%E4%BB%8Equeue%E9%87%8Cremov=
+e%E7%9A%84%E5%91%A2%EF%BC%9F%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20=
+%20%20%20%20%20%20%20%20%20%20%20%20%20%20-%3E%0A%20%20%20%20%20%20%20%20=
+%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%E9%81%8D%E5%=
+8E%86%E6%AF%8F%E4%B8%AA%E8%B4%A6%E6%88%B7%EF%BC%8C%E5%AF%B9%E6%AF%8F%E4%B=
+8%AA%E8%B4%A6%E6%88%B7%E6%89%A7%E8%A1%8C%EF%BC%9A%7B%0A%20%20%20%20%20%20=
+%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%=
+20%20list.Forward%20%20%20%2F%2F%E6%8A%8ATx%E5%88%97%E8%A1%A8%E4%B8%ADnon=
+ce%E5%B0%8F%E4%BA%8E%E5%BD%93%E5%89%8D%E7%8A%B6%E6%80%81%E7%9A%84%E5%88%A=
+0%E6%8E%89%E3%80%82%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20=
+%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%E5%88%A0%E6%8E%89%E4%BD%99%=
+E9%A2%9D%E4%B8%8D%E5%A4%9F%E7%9A%84%EF%BC%88%E4%B8%8D%E8%B6%B3%E4%BB%A5%E=
+6%94%AF%E4%BB%98gas%E7%AD%89%EF%BC%89%0A%20%20%20%20%20%20%20%20%20%20%20=
+%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%E9%80%89%=
+E5%87%BA%E6%89%80%E6%9C%89%E5%8F%AF%E4%BB%A5%E6%89%A7%E8%A1%8C%E7%9A%84Tx=
+%20(nonce%E5%A4%A7%E4%BA%8E%E5%BD%93%E5%89%8Dnonce%E4%B8%94%E8%BF%9E%E7%B=
+B%AD%E5%A2%9E%E5%8A%A0%EF%BC%89%0A%20%20%20%20%20%20%20%20%20%20%20%20%20=
+%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%E9%81%8D%E5%8E%=
+86%E8%BF%99%E4%BA%9BTx%EF%BC%8C%E5%AF%B9%E6%AF%8F%E4%B8%AA%E6%89%A7%E8%A1=
+%8Cpool.promoteTx%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%2=
+0%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20-%3E%20%20%0A%20%2=
+0%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20=
+%20%20%20%20%20%20%20%20%20%20list%20%3A%3D%20pool.pending%5Baddr%5D%20%2=
+0%2F%2Flist%E6%98%AFpending%20%E4%B8%AD%E8%AF%A5%E8%B4%A6%E6%88%B7%E7%9A%=
+84TxList%EF%BC%8C%E5%8D%B3%E6%8F%92%E5%85%A5%E7%9B%AE%E6%A0%87%E3%80%82%0=
+A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20=
+%20%20%20%20%20%20%20%20%20%20%20%20inserted%2C%20old%20%3A%3D%20list.Add=
+(tx%2C%20pool.config.PriceBump)%0A%20%20%20%20%20%20%20%20%20%20%20%20%20=
+%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%=
+20%20%20-%3E%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%=
+20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%E6%9F%A5%E=
+7%9C%8B%E8%AF%A5nonce%E5%9C%A8list%E4%B8%AD%E6%98%AF%E5%90%A6%E5%B7%B2%E6=
+%9C%89%E4%BA%86%EF%BC%8C%E5%A6%82%E6%9E%9C%E6%9C%89%E7%9A%84%E8%AF%9D%EF%=
+BC%8C%E6%9F%A5%E7%9C%8B%E5%8E%9F%E6%9C%89Tx%E7%9A%84gasFee%E6%98%AF%E5%90=
+%A6%E6%AF%94%E6%96%B0%E7%9A%84%E9%AB%98%EF%BC%8C%E6%98%AF%E7%9A%84%E8%AF%=
+9D%E8%BF%94%E5%9B%9E%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%2=
+0%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%E5=
+%90%A6%E5%88%99%E8%AE%A1%E7%AE%97%E6%96%B0Tx%E7%9A%84gas%E6%AF%94%E6%97%A=
+7%E4%BA%A4%E6%98%93%E9%AB%98%E7%9A%84%E6%AF%94%E4%BE%8B%E6%98%AF%E5%90%A6=
+%E6%BB%A1%E8%B6%B3%E8%A6%81%E6%B1%82%EF%BC%88%E5%90%8Cnonce%E7%9A%84%E4%B=
+A%A4%E6%98%93%EF%BC%8C%E6%96%B0%E7%9A%84%E8%A6%81%E6%AF%94%E6%97%A7%E7%9A=
+%84gas%E8%B4%B9%E9%AB%98x%25%E6%89%8D%E5%85%81%E8%AE%B8%E6%9B%BF%E6%8D%A2=
+%E4%BA%A4%E6%98%93%EF%BC%8C%E6%AF%94%E4%BE%8B%E5%9C%A8pool.config.PriceBu=
+mp%E4%B8%AD%E8%AE%BE%E7%BD%AE%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%2=
+0%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20=
+%20%20%E5%A6%82%E6%9E%9C%E9%80%9A%E8%BF%87%E6%A3%80%E6%9F%A5%EF%BC%8C%E5%=
+88%99%E6%8A%8A%E6%96%B0%E4%BA%A4%E6%98%93%E5%8A%A0%E5%85%A5list%EF%BC%8C%=
+E5%B9%B6%E6%9B%B4%E6%96%B0list%E7%9A%84gasCap%EF%BC%8CcostCap%0A%20%20%20=
+%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%=
+20%20%20%20%20%20%20%20%20%E6%A0%B9%E6%8D%AElist.Add%E7%9A%84%E7%BB%93%E6=
+%9E%9C%EF%BC%8C%E6%9B%B4%E6%96%B0pool.all%2C%20pool.priced%EF%BC%8Cpendin=
+gNonces%E7%AD%89%E7%8A%B6%E6%80%81%0A%20%20%20%20%20%20%20%20%20%20%20%20=
+%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%E5%A6%82%E6%=
+9E%9C%E8%AF%A5%E8%B4%A6%E6%88%B7%E4%B8%8D%E6%98%AF%E6%9C%AC%E5%9C%B0%E8%B=
+4%A6%E6%88%B7%EF%BC%8C%E6%A3%80%E6%9F%A5%E8%AF%A5%E8%B4%A6%E6%88%B7%E5%A4=
+%A7%E5%B0%8F%E6%98%AF%E5%90%A6%E8%B6%85%E5%87%BApool.config.AccountQueue%=
+EF%BC%88%E5%8D%B3pool%E4%B8%AD%E5%85%81%E8%AE%B8%E7%9A%84queue%E4%B8%AD%E=
+4%B8%80%E4%B8%AA%E8%B4%A6%E6%88%B7%E5%8F%AF%E4%BB%A5%E4%BF%9D%E5%AD%98%E7=
+%9A%84%E6%9C%80%E5%A4%A7Tx%E6%95%B0%EF%BC%89%EF%BC%8C%E5%A6%82%E6%9E%9C%E=
+8%B6%85%E5%87%BA%EF%BC%8C%E5%B0%B1%E4%BB%8Equeue%E4%B8%AD%E7%A7%BB%E9%99%=
+A4%E8%B6%85%E5%87%BA%E9%83%A8%E5%88%86%E7%9A%84Tx%E3%80%82%0A%20%20%20%20=
+%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%=
+20%20%20%20%E6%9B%B4%E6%96%B0%E5%90%84%E7%A7%8D%E5%8F%98%E9%87%8F%E7%8A%B=
+6%E6%80%81%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20=
+%20%20%20%20%20%20%20%20%7D%0A%20%20%20%20if%20reset%20!%3D%20null%0A%20%=
+20%20%20%20%20%20%20pool.demoteUnexecutables()%20%20%2F%2F%E9%81%8D%E5%8E=
+%86pending%E4%B8%AD%E7%9A%84%E6%89%80%E6%9C%89%E8%B4%A6%E6%88%B7%EF%BC%8C=
+%E7%A7%BB%E9%99%A4%E6%89%80%E6%9C%89%E8%B6%85%E8%BF%87nonce%E7%9A%84%EF%B=
+C%8C%E4%BD%99%E9%A2%9D%E4%B8%8D%E8%B6%B3%E7%9A%84%EF%BC%88%E4%B8%8D%E5%A4=
+%9Fgas)%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20=
+%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%=
+20%20%2F%2F%E9%92%88%E5%AF%B9gas%E8%B4%B9%E4%B8%8D%E5%A4%9F%E7%9A%84%EF%B=
+C%8C%E5%B9%B6%E4%B8%8D%E6%98%AF%E7%9B%B4%E6%8E%A5%E6%8A%9B%E5%BC%83%EF%BC=
+%8C%E8%80%8C%E6%98%AF%E5%86%8D%E5%8A%A0%E5%88%B0queue%E9%87%8C%EF%BC%8C%E=
+5%9B%A0%E4%B8%BA%E6%9C%AA%E6%9D%A5price%E5%8F%AF%E8%83%BD%E4%BC%9A%E9%99%=
+8D%EF%BC%8C%E9%9A%8F%E6%97%B6%E5%8F%AF%E8%83%BD%E5%8F%88%E6%BB%A1%E8%B6%B=
+3%E8%A6%81%E6%B1%82%E4%BA%86%E3%80%82%20%0A%20%20%20%20%20%20%20%20%E6%9B=
+%B4%E6%96%B0pool.pendingNonces%20%20%20%20%2F%2F%E6%8A%8Apending%E7%9A%84=
+%E6%89%80%E6%9C%89%E8%B4%A6%E6%88%B7%E7%9A%84nonce%E6%9B%B4%E6%96%B0%E5%8=
+8%B0%E6%96%B0%E5%9D%97%0A%20%20%20%20%20%20%20%20%E5%AF%B9%E5%A4%96%E5%8F=
+%91%E5%87%BANewTxsEvent%E9%80%9A%E7%9F%A5%0A%60%60%60%0A%0A%0A%0A%0A%0A%0=
+A%0A%0A%0A%0A%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20=
+%20%0A%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%0A%20%=
+20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%20%0A%0A%20%20%20%2=
+0%20%20%20%20%20%20%20%20%0A%20%20%20%20%0A%20%20%20%20%20%20%20%20</cent=
+er></span>=0A</div></body></html>
+ 
